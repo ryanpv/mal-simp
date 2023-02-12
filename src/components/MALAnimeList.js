@@ -41,7 +41,7 @@ function MalAnimeList() {
     }
   }
 
-
+// offsets to be sent as params to server. 
   async function incrementOffset(e) {
     e.preventDefault();
     setOffset(prevOffset => prevOffset + 8);
@@ -51,19 +51,6 @@ function MalAnimeList() {
     e.preventDefault();
     setOffset(prevOffset => prevOffset - 8);
   }
-
-  // function renderList() {
-  //   return userList.data.map(el => {
-  //     return(
-  //       <div className='anime-list' key={ el.node.id }>
-  //         <li>
-  //           <h3>{ el.node.title }</h3>
-  //           <img src={ el.node.main_picture.medium } alt='' />
-  //         </li> 
-  //       </div>
-  //       )
-  //     })
-  //   }
 
 
   return (

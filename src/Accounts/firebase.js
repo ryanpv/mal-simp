@@ -16,19 +16,19 @@ import { getAuth } from "firebase/auth"
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyCuyl4cA3zNaLyM4qPZqOawgZ56hyW4Orc",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 
-  authDomain: "mal-simplified.firebaseapp.com",
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
 
-  projectId: "mal-simplified",
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 
-  storageBucket: "mal-simplified.appspot.com",
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 
-  messagingSenderId: "902536660610",
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 
-  appId: "1:902536660610:web:0fe39439dd7f357948569b",
+  appId: process.env.REACT_APP_FIREBASE_APP_I,
 
-  measurementId: "G-04878TTQG8"
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 
 };
 
