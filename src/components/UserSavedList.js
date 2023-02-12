@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts'
 import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, InputGroup } from 'react-bootstrap';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
@@ -8,7 +8,7 @@ import DeleteModal from '../modals/DeleteModal';
 
 export default function UserSavedList() {
   const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
-  const { categoryList, setCategoryList, categoryContents, setCategoryContents, setLastAddedCategory } = useStateContext();
+  const { categoryList, setCategoryList, categoryContents, setCategoryContents, setLastAddedCategory, errorMessage } = useStateContext();
   const { handleShow } = useDisplayContext();
   const { currentUser } = useAuth();
   const firebaseToken = currentUser && currentUser.accessToken;
@@ -17,8 +17,6 @@ export default function UserSavedList() {
   // const [lastAddedCategory, setLastAddedCategory] = React.useState("");
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const [show, setShow] = React.useState(false);
-  // const [categoryContents, setCategoryContents] = React.useState({})
-  const savedSearchRef = React.useRef();
   const [paginationTitles, setPaginationTitles] = React.useState({ firstTitle: '', lastTitle: '' });
   const [fetchCount, setFetchCount] = React.useState(10);
 
@@ -119,24 +117,19 @@ async function fetchCategoryContent(e, value) { // called on category select
     });
   
     const fetchResult = await fetchContent.json();
-    
-    // if (categoryContents)
-
-      setCategoryContents(fetchResult);
-
-
+    setCategoryContents(fetchResult);
     setPaginationTitles({ 
       firstTitle: fetchResult[0].animeTitle,
       lastTitle: fetchResult[fetchResult.length - 1].animeTitle 
     });
     setFetchCount(fetchResult.length)
+    setSelectedCategory(value)
   
     console.log('category: ', value)
     console.log('test', fetchResult)
   } catch (err) {
     console.log(err);
   }
-  setSelectedCategory(value)
 
   // onSelect should update state which will cause the table to render
 };
@@ -204,28 +197,10 @@ function deleteBtn() {
   setShow(prev => !prev)
 }
 
-async function savedSearch(e) {
-  e.preventDefault();
-  try {
-    console.log( savedSearchRef.current.value );
-
-    const searchQuery = await fetch(`${ baseUrl }/saved-anime-search/${ savedSearchRef.current.value }`, {
-      credentials: 'include',
-      headers: {
-        Authorization: `Bearer ${ firebaseToken }`
-      }
-    });
-    console.log('search query: ', searchQuery);
-  } catch (err) {
-    console.log(err);
-  }
-  return savedSearchRef.current.value === ""
-
-};
-
 
   return (
   <>
+    { firebaseToken ? 
     <Container>
       <Form onSubmit={ (e) => addNewCategory(e) }>
         <Row className="w-50 mb-3 mt-3">
@@ -245,6 +220,7 @@ async function savedSearch(e) {
         </Row>
       </Form>
     </Container>
+    : null }
 
 
   { firebaseToken ?
@@ -252,7 +228,6 @@ async function savedSearch(e) {
       <thead>
         <tr>
           <th style={ { border: "1px solid black", width: 150 } }>
-            {/* { selectedCategory }{'   '} */}
             { selectedCategory !== "" ? selectedCategory : "" }{'   '}
 
             { selectedCategory === "" ? null
@@ -260,36 +235,31 @@ async function savedSearch(e) {
             : selectedCategory === "Watch Later" ? null // default category
             : <Button size="sm" onClick={ deleteBtn } variant='danger' value='del'>-</Button> }
           </th>
-          {/* <th style={{ margin: 20, border: "1px solid black", padding: "10px 10px", width: 150 }}>Image</th> */}
+
           <th style={ { margin: 20, border: "1px solid black", padding: "10px 10px", width: 200 } }>Score</th>
           <th style={ { border: "1px solid black", padding: "10px 10px" } }>Anime Title</th>
-          {/* <th style={{ border: "1px solid black", padding: "10px 10px" }}
-            >
-              <Form onSubmit={ (e) => savedSearch(e) }>
-                <Form.Group>
-              <InputGroup size='small'>
-                <InputGroup.Text>Anime Title</InputGroup.Text>
-                <Form.Control  ref={ savedSearchRef } type='text' placeholder='Search your saved titles...'/>
-              </InputGroup>
-                </Form.Group>
-              </Form>
-          </th> */}
           <th style={ { border: "1px solid black", padding: "10px 10px" } }>No. Episodes</th>
         </tr>
       </thead>
       <tbody>{ displaySearchedAnime() }</tbody>
     </table>
-  : <h1>401 UNAUTHORIZED // Please log in to view account data</h1> }
 
-    {/* <Button onClick={ (e) => fetchPreviousPage(e) }>Backward Pagination</Button> */}
-    { categoryContents.length > 0 && fetchCount === 10 
-    ? <div className='text-center mb-2'>
+    : <div className='text-center'>
+        <h1>401 UNAUTHORIZED - { errorMessage !== '' ? errorMessage : null }</h1>
+        <h3><Link to='/login'>Log in</Link> or <Link to='/sign-up'>Sign up</Link> to save anime titles</h3>
+      </div> 
+  }
+
+  { categoryContents.length > 0 && fetchCount === 10 ?
+      <div className='text-center mb-2'>
         <Button onClick={ (e) => fetchNextPage(e) }>Load More</Button> 
       </div>
-    : null }
+    : null 
+  }
 
     <DeleteModal selectedCategory={ selectedCategory } show={ show } setShow={ setShow } categoryList={ categoryList } 
     setCategoryList={ setCategoryList } setSelectedCategory={ setSelectedCategory } setCategoryContents={ setCategoryContents } />
   </>
-  )
-}
+
+  );
+};

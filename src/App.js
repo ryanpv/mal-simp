@@ -23,7 +23,7 @@ import MalAnimeList from './components/MALAnimeList.js';
 function App() {
   const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
   // const [show, setShow] = React.useState(false);
-  const { show, setShow, setCategoryList, lastAddedCategory } = useStateContext();
+  const { show, setShow, setCategoryList, lastAddedCategory, setErrorMessage } = useStateContext();
   const handleClose = () => setShow(false);
   const { setLoading, currentUser } = useAuth();
   const firebaseToken = currentUser && currentUser.accessToken;

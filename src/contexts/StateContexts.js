@@ -20,6 +20,7 @@ export function StateProvider({ children }) {
   const [categoryContents, setCategoryContents] = React.useState([]) // state for saved anime in categories
   const [lastAddedCategory, setLastAddedCategory] = React.useState("");
   const [additionalContent, setAdditionalContent] = React.useState([]);
+  const [errorMessage, setErrorMessage] = React.useState('')
 
 
 
@@ -31,6 +32,8 @@ export function StateProvider({ children }) {
     offset,
     loading,
     setLoading,
+    errorMessage,
+    setErrorMessage,
     setOffset,
     animeDetails,
     setAnimeDetails,

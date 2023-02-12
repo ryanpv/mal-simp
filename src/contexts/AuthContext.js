@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
-  const { setCategoryList } = useStateContext();
+  const { setCategoryList, setErrorMessage } = useStateContext();
 
 
   function signup(email, password) {
@@ -39,7 +39,6 @@ export function AuthProvider({ children }) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
-        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code
@@ -91,6 +90,7 @@ export function AuthProvider({ children }) {
         setLoading(false)
         console.log(user.accessToken && 'firebase token acquired');
       } else {
+        setErrorMessage('No user detected. Please log in or refresh the page.')
         console.log('no user logged in');
       }
     })
