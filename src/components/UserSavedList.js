@@ -1,0 +1,295 @@
+import React from 'react'
+import { useParams, useNavigate } from 'react-router-dom';
+import { useStateContext } from '../contexts/StateContexts'
+import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, InputGroup } from 'react-bootstrap';
+import { useDisplayContext } from '../contexts/DisplayDataContext';
+import { useAuth } from '../contexts/AuthContext';
+import DeleteModal from '../modals/DeleteModal';
+
+export default function UserSavedList() {
+  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const { categoryList, setCategoryList, categoryContents, setCategoryContents, setLastAddedCategory } = useStateContext();
+  const { handleShow } = useDisplayContext();
+  const { currentUser } = useAuth();
+  const firebaseToken = currentUser && currentUser.accessToken;
+  const categoryRef = React.useRef();
+  const selectRef = React.useRef();
+  // const [lastAddedCategory, setLastAddedCategory] = React.useState("");
+  const [selectedCategory, setSelectedCategory] = React.useState("");
+  const [show, setShow] = React.useState(false);
+  // const [categoryContents, setCategoryContents] = React.useState({})
+  const savedSearchRef = React.useRef();
+  const [paginationTitles, setPaginationTitles] = React.useState({ firstTitle: '', lastTitle: '' });
+  const [fetchCount, setFetchCount] = React.useState(10);
+
+  const params = useParams();
+  const navigate = useNavigate();
+
+
+  // React.useEffect(() => {
+  //   async function getCategories() {
+  //     if (firebaseToken) {
+  //       const fetchCategories = await fetch('http://localhost:6969/get-categories', {
+  //         credentials: "include",
+  //         headers: {
+  //           Authorization: `Bearer ${ firebaseToken }`
+  //         }
+  //       });
+  
+  //       const response = await fetchCategories.json();
+  //       const responseArr = await response.map(title => {return {categoryName: title}})
+  //       setCategoryList(response)
+  //       console.log(responseArr);
+  //     } else {
+  //       console.log('fetch category error');
+  //     }
+  //   };
+  //   getCategories();
+  // }, [lastAddedCategory, currentUser]);
+
+
+
+  const RemoveAnimeBtn = (props) => {
+    return (
+      <>
+        <Dropdown>
+          <DropdownButton variant="light" size="sm" title="" onSelect={ (e) => removeAnime({ categoryName: props.anime.categoryName, animeId: e }) }>
+            <Dropdown.Item eventKey={props.anime.animeId}>Delete</Dropdown.Item>
+          </DropdownButton>
+        </Dropdown>
+      </>
+    )
+  }
+
+  async function removeAnime(animeInfo) {
+    await fetch(`${ baseUrl }/remove-anime`, {
+      method: 'DELETE',
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${ firebaseToken }`
+      },
+      body: JSON.stringify(animeInfo)
+    });
+    // const updateContentList = categoryContents.filter(anime => anime.animeId.toString() !== animeInfo.animeId.toString())
+    // setCategoryContents(updateContentList)
+    // console.log(updateContentList);
+  }
+
+  const AnimeResultList = (props) => {
+    return (
+      <tr>
+        {/* <td></td> */}
+        <td>
+          <Button onClick={ () => handleShow({ id:props.anime.animeId }) } variant='link'><img alt={ `${props.anime.animeTitle} thumbnail` } 
+          src={ props.anime.main_picture.medium } width={75} height={100} /></Button>
+        </td>
+        <td>{props.anime.mean}</td>
+        <td>
+          <ButtonGroup>
+            <RemoveAnimeBtn anime={props.anime} />
+            <Button onClick={ () => handleShow({ id:props.anime.animeId }) } variant='link'>{props.anime.animeTitle}</Button>
+          </ButtonGroup>
+        </td>
+        <td>{ props.anime.num_episodes }</td>
+      </tr>
+    )
+  }
+
+  const displaySearchedAnime = () => {
+    if (categoryContents.length > 0) {
+      return categoryContents.map(anime => {
+        return (
+          <AnimeResultList anime={ anime } key={ anime.animeId } />
+        )
+      });
+    };
+    return ;
+  };
+
+
+async function fetchCategoryContent(e, value) { // called on category select
+  e.preventDefault();
+  try {
+    const fetchContent = await fetch(`${ baseUrl }/get-content/${ value }`,{
+      credentials:'include',
+      headers: {
+        Authorization: `Bearer ${ firebaseToken }`
+      },
+    });
+  
+    const fetchResult = await fetchContent.json();
+    
+    // if (categoryContents)
+
+      setCategoryContents(fetchResult);
+
+
+    setPaginationTitles({ 
+      firstTitle: fetchResult[0].animeTitle,
+      lastTitle: fetchResult[fetchResult.length - 1].animeTitle 
+    });
+    setFetchCount(fetchResult.length)
+  
+    console.log('category: ', value)
+    console.log('test', fetchResult)
+  } catch (err) {
+    console.log(err);
+  }
+  setSelectedCategory(value)
+
+  // onSelect should update state which will cause the table to render
+};
+
+async function fetchNextPage(e) {
+  e.preventDefault();
+  try {
+    const fetchContent = await fetch(`${ baseUrl }/content-paginate-forward/${ selectedCategory }/${ paginationTitles.lastTitle }`,{
+      credentials:'include',
+      headers: {
+        Authorization: `Bearer ${ firebaseToken }`
+      },
+    });
+
+    const nextPage = await fetchContent.json()
+    setCategoryContents((prev) => prev.concat(nextPage) );
+    setFetchCount(nextPage.length)
+    if (nextPage.length === 10) {
+      setPaginationTitles({ 
+            firstTitle: nextPage[0].animeTitle,
+            lastTitle: nextPage[nextPage.length - 1].animeTitle
+          });
+      }
+      console.log('length', nextPage.length);
+  } catch (err) {
+    console.log(err);
+  };
+};
+
+
+async function addNewCategory(e) {
+  e.preventDefault();
+  const categoryInput = categoryRef.current.value
+  const checkCategoryDuplicate = categoryList.filter(category => category.toLowerCase() === categoryInput.toLowerCase())
+  try {
+
+    if (categoryInput === "" || !/\S/.test(categoryInput) || categoryInput.includes('  ')) {
+      alert("Please enter proper category name. Ensure no double spacing")
+    } else if (checkCategoryDuplicate.length > 0) {
+      alert('category already exists')
+    } else if(categoryList.length >= 25) { 
+      alert('maximum amount of categories reached') // limit users' categories amount
+    } else {
+        const postCategory = await fetch(`${ baseUrl }/create-category`, {
+          method: 'POST',
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${ firebaseToken }`
+          },
+          body: JSON.stringify({ categoryName: categoryInput})
+        });
+        console.log(categoryRef.current.value)   
+        setLastAddedCategory(categoryInput)
+
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
+    return categoryRef.current.value === ""
+}
+
+function deleteBtn() {
+  setShow(prev => !prev)
+}
+
+async function savedSearch(e) {
+  e.preventDefault();
+  try {
+    console.log( savedSearchRef.current.value );
+
+    const searchQuery = await fetch(`${ baseUrl }/saved-anime-search/${ savedSearchRef.current.value }`, {
+      credentials: 'include',
+      headers: {
+        Authorization: `Bearer ${ firebaseToken }`
+      }
+    });
+    console.log('search query: ', searchQuery);
+  } catch (err) {
+    console.log(err);
+  }
+  return savedSearchRef.current.value === ""
+
+};
+
+
+  return (
+  <>
+    <Container>
+      <Form onSubmit={ (e) => addNewCategory(e) }>
+        <Row className="w-50 mb-3 mt-3">
+          <Form.Group as={ Col }>
+            <Form.Label>Select Category</Form.Label>
+            <Form.Select ref={selectRef} onChange={ (e) => fetchCategoryContent(e, e.target.value) }>
+              <option defaultValue='select category...'>Select category...</option>
+              <option value='Watch Later'>Watch Later</option>
+              { categoryList.length > 0 ? categoryList.map(title => <option key={ categoryList.indexOf(title) } value={ title} >{ title }</option>) : null }
+            </Form.Select>
+            </Form.Group>
+
+          <Form.Group as={ Col }>
+            <Form.Label>Add new category</Form.Label>
+            <Form.Control type='text' ref={categoryRef} placeholder='New Category'/>
+          </Form.Group>
+        </Row>
+      </Form>
+    </Container>
+
+
+  { firebaseToken ?
+      <table className='table table-striped' style={ { marginTop: 20 } }>
+      <thead>
+        <tr>
+          <th style={ { border: "1px solid black", width: 150 } }>
+            {/* { selectedCategory }{'   '} */}
+            { selectedCategory !== "" ? selectedCategory : "" }{'   '}
+
+            { selectedCategory === "" ? null
+            : selectedCategory === "Select category..." ? null // default selection value
+            : selectedCategory === "Watch Later" ? null // default category
+            : <Button size="sm" onClick={ deleteBtn } variant='danger' value='del'>-</Button> }
+          </th>
+          {/* <th style={{ margin: 20, border: "1px solid black", padding: "10px 10px", width: 150 }}>Image</th> */}
+          <th style={ { margin: 20, border: "1px solid black", padding: "10px 10px", width: 200 } }>Score</th>
+          <th style={ { border: "1px solid black", padding: "10px 10px" } }>Anime Title</th>
+          {/* <th style={{ border: "1px solid black", padding: "10px 10px" }}
+            >
+              <Form onSubmit={ (e) => savedSearch(e) }>
+                <Form.Group>
+              <InputGroup size='small'>
+                <InputGroup.Text>Anime Title</InputGroup.Text>
+                <Form.Control  ref={ savedSearchRef } type='text' placeholder='Search your saved titles...'/>
+              </InputGroup>
+                </Form.Group>
+              </Form>
+          </th> */}
+          <th style={ { border: "1px solid black", padding: "10px 10px" } }>No. Episodes</th>
+        </tr>
+      </thead>
+      <tbody>{ displaySearchedAnime() }</tbody>
+    </table>
+  : <h1>401 UNAUTHORIZED // Please log in to view account data</h1> }
+
+    {/* <Button onClick={ (e) => fetchPreviousPage(e) }>Backward Pagination</Button> */}
+    { categoryContents.length > 0 && fetchCount === 10 
+    ? <div className='text-center mb-2'>
+        <Button onClick={ (e) => fetchNextPage(e) }>Load More</Button> 
+      </div>
+    : null }
+
+    <DeleteModal selectedCategory={ selectedCategory } show={ show } setShow={ setShow } categoryList={ categoryList } 
+    setCategoryList={ setCategoryList } setSelectedCategory={ setSelectedCategory } setCategoryContents={ setCategoryContents } />
+  </>
+  )
+}
