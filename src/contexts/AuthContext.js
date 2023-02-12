@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth"
+import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, 
+    signOut, sendPasswordResetEmail } from "firebase/auth"
 import { auth } from '../Accounts/firebase'
 import { useStateContext } from './StateContexts';
 
@@ -16,9 +17,9 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [error, setError] = useState('');
   const [currentUser, setCurrentUser] = useState();
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
-  const { setCategoryList, setErrorMessage } = useStateContext();
+  const { setCategoryList, setErrorMessage, loading, setLoading } = useStateContext();
 
 
   function signup(email, password) {
@@ -55,6 +56,10 @@ export function AuthProvider({ children }) {
     navigate('/')
     return signOut(auth)
   };
+
+  function resetPassword(email) {
+    sendPasswordResetEmail(auth, email)
+  }
 
   async function malLogout() {
     try {
@@ -102,6 +107,7 @@ export function AuthProvider({ children }) {
     login,
     loginWithGoogle,
     logout,
+    resetPassword,
     setLoading,
     error,
     setError,

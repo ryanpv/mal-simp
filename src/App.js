@@ -16,6 +16,7 @@ import Signup from './Accounts/signup.js';
 import { useAuth } from './contexts/AuthContext.js';
 import UserSavedList from './components/UserSavedList.js';
 import MalAnimeList from './components/MALAnimeList.js';
+import ForgotPassword from './Accounts/ForgotPassword.js';
 
 
 
@@ -66,6 +67,7 @@ function App() {
         <Route path="/search-results" element={ <SearchResults /> } />
         <Route path="/login" element={ <Login /> } />
         <Route path="/sign-up" element={ <Signup /> } />
+        <Route path="/forgot-password" element={ <ForgotPassword /> } />
 
       </Routes>
     <TrailerModal show={ show } onHide={ () => handleClose() } />

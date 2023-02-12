@@ -18,13 +18,10 @@ function MalAnimeList() {
 
 
   React.useEffect(() => {
-    // if (currentUser) {
+
     setLoading(true);
     getUserList()
     setLoading(false)
-    // } else { 
-    //   setAnimeList({}) 
-    // }
 
   }, [offset, firebaseToken])
   
@@ -57,7 +54,7 @@ function MalAnimeList() {
     <>
     <div className='text-center mb-3'>
       <h2 >User Anime List</h2>
-      { currentUser ? <i>Your anime list from MyAnimeList</i> : <i><Link to='/'>Log in</Link> to MAL to see your saved anime list</i>} 
+      { animeList.data ? <i>Your anime list from MyAnimeList</i> : <i><Link to='/'>Log in</Link> to MAL to see your saved anime list</i> } 
     </div>
 
     <Container>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Button, Card, Form, Alert } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -40,20 +40,29 @@ export default function Login() {
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
 
-            <Button variant="outline-primary" className='w-100 mt-2' type='submit'>Log In.</Button>
+            <Button variant="outline-primary" className='w-100 mt-4' type='submit'>Log In.</Button>
           </Form>
 
-            <Button onClick={ loginWithGoogle } variant="outline-primary" className='w-100 mt-2' type='submit'>Google Sign in</Button>
-            <Button variant='link' size='sm' onClick={ loginWithGoogle }>
-              <img src={require('./google-signin-logo.png')} alt='google sign-in logo' width={150} />
-            </Button>
+
+
 
           {/* <div className='w-100 text-center mt-3'>
             <Link to="/admin/forgot-password">Forgot Password?</Link> 
           </div> */}
 
         </Card.Body>
+          <div className='mt-2 mb-2 text-center'>
+            <Button variant='link' size='sm' onClick={ loginWithGoogle }>
+              <img src={require('./google-signin-logo.png')} alt='google sign-in logo' width={150} />
+            </Button>
+          </div>
       </Card>
+          {/* <Button onClick={ loginWithGoogle } variant="outline-primary" className='w-100 mt-4' type='submit'>Google Sign in</Button> */}
+        
+
+          <div className='w-100 text-center mt-4'>
+            <Link to='/forgot-password'>Forgot Password?</Link>
+          </div>
     </>
   )
 }

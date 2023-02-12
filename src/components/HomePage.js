@@ -7,7 +7,7 @@ import { async } from '@firebase/util';
 
 export default function HomePage() {
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
-  const { animeList, setAnimeList } = useStateContext();
+  const { animeList, setAnimeList, errorMessage, setErrorMessage } = useStateContext();
   const { handleShow } = useDisplayContext();
   const [offset, setOffset] = React.useState(0)
   const { currentUser, setLoading } = useAuth();
@@ -37,10 +37,14 @@ export default function HomePage() {
         const recommendationResults = await fetchRecommended.json();
         setAnimeList(recommendationResults);
         
-        console.log(recommendationResults);
+        
+        console.log('recommendations fetched', recommendationResults);
 
       } catch (err) {
-        console.log(err);
+        if (err) {
+          setErrorMessage('Log in to MAL to see recommendations')
+        }
+        // console.log(err);
       }
     }
     fetchRecommendedAnime();
@@ -76,9 +80,13 @@ export default function HomePage() {
       <br></br>
     <div className='w-100 text-center'>
       <Button onClick={ () => fetchServer() }>Log In to MyAnimeList.net</Button>
+      {'   '}
       <Button onClick={ () => malLogout() }>Log out of MAL</Button>
     </div>
+    { animeList.data ? 
     <h2>Recommendations based on your MAL saves.</h2>
+    : <h2>{ errorMessage }</h2>
+    }
     
     <Container className='fluid'>
       <Row xs={1} md={5} className="g-4">

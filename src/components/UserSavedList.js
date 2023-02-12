@@ -248,18 +248,18 @@ function deleteBtn() {
         <h1>401 UNAUTHORIZED - { errorMessage !== '' ? errorMessage : null }</h1>
         <h3><Link to='/login'>Log in</Link> or <Link to='/sign-up'>Sign up</Link> to save anime titles</h3>
       </div> 
-  };
+  }
 
   { categoryContents.length > 0 && fetchCount === 10 ?
       <div className='text-center mb-2'>
         <Button onClick={ (e) => fetchNextPage(e) }>Load More</Button> 
       </div>
     : null 
-  };
+  }
 
     <DeleteModal selectedCategory={ selectedCategory } show={ show } setShow={ setShow } categoryList={ categoryList } 
     setCategoryList={ setCategoryList } setSelectedCategory={ setSelectedCategory } setCategoryContents={ setCategoryContents } />
   </>
 
-  );
+  )
 };
