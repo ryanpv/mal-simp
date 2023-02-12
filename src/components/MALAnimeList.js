@@ -11,19 +11,35 @@ function MalAnimeList() {
   const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
   // const [animeList, setUserList] = React.useState({})
   const [offset, setOffset] = React.useState(0)
-  const { animeList, setAnimeList, loading, setLoading } = useStateContext();
+  const { animeList, setAnimeList, loading, setLoading, malUserDetails, setMalUserDetails } = useStateContext();
   const { currentUser } = useAuth();
   const firebaseToken = currentUser && currentUser.accessToken
   // const { handleShow } = useDisplayContext();
 
 
   React.useEffect(() => {
-
     setLoading(true);
-    getUserList()
+    if(malUserDetails.id) {
+      getUserList()
+    } else {
+      getUserList()
+      getMalUser()
+    }; 
     setLoading(false)
 
-  }, [offset, firebaseToken])
+  }, [offset, firebaseToken, malUserDetails])
+
+  async function getMalUser() {
+    try {
+      const fetchMalUser = await fetch(`${ baseUrl }/get-mal-username`, { credentials: 'include' });
+      const malUserName = await fetchMalUser.json();
+      console.log(malUserName);
+      setMalUserDetails(malUserName)
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
   
   async function getUserList() {
     try {

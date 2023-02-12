@@ -21,6 +21,7 @@ export function StateProvider({ children }) {
   const [lastAddedCategory, setLastAddedCategory] = React.useState("");
   const [additionalContent, setAdditionalContent] = React.useState([]);
   const [errorMessage, setErrorMessage] = React.useState('')
+  const [malUserDetails, setMalUserDetails] = React.useState({})
 
 
 
@@ -33,6 +34,8 @@ export function StateProvider({ children }) {
     loading,
     setLoading,
     errorMessage,
+    malUserDetails,
+    setMalUserDetails,
     setErrorMessage,
     setOffset,
     animeDetails,

@@ -7,7 +7,7 @@ import { async } from '@firebase/util';
 
 export default function HomePage() {
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
-  const { animeList, setAnimeList, errorMessage, setErrorMessage } = useStateContext();
+  const { animeList, setAnimeList, errorMessage, setErrorMessage, malUserDetails } = useStateContext();
   const { handleShow } = useDisplayContext();
   const [offset, setOffset] = React.useState(0)
   const { currentUser, setLoading } = useAuth();
@@ -33,13 +33,16 @@ export default function HomePage() {
   React.useEffect(() => {
     async function fetchRecommendedAnime() {
       try {
-        const fetchRecommended = await fetch(`${ baseUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
-        const recommendationResults = await fetchRecommended.json();
-        setAnimeList(recommendationResults);
-        
-        
-        console.log('recommendations fetched', recommendationResults);
+        if (malUserDetails.id) {
 
+          const fetchRecommended = await fetch(`${ baseUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
+          const recommendationResults = await fetchRecommended.json();
+          setAnimeList(recommendationResults);
+          
+          
+          console.log('recommendations fetched', recommendationResults);
+        }
+         return ; 
       } catch (err) {
         if (err) {
           setErrorMessage('Log in to MAL to see recommendations')
@@ -49,7 +52,7 @@ export default function HomePage() {
     }
     fetchRecommendedAnime();
 
-  }, [offset])
+  }, [offset, malUserDetails])
 
 
   async function incrementOffset(e) {
@@ -74,17 +77,21 @@ export default function HomePage() {
 
   return (
     <>
-    <div className='w-100 text-center mt-1'>
+    <div className='w-100 text-center mt-1 mb-4'>
       <h2>Welcome to MAL-Simp. A web-app that simplifies MyAnimeList</h2>
       </div>
-      <br></br>
+
     <div className='w-100 text-center'>
-      <Button onClick={ () => fetchServer() }>Log In to MyAnimeList.net</Button>
-      {'   '}
-      <Button onClick={ () => malLogout() }>Log out of MAL</Button>
+      { malUserDetails.name ? 
+        <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
+        : <Button onClick={ () => fetchServer() }>Log In to MyAnimeList.net</Button> 
+        }
     </div>
-    { animeList.data ? 
-    <h2>Recommendations based on your MAL saves.</h2>
+
+    { malUserDetails.name ? 
+      <div className='text-center'>
+        <h2>Anime recommendations for <strong><i>{ malUserDetails.name }</i></strong> :</h2>
+      </div>
     : <h2>{ errorMessage }</h2>
     }
     
@@ -114,19 +121,6 @@ export default function HomePage() {
         : null
       }
       </Container>
-
-
-
-
-
-
-{/* {userList.paging ?
-  <div>
-    { userList.paging.next ? <Button>Next</Button> : null }
-    { userList.paging.previous ? <Button>Previous</Button> : null }
-  </div> :
-  null
-  } */}
 
     </>
   )
