@@ -15,8 +15,6 @@ function TrailerModal(props) {
 
 
   async function saveToCategory(value) {
-    // console.log('body', body);
-    // console.log('value', value);
     try { 
       const body = {
         animeId: animeDetails.id,
@@ -47,10 +45,10 @@ function TrailerModal(props) {
       return categoryList.map(category => {
         return (
           <Dropdown.Item key={ categoryList.indexOf(category) } eventKey={ category }>{ category }</Dropdown.Item>
-        )
-      })
-    }
-  }
+        );
+      });
+    };
+  };
 
   
   return (

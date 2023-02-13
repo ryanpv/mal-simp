@@ -38,12 +38,11 @@ function MalAnimeList() {
 
     } catch (err) {
       console.log(err);
-    }
-  }
+    };
+  };
   
   async function getUserList() {
     try {
-
       const getAnimeList = await fetch(`${ baseUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
       const userListResult = await getAnimeList.json();
       console.log(userListResult);
@@ -51,19 +50,19 @@ function MalAnimeList() {
 
     } catch (err) {
       console.log(err);
-    }
-  }
+    };
+  };
 
 // offsets to be sent as params to server. 
   async function incrementOffset(e) {
     e.preventDefault();
     setOffset(prevOffset => prevOffset + 8);
-  }
+  };
 
   function decrementOffset(e) {
     e.preventDefault();
     setOffset(prevOffset => prevOffset - 8);
-  }
+  };
 
 
   return (

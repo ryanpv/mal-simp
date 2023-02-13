@@ -108,6 +108,7 @@ export default function UserSavedList() {
 
 async function fetchCategoryContent(e, value) { // called on category select
   e.preventDefault();
+  setSelectedCategory(value)
   try {
     const fetchContent = await fetch(`${ baseUrl }/get-content/${ value }`,{
       credentials:'include',
@@ -115,15 +116,17 @@ async function fetchCategoryContent(e, value) { // called on category select
         Authorization: `Bearer ${ firebaseToken }`
       },
     });
-  
     const fetchResult = await fetchContent.json();
+
     setCategoryContents(fetchResult);
-    setPaginationTitles({ 
-      firstTitle: fetchResult[0].animeTitle,
-      lastTitle: fetchResult[fetchResult.length - 1].animeTitle 
-    });
+    if (fetchResult.length > 0) {
+      setPaginationTitles({ 
+        firstTitle: fetchResult[0].animeTitle,
+        lastTitle: fetchResult[fetchResult.length - 1].animeTitle 
+      });
+    };
+
     setFetchCount(fetchResult.length)
-    setSelectedCategory(value)
   
     console.log('category: ', value)
     console.log('test', fetchResult)
@@ -201,25 +204,25 @@ function deleteBtn() {
   return (
   <>
     { firebaseToken ? 
-    <Container>
-      <Form onSubmit={ (e) => addNewCategory(e) }>
-        <Row className="w-50 mb-3 mt-3">
-          <Form.Group as={ Col }>
-            <Form.Label>Select Category</Form.Label>
-            <Form.Select ref={selectRef} onChange={ (e) => fetchCategoryContent(e, e.target.value) }>
-              <option defaultValue='select category...'>Select category...</option>
-              <option value='Watch Later'>Watch Later</option>
-              { categoryList.length > 0 ? categoryList.map(title => <option key={ categoryList.indexOf(title) } value={ title} >{ title }</option>) : null }
-            </Form.Select>
-            </Form.Group>
+      <Container>
+        <Form onSubmit={ (e) => addNewCategory(e) }>
+          <Row className="w-50 mb-3 mt-3">
+            <Form.Group as={ Col }>
+              <Form.Label>Select Category</Form.Label>
+              <Form.Select ref={selectRef} onChange={ (e) => fetchCategoryContent(e, e.target.value) }>
+                <option defaultValue='select category...'>Select category...</option>
+                <option value='Watch Later'>Watch Later</option>
+                { categoryList.length > 0 ? categoryList.map(title => <option key={ categoryList.indexOf(title) } value={ title} >{ title }</option>) : null }
+              </Form.Select>
+              </Form.Group>
 
-          <Form.Group as={ Col }>
-            <Form.Label>Add new category</Form.Label>
-            <Form.Control type='text' ref={categoryRef} placeholder='New Category'/>
-          </Form.Group>
-        </Row>
-      </Form>
-    </Container>
+            <Form.Group as={ Col }>
+              <Form.Label>Add new category</Form.Label>
+              <Form.Control type='text' ref={categoryRef} placeholder='New Category'/>
+            </Form.Group>
+          </Row>
+        </Form>
+      </Container>
     : null }
 
 
