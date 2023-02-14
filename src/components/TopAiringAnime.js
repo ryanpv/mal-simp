@@ -4,7 +4,7 @@ import ContentCards from '../templates/ContentCards';
 import { Container, Button } from 'react-bootstrap';
 
 function TopAiringAnime() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [offset, setOffset] = React.useState(0)
   const { animeList, setAnimeList } = useStateContext();
 
@@ -12,7 +12,7 @@ function TopAiringAnime() {
   React.useEffect(() => {
     async function getTopAiring() {
       try {
-        const getTopAiringList = await fetch(`${ baseUrl }/anime-ranked/airing/${ offset }`)
+        const getTopAiringList = await fetch(`${ serverUrl }/anime-ranked/airing/${ offset }`)
         const topAiringResults = await getTopAiringList.json();
 
         setAnimeList(topAiringResults)

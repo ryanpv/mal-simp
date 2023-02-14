@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 ///////////////////////////////////////////////////////
 
 function MalAnimeList() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   // const [animeList, setUserList] = React.useState({})
   const [offset, setOffset] = React.useState(0)
   const { animeList, setAnimeList, loading, setLoading, malUserDetails, setMalUserDetails } = useStateContext();
@@ -31,7 +31,7 @@ function MalAnimeList() {
 
   async function getMalUser() {
     try {
-      const fetchMalUser = await fetch(`${ baseUrl }/get-mal-username`, { credentials: 'include' });
+      const fetchMalUser = await fetch(`${ serverUrl }/get-mal-username`, { credentials: 'include' });
       const malUserName = await fetchMalUser.json();
       console.log(malUserName);
       setMalUserDetails(malUserName)
@@ -43,7 +43,7 @@ function MalAnimeList() {
   
   async function getUserList() {
     try {
-      const getAnimeList = await fetch(`${ baseUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
+      const getAnimeList = await fetch(`${ serverUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
       const userListResult = await getAnimeList.json();
       console.log(userListResult);
       setAnimeList(userListResult)

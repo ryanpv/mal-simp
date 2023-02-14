@@ -5,7 +5,7 @@ import TrailerPagination from '../trailerPagination';
 import { useAuth } from '../contexts/AuthContext';
 
 function TrailerModal(props) {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const { animeDetails, currentPage, setCurrentPage, categoryList, setCategoryContents, categoryContents, additionalContent, setAdditionalContent } = useStateContext();
   const indexOfTrailerDisplayed = currentPage - 1 // only displaying 1 video each tab so - 1 to get the video index
   const currentTrailer = animeDetails.videos && animeDetails.videos.slice(indexOfTrailerDisplayed, currentPage)
@@ -24,7 +24,7 @@ function TrailerModal(props) {
         mean: animeDetails.mean !== undefined ? animeDetails.mean : 'Currently unavailable.',      
         categoryName: value
       }
-      const postAnime = await fetch(`${ baseUrl }/add-anime`, {
+      const postAnime = await fetch(`${ serverUrl }/add-anime`, {
         method: 'POST',
         credentials: 'include',
         headers: {

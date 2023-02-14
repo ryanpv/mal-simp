@@ -8,7 +8,7 @@ import ContentCards from '../templates/ContentCards';
 
 
 function SeasonalAnime() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   // const [animeList, setAnimeList] = React.useState({});
   const date = new Date();
   const [currentYear, setCurrentYear] = React.useState(date.getFullYear())
@@ -24,7 +24,7 @@ function SeasonalAnime() {
   React.useEffect(() => {
     async function getSeasonalAnime() {
       try {
-        const getSeasonalList = await fetch(`${ baseUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
+        const getSeasonalList = await fetch(`${ serverUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
         const seasonalListResults = await getSeasonalList.json();
         console.log('season results', seasonalListResults);
 

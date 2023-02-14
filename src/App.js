@@ -22,7 +22,7 @@ import ForgotPassword from './Accounts/ForgotPassword.js';
 
 
 function App() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   // const [show, setShow] = React.useState(false);
   const { show, setShow, setCategoryList, lastAddedCategory, setErrorMessage } = useStateContext();
   const handleClose = () => setShow(false);
@@ -32,7 +32,7 @@ function App() {
   React.useEffect(() => {
     async function getCategories() {
       if (firebaseToken) {
-        const fetchCategories = await fetch(`${ baseUrl }/get-categories`, {
+        const fetchCategories = await fetch(`${ serverUrl }/get-categories`, {
           credentials: "include",
           headers: {
             Authorization: `Bearer ${ firebaseToken }`

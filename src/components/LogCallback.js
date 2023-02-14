@@ -7,12 +7,12 @@ function LogCallback() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+    const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
     const code = `${location.search.split('=')[1]}`;
     // console.log(code);
 
     async function retrieveMalToken() {
-      const malToken = await fetch(`${ baseUrl }/mal-auth?code=${ code }`, { credentials: 'include' })
+      const malToken = await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { credentials: 'include' })
 
     };
 

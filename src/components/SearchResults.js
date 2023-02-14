@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
 
 export default function SearchResults() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [offset, setOffset] = React.useState(0)
   const { searchResults, setSearchResults } = useStateContext();
   const { handleShow } = useDisplayContext()
@@ -16,7 +16,7 @@ export default function SearchResults() {
   React.useEffect(() => {
     async function updateSearchResults() {
       try {
-        const animeSearch = await fetch(`${ baseUrl }/animesearch/${ offset }/anime?q=${ url.get('anime') }`)
+        const animeSearch = await fetch(`${ serverUrl }/animesearch/${ offset }/anime?q=${ url.get('anime') }`)
         const animeSearchResults = await animeSearch.json()
         setSearchResults(animeSearchResults)
 

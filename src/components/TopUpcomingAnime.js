@@ -4,14 +4,14 @@ import ContentCards from '../templates/ContentCards';
 import { Container, Button } from 'react-bootstrap';
 
 function TopUpcomingAnime() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [offset, setOffset] = React.useState(0)
   const { animeList, setAnimeList } = useStateContext();
 
   React.useEffect(() => {
     async function getTopUpcoming() {
       try {
-        const getTopUpcomingList = await fetch(`${ baseUrl }/anime-ranked/upcoming/${ offset }`)
+        const getTopUpcomingList = await fetch(`${ serverUrl }/anime-ranked/upcoming/${ offset }`)
         const topUpcomingResults = await getTopUpcomingList.json();
 
         setAnimeList(topUpcomingResults)

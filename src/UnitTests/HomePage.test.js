@@ -1,6 +1,6 @@
 import React from "react";
-import '@testing-library/jest-dom/extend-expect';
-import { render, cleanup, } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect'
+import { render, cleanup, screen } from '@testing-library/react';
 import { StateProvider } from "../contexts/StateContexts";
 import { AuthProvider } from "../contexts/AuthContext";
 import { DisplayDataProvider } from "../contexts/DisplayDataContext";
@@ -28,5 +28,3 @@ import HomePage from "../components/HomePage";
     expect(asFragment(<HomePage />)).toMatchSnapshot()
 
   })
-
-  

@@ -11,14 +11,14 @@ export default function HomePage() {
   const { handleShow } = useDisplayContext();
   const [offset, setOffset] = React.useState(0)
   const { currentUser, setLoading } = useAuth();
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
 
 
 
   async function fetchServer() {
     // const code_challenge = await getCode();
     try {
-      const getCode = await fetch(`${ baseUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
+      const getCode = await fetch(`${ serverUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
       const getChallenge = await getCode.json();
 
       await window.open(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=http://localhost:3000/logcallback`, "_self")
@@ -35,7 +35,7 @@ export default function HomePage() {
       try {
         if (malUserDetails.id) {
 
-          const fetchRecommended = await fetch(`${ baseUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
+          const fetchRecommended = await fetch(`${ serverUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
           const recommendationResults = await fetchRecommended.json();
           setAnimeList(recommendationResults);
           
@@ -67,7 +67,7 @@ export default function HomePage() {
 
   async function malLogout() {
     try {
-      await fetch(`${ baseUrl }/clear-mal-cookie`, { credentials: 'include'})
+      await fetch(`${ serverUrl }/clear-mal-cookie`, { credentials: 'include'})
       window.location.reload();
     } catch (err) {
       console.log(err);

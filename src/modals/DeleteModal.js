@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 
 function DeleteModal(props) {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const handleClose = () => props.setShow(false);
   const categoryDeleteRef = React.useRef('');
   const [deleteInput, setDeleteInput] = React.useState({ category: ""});
@@ -22,7 +22,7 @@ function DeleteModal(props) {
     e.preventDefault();
     try {
       if (deleteInput.category === props.selectedCategory) {
-        await fetch(`${ baseUrl }/delete-category/${ props.selectedCategory }`, {
+        await fetch(`${ serverUrl }/delete-category/${ props.selectedCategory }`, {
           method: 'DELETE',
           credentials: 'include',
           headers: {

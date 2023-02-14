@@ -6,7 +6,7 @@ import { auth } from '../Accounts/firebase';
 import { useStateContext } from './StateContexts';
 
 // const auth = getAuth();
-const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL;
+const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
 const AuthContext = React.createContext();
 const providerGoogle = new GoogleAuthProvider();
 
@@ -63,7 +63,7 @@ export function AuthProvider({ children }) {
 
   async function malLogout() {
     try {
-      await fetch(`${ baseUrl }/clear-mal-cookie`, { credentials: 'include'})
+      await fetch(`${ serverUrl }/clear-mal-cookie`, { credentials: 'include'})
       window.location.reload();
     } catch (err) {
       console.log(err);

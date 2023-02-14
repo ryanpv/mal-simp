@@ -5,7 +5,7 @@ import { useStateContext } from '../contexts/StateContexts';
 import { useAuth } from '../contexts/AuthContext'
 
 function NavBar() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const navigate = useNavigate();
   const animeRef = React.useRef();
   const { setSearchResults, offset, setOffset } = useStateContext();
@@ -19,7 +19,7 @@ function NavBar() {
     // console.log(animeRef.current.value);
 
     try {
-      const animeSearch = await fetch(`${ baseUrl }/animesearch/${ offset }/anime?q=${ new URLSearchParams(animeRef.current.value) }`)
+      const animeSearch = await fetch(`${ serverUrl }/animesearch/${ offset }/anime?q=${ new URLSearchParams(animeRef.current.value) }`)
       const animeSearchResults = await animeSearch.json()
       setSearchResults(animeSearchResults)
       setOffset(0)

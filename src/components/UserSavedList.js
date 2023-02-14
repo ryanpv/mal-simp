@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 import DeleteModal from '../modals/DeleteModal';
 
 export default function UserSavedList() {
-  const baseUrl = process.env.NODE_ENV === 'development' && process.env.REACT_APP_SERVER_BASEURL
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const { categoryList, setCategoryList, categoryContents, setCategoryContents, setLastAddedCategory, errorMessage } = useStateContext();
   const { handleShow } = useDisplayContext();
   const { currentUser } = useAuth();
@@ -60,7 +60,7 @@ export default function UserSavedList() {
   }
 
   async function removeAnime(animeInfo) {
-    await fetch(`${ baseUrl }/remove-anime`, {
+    await fetch(`${ serverUrl }/remove-anime`, {
       method: 'DELETE',
       credentials: "include",
       headers: {
@@ -110,7 +110,7 @@ async function fetchCategoryContent(e, value) { // called on category select
   e.preventDefault();
   setSelectedCategory(value)
   try {
-    const fetchContent = await fetch(`${ baseUrl }/get-content/${ value }`,{
+    const fetchContent = await fetch(`${ serverUrl }/get-content/${ value }`,{
       credentials:'include',
       headers: {
         Authorization: `Bearer ${ firebaseToken }`
@@ -140,7 +140,7 @@ async function fetchCategoryContent(e, value) { // called on category select
 async function fetchNextPage(e) {
   e.preventDefault();
   try {
-    const fetchContent = await fetch(`${ baseUrl }/content-paginate-forward/${ selectedCategory }/${ paginationTitles.lastTitle }`,{
+    const fetchContent = await fetch(`${ serverUrl }/content-paginate-forward/${ selectedCategory }/${ paginationTitles.lastTitle }`,{
       credentials:'include',
       headers: {
         Authorization: `Bearer ${ firebaseToken }`
@@ -176,7 +176,7 @@ async function addNewCategory(e) {
     } else if(categoryList.length >= 25) { 
       alert('maximum amount of categories reached') // limit users' categories amount
     } else {
-        const postCategory = await fetch(`${ baseUrl }/create-category`, {
+        const postCategory = await fetch(`${ serverUrl }/create-category`, {
           method: 'POST',
           credentials: "include",
           headers: {
