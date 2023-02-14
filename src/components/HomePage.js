@@ -47,7 +47,7 @@ export default function HomePage() {
          return ; 
       } catch (err) {
         if (err) {
-          setErrorMessage('Log in to MAL to see recommendations')
+          setErrorMessage('Log in to MAL to see recommendations.')
         }
         // console.log(err);
       }
