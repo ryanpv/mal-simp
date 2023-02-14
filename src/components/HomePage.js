@@ -12,6 +12,8 @@ export default function HomePage() {
   const [offset, setOffset] = React.useState(0)
   const { currentUser, setLoading } = useAuth();
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
+  const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
+
 
 
 
@@ -21,7 +23,7 @@ export default function HomePage() {
       const getCode = await fetch(`${ serverUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
       const getChallenge = await getCode.json();
 
-      await window.open(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=http://localhost:3000/logcallback`, "_self")
+      await window.open(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=${ clientUrl }/logcallback`, "_self")
       
     } catch (error) {
       console.log(error);
