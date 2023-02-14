@@ -39,6 +39,6 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
 
 
-// export default app;
+export default app;
 
 // const analytics = getAnalytics(app);
