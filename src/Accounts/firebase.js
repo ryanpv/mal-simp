@@ -16,7 +16,7 @@ import { getAuth } from "firebase/auth"
 
 const firebaseConfig = {
 
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "mock_key",
 
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
 
@@ -39,6 +39,6 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
 
 
-export default app;
+// export default app;
 
 // const analytics = getAnalytics(app);
