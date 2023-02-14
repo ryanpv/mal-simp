@@ -6,9 +6,9 @@ name: Deploy to Firebase Hosting on merge
   push:
     branches:
       - main
-# env:
+env:
 #   CI: false,
-#   credentials: '${{ secrets.REACT_APP }}'
+  credentials: '${{ secrets.REACT_APP }}'
 
 jobs:
   build_and_deploy:
