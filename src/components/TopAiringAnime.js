@@ -9,8 +9,8 @@ function TopAiringAnime() {
   const { animeList, setAnimeList } = useStateContext();
 
 
+  console.log('serverurl: ', serverUrl);
   React.useEffect(() => {
-    console.log('serverurl: ', serverUrl);
     async function getTopAiring() {
       try {
         const getTopAiringList = await fetch(`https://us-central1-mal-simplified.cloudfunctions.net/api/anime-ranked/airing/${ offset }`)
