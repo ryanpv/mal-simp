@@ -33,7 +33,7 @@ export default function HomePage() {
   console.log(process.env.NODE_ENV === 'development');
 
   React.useEffect(() => {
-    console.log(process.env.NODE_ENV, 'url: ', process.env.REACT_APP_SERVER_BASEURL);
+    console.log(process.env.NODE_ENV, 'url: ', process.env.REACT_APP_DEPLOYED_SERVER);
     async function fetchRecommendedAnime() {
       try {
         if (malUserDetails.id) {
