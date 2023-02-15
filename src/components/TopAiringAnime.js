@@ -10,7 +10,7 @@ function TopAiringAnime() {
 
 
   React.useEffect(() => {
-    console.log(serverUrl);
+    console.log('serverurl: ', serverUrl);
     async function getTopAiring() {
       try {
         const getTopAiringList = await fetch(`https://us-central1-mal-simplified.cloudfunctions.net/api/anime-ranked/airing/${ offset }`)
