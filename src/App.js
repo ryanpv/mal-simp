@@ -58,16 +58,16 @@ function App() {
     {/* <NavBar /> */}
       <Routes>
         <Route path="/" element={ <HomePage /> } />
-        <Route path="/logcallback" element={ <LogCallback /> } />
-        <Route path="/user-MAL" element={ <MalAnimeList /> } />
-        <Route path="/user-anime-list" element={ <UserSavedList /> } />
-        <Route path="/seasonal-anime" element={ <SeasonalAnime /> } />
-        <Route path="/top-airing-anime" element={ <TopAiringAnime /> } />
-        <Route path="/top-upcoming-anime" element={ <TopUpcomingAnime /> } />
-        <Route path="/search-results" element={ <SearchResults /> } />
-        <Route path="/login" element={ <Login /> } />
-        <Route path="/sign-up" element={ <Signup /> } />
-        <Route path="/forgot-password" element={ <ForgotPassword /> } />
+        <Route path="logcallback" element={ <LogCallback /> } />
+        <Route path="user-MAL" element={ <MalAnimeList /> } />
+        <Route path="user-anime-list" element={ <UserSavedList /> } />
+        <Route path="seasonal-anime" element={ <SeasonalAnime /> } />
+        <Route path="top-airing-anime" element={ <TopAiringAnime /> } />
+        <Route path="top-upcoming-anime" element={ <TopUpcomingAnime /> } />
+        <Route path="search-results" element={ <SearchResults /> } />
+        <Route path="login" element={ <Login /> } />
+        <Route path="sign-up" element={ <Signup /> } />
+        <Route path="forgot-password" element={ <ForgotPassword /> } />
 
       </Routes>
     <TrailerModal show={ show } onHide={ () => handleClose() } />
