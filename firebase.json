@@ -3,7 +3,7 @@
     "public": "build",
     "rewrites": [
       {
-        "source": "api/**",
+        "source": "**",
         "function": "api"
       }
     ],
@@ -12,18 +12,5 @@
       "**/.*",
       "**/node_modules/**"
     ]
-  },
-  "functions": [
-    {
-      "source": ".",
-      "runtime": "nodejs16",
-      "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log"
-      ]
-    }
-  ]
+  }
 }
