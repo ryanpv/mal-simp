@@ -12,7 +12,7 @@ function TopAiringAnime() {
   React.useEffect(() => {
     async function getTopAiring() {
       try {
-        const getTopAiringList = await fetch(`${ serverUrl }/anime-ranked/airing/${ offset }`)
+        const getTopAiringList = await fetch(`https://us-central1-mal-simplified.cloudfunctions.net/api/anime-ranked/airing/${ offset }`)
         const topAiringResults = await getTopAiringList.json();
 
         setAnimeList(topAiringResults)
