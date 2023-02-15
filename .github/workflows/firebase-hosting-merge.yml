@@ -7,7 +7,7 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - main
 env: 
-  MY_KEY: 'MY_VALUE',
+  MY_KEY: 'MY_VALUE'
   REACT_APP_DEPLOYED_SERVER: '${{ secrets.REACT_APP_DEPLOYED_SERVER }}'
 jobs:
   build_and_deploy:
