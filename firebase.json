@@ -7,7 +7,7 @@
         "destination": "index.html"
       },
       {
-        "source": "/api/**",
+        "source": "**",
         "function": "api"
       }
     ],
