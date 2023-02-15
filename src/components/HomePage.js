@@ -33,7 +33,7 @@ export default function HomePage() {
   console.log(process.env.NODE_ENV === 'development');
 
   React.useEffect(() => {
-    console.log('server: ', process.env.REACT_APP_DEPLOYED_SERVER === 'https://us-central1-mal-simplified.cloudfunctions.net');
+    console.log('server: ', process.env);
     async function fetchRecommendedAnime() {
       try {
         if (malUserDetails.id) {
