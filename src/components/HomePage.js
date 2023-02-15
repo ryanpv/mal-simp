@@ -80,7 +80,7 @@ export default function HomePage() {
   return (
     <>
     <div className='w-100 text-center mt-1 mb-4'>
-      <h2>Welcome to MAL-Simp. A web-app that simplifies MyAnimeList</h2>
+      <h2>Welcome the web-app that simplifies MyAnimeList - MAL-Simp</h2>
       </div>
 
     <div className='w-100 text-center'>
