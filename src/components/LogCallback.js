@@ -19,7 +19,7 @@ function LogCallback() {
     retrieveMalToken();
     navigate('/')
 
-  })
+  },[])
   
   
   return (
