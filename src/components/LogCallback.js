@@ -13,13 +13,14 @@ function LogCallback() {
 
     async function retrieveMalToken() {
       const malToken = await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { credentials: 'include' })
+      console.log('log callback execution');
 
     };
 
     retrieveMalToken();
     navigate('/')
 
-  },)
+  },[])
   
   
   return (
