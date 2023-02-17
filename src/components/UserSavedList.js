@@ -128,8 +128,8 @@ async function fetchCategoryContent(e, value) { // called on category select
 
     setFetchCount(fetchResult.length)
   
-    console.log('category: ', value)
-    console.log('test', fetchResult)
+    // console.log('category: ', value)
+    // console.log('test', fetchResult)
   } catch (err) {
     console.log(err);
   }
@@ -156,7 +156,7 @@ async function fetchNextPage(e) {
             lastTitle: nextPage[nextPage.length - 1].animeTitle
           });
       }
-      console.log('length', nextPage.length);
+      // console.log('length', nextPage.length);
   } catch (err) {
     console.log(err);
   };
@@ -185,7 +185,7 @@ async function addNewCategory(e) {
           },
           body: JSON.stringify({ categoryName: categoryInput})
         });
-        console.log(categoryRef.current.value)   
+        // console.log(categoryRef.current.value)   
         setLastAddedCategory(categoryInput)
 
       }

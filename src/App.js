@@ -42,7 +42,7 @@ function App() {
         const response = await fetchCategories.json(); // response is array of strings that are the category names
         const responseArr = await response.map(title => {return {categoryName: title}})
         setCategoryList(response)
-        console.log(responseArr);
+        // console.log(responseArr);
       } else {
         console.log('fetch category error');
       }

@@ -11,7 +11,7 @@ export default function SearchResults() {
   const { handleShow } = useDisplayContext()
   const { search } = useLocation();
   const url = new URLSearchParams(search)
-  console.log(url.get("anime"));
+  // console.log(url.get("anime"));
 
   React.useEffect(() => {
     async function updateSearchResults() {
@@ -20,7 +20,7 @@ export default function SearchResults() {
         const animeSearchResults = await animeSearch.json()
         setSearchResults(animeSearchResults)
 
-        console.log(offset);
+        // console.log(offset);
         
       } catch (err) {
         console.log(err);

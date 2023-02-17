@@ -16,7 +16,7 @@ function TopUpcomingAnime() {
 
         setAnimeList(topUpcomingResults)
 
-        console.log(topUpcomingResults);
+        // console.log(topUpcomingResults);
       } catch (err) {
         console.log(err);
       }

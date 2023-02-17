@@ -26,7 +26,7 @@ function SeasonalAnime() {
       try {
         const getSeasonalList = await fetch(`${ serverUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
         const seasonalListResults = await getSeasonalList.json();
-        console.log('season results', seasonalListResults);
+        // console.log('season results', seasonalListResults);
 
         setAnimeList(seasonalListResults);
       } catch (err) {

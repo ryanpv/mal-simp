@@ -77,7 +77,7 @@ export function AuthProvider({ children }) {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user;
-        console.log(`user: ${ user }, token: ${ token }`);
+        // console.log(`user: ${ user }, token: ${ token }`);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -93,7 +93,8 @@ export function AuthProvider({ children }) {
       if (user) {
         setCurrentUser(user);
         setLoading(false);
-        console.log(user.accessToken && 'firebase token acquired');
+        console.log('firebase token acquired');
+        // console.log(user.accessToken && 'firebase token acquired');
       } else {
         setErrorMessage('No user detected. Please log in or refresh the page.');
         console.log('no user logged in');

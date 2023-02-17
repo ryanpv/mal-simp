@@ -16,7 +16,7 @@ export default function ForgotPassword() {
 
     try {
       await resetPassword(emailRef.current.value)
-      console.log(`password reset for ${ emailRef.current.value }`);
+      // console.log(`password reset for ${ emailRef.current.value }`);
       navigate('/user-anime-list')
 
     } catch (err) {
