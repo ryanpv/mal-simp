@@ -18,14 +18,14 @@ function MalAnimeList() {
 
 
   React.useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     if(malUserDetails.id) {
       getUserList()
     } else {
       getUserList()
       getMalUser()
     }; 
-    setLoading(false)
+    // setLoading(false)
 
   }, [offset, firebaseToken, malUserDetails])
 
