@@ -12,7 +12,7 @@ function LogCallback() {
     // console.log(code);
 
     async function retrieveMalToken() {
-      const malToken = await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { credentials: 'include' })
+      const malToken = await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { method: 'POST', credentials: 'include' })
       console.log('log callback execution');
 
     };
