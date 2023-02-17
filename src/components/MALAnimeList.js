@@ -20,8 +20,10 @@ function MalAnimeList() {
   React.useEffect(() => {
     // setLoading(true);
     if(malUserDetails.id) {
+      console.log("MAL page if statement");
       getUserList()
     } else {
+      console.log("MAL page else statement");
       getUserList()
       getMalUser()
     }; 
