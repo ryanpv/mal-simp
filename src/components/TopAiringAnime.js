@@ -9,7 +9,7 @@ function TopAiringAnime() {
   const { animeList, setAnimeList } = useStateContext();
 
 
-  console.log('serverurl: ', serverUrl);
+  // console.log('serverurl: ', serverUrl);
   React.useEffect(() => {
     async function getTopAiring() {
       try {
@@ -18,7 +18,7 @@ function TopAiringAnime() {
 
         setAnimeList(topAiringResults)
 
-        console.log(topAiringResults);
+        // console.log(topAiringResults);
       } catch (err) {
         console.log(err);
       }

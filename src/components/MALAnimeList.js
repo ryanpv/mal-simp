@@ -33,7 +33,7 @@ function MalAnimeList() {
     try {
       const fetchMalUser = await fetch(`${ serverUrl }/get-mal-username`, { credentials: 'include' });
       const malUserName = await fetchMalUser.json();
-      console.log(malUserName);
+      console.log('MAL username: ', malUserName);
       setMalUserDetails(malUserName)
 
     } catch (err) {
