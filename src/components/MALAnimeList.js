@@ -47,7 +47,7 @@ function MalAnimeList() {
     try {
       const getAnimeList = await fetch(`${ serverUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
       const userListResult = await getAnimeList.json();
-      // console.log(userListResult);
+      console.log(userListResult);
       setAnimeList(userListResult)
 
     } catch (err) {
