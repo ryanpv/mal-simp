@@ -36,7 +36,7 @@ export default function HomePage() {
     // console.log('homepage serverurl: ', serverUrl);
     async function fetchRecommendedAnime() {
       try {
-        if (malUserDetails.id) {
+        // if (malUserDetails.id) {
 
           const fetchRecommended = await fetch(`${ serverUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
           const recommendationResults = await fetchRecommended.json();
@@ -44,7 +44,7 @@ export default function HomePage() {
           
           
           console.log('recommendations fetched', recommendationResults);
-        }
+        // }
          return ; 
       } catch (err) {
         if (err) {
