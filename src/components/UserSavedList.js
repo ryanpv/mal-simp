@@ -183,10 +183,11 @@ async function addNewCategory(e) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${ firebaseToken }`
           },
-          body: JSON.stringify({ categoryName: categoryInput})
+          body: JSON.stringify({ categoryName: categoryInput })
         });
         // console.log(categoryRef.current.value)   
         setLastAddedCategory(categoryInput)
+        alert(`'${ categoryInput }' added as a category`)
 
       }
 
