@@ -93,7 +93,7 @@ export function AuthProvider({ children }) {
       if (user) {
         setCurrentUser(user);
         setLoading(false);
-        console.log('firebase token acquired');
+        // console.log('firebase token acquired');
         // console.log(user.accessToken && 'firebase token acquired');
       } else {
         setErrorMessage('No user detected. Please log in or refresh the page.');
