@@ -43,7 +43,7 @@ export default function HomePage() {
           setAnimeList(recommendationResults);
           
           
-          console.log('recommendations fetched', recommendationResults);
+          // console.log('recommendations fetched', recommendationResults);
         // }
          return ; 
       } catch (err) {
@@ -85,7 +85,7 @@ export default function HomePage() {
       </div>
 
     <div className='w-100 text-center'>
-      { malUserDetails.name ? 
+      { malUserDetails.name || animeList.data ? 
         <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
         : <Button onClick={ () => fetchServer() }>Log In to MyAnimeList.net</Button> 
         }
