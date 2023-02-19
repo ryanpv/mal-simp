@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, redirect, Navigate } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts'
 import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, InputGroup } from 'react-bootstrap';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
@@ -248,10 +248,14 @@ function deleteBtn() {
       <tbody>{ displaySearchedAnime() }</tbody>
     </table>
 
-    : <div className='text-center'>
+    :
+    <>
+    <div className='text-center'>
         <h1>401 UNAUTHORIZED - { errorMessage !== '' ? errorMessage : null }</h1>
         <h3><Link to='/login'>Log in</Link> or <Link to='/sign-up'>Sign up</Link> to save anime titles</h3>
       </div> 
+      <Navigate replace to='/login' />
+    </> 
   }
 
   { categoryContents.length > 0 && fetchCount === 10 ?

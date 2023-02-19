@@ -1,13 +1,13 @@
 import React from 'react'
-import { Button, Row, Col, Card, Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
 import { useAuth } from '../contexts/AuthContext';
-import { async } from '@firebase/util';
+import ContentCards from '../templates/ContentCards';
 
 export default function HomePage() {
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
-  const { animeList, setAnimeList, errorMessage, setErrorMessage, malUserDetails } = useStateContext();
+  const { animeList, setAnimeList, errorMessage, setErrorMessage, malUserDetails, setMalUserDetails } = useStateContext();
   const { handleShow } = useDisplayContext();
   const [offset, setOffset] = React.useState(0)
   const { currentUser, setLoading } = useAuth();
@@ -15,16 +15,14 @@ export default function HomePage() {
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
 
 
-
-
-  async function fetchServer() {
+  async function malLogin() {
     // const code_challenge = await getCode();
     try {
       const getCode = await fetch(`${ serverUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
       const getChallenge = await getCode.json();
 
       await window.open(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=${ clientUrl }/logcallback`, "_self")
-      
+      // *** GET USERNAME ON LOGIN ***
     } catch (error) {
       console.log(error);
     }
@@ -36,16 +34,16 @@ export default function HomePage() {
     // console.log('homepage serverurl: ', serverUrl);
     async function fetchRecommendedAnime() {
       try {
-        // if (malUserDetails.id) {
-
+        if (!malUserDetails.id) {
+          const fetchMalUser = await fetch(`${ serverUrl }/get-mal-username`, { credentials: 'include' });
+          const malUserName = await fetchMalUser.json();
+          console.log('fetched for mal username');
+          setMalUserDetails(malUserName)
+        }
           const fetchRecommended = await fetch(`${ serverUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
           const recommendationResults = await fetchRecommended.json();
           setAnimeList(recommendationResults);
           
-          
-          // console.log('recommendations fetched', recommendationResults);
-        // }
-         return ; 
       } catch (err) {
         if (err) {
           setErrorMessage('Log in to MAL to see recommendations.')
@@ -55,17 +53,17 @@ export default function HomePage() {
     }
     fetchRecommendedAnime();
 
-  }, [offset, malUserDetails])
+  }, [offset])
 
 
   async function incrementOffset(e) {
     e.preventDefault();
-    setOffset(prevOffset => prevOffset + 5);
+    setOffset(prevOffset => prevOffset + 8);
   }
 
   function decrementOffset(e) {
     e.preventDefault();
-    setOffset(prevOffset => prevOffset - 5);
+    setOffset(prevOffset => prevOffset - 8);
   }
 
   async function malLogout() {
@@ -80,14 +78,10 @@ export default function HomePage() {
 
   return (
     <>
-    <div className='w-100 text-center mt-1 mb-4'>
-      <h2>Welcome the web-app that simplifies MyAnimeList - MAL-Simp.</h2>
-      </div>
-
-    <div className='w-100 text-center'>
+    <div className='w-100 text-center mt-2 mb-4'>
       { malUserDetails.name || animeList.data ? 
         <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
-        : <Button onClick={ () => fetchServer() }>Log In to MyAnimeList.net</Button> 
+        : <Button onClick={ () => malLogin() }>Log In to MyAnimeList.net</Button> 
         }
     </div>
 
@@ -99,22 +93,7 @@ export default function HomePage() {
     }
     
     <Container className='fluid'>
-      <Row xs={1} md={5} className="g-4">
-        { animeList.data ? animeList.data.map(recs => { return (
-          <Col key={ recs.node.id } >
-            <Card onClick={() => handleShow({ id: recs.node.id }) } bg="light" style={ { height: '100%', cursor: "pointer" } }>
-              <Card.Img variant='top' src={ recs.node.main_picture.medium } />
-              <Card.Body>
-                <strong as="h6">{ recs.node.title }</strong>
-              </Card.Body>
-              <Card.Footer>Score: { recs.node.mean }</Card.Footer>
-            </Card>
-          </Col>
-          );
-        })
-        : null
-        }
-      </Row>
+      <ContentCards />
       { animeList.paging ?
         <div className='w-100 text-center mt-2 mb-2'>
           { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
@@ -123,7 +102,7 @@ export default function HomePage() {
         </div> 
         : null
       }
-      </Container>
+    </Container>
 
     </>
   )

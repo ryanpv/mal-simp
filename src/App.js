@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import React from "react";
-import HomePage from './components/HomePage.js'
+import UserRecommendations from './components/UserRecommendations.js'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogCallback from "./components/LogCallback.js";
 import NavBar from "./components/NavBar.js";
@@ -57,12 +57,12 @@ function App() {
     <div className="App">
     {/* <NavBar /> */}
       <Routes>
-        <Route path="/" element={ <HomePage /> } />
+        <Route path="/" element={ <TopAiringAnime /> } />
+        <Route path="/user-recommendations" element={ <UserRecommendations /> } />
         <Route path="/logcallback" element={ <LogCallback /> } />
         <Route path="/user-MAL" element={ <MalAnimeList /> } />
         <Route path="/user-anime-list" element={ <UserSavedList /> } />
         <Route path="/seasonal-anime" element={ <SeasonalAnime /> } />
-        <Route path="/top-airing-anime" element={ <TopAiringAnime /> } />
         <Route path="/top-upcoming-anime" element={ <TopUpcomingAnime /> } />
         <Route path="/search-results" element={ <SearchResults /> } />
         <Route path="/login" element={ <Login /> } />

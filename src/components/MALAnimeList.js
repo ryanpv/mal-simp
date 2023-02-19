@@ -9,51 +9,32 @@ import { Link } from 'react-router-dom';
 
 function MalAnimeList() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
-  // const [animeList, setUserList] = React.useState({})
+  const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
   const [offset, setOffset] = React.useState(0)
   const { animeList, setAnimeList, loading, setLoading, malUserDetails, setMalUserDetails } = useStateContext();
   const { currentUser } = useAuth();
-  const firebaseToken = currentUser && currentUser.accessToken
-  // const { handleShow } = useDisplayContext();
+  const firebaseToken = currentUser && currentUser.accessToken;
+  const clientId = process.env.REACT_APP_MAL_CLIENT_ID
 
 
   React.useEffect(() => {
-    // setLoading(true);
-    if(malUserDetails.id) {
-      console.log("MAL page if statement");
-      getUserList()
-    } else {
-      console.log("MAL page else statement");
-      getUserList()
-      getMalUser()
-    }; 
-    // setLoading(false)
+    async function getUserList() {
+      try {
+        const getAnimeList = await fetch(`${ serverUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
+        const userListResult = await getAnimeList.json();
+        // console.log(userListResult);
+        setAnimeList(userListResult)
+  
+      } catch (err) {
+        console.log(err);
+      };
+    };
 
+    getUserList()
   }, [offset, firebaseToken, malUserDetails])
 
-  async function getMalUser() {
-    try {
-      const fetchMalUser = await fetch(`${ serverUrl }/get-mal-username`, { credentials: 'include' });
-      const malUserName = await fetchMalUser.json();
-      console.log('MAL username: ', malUserName);
-      setMalUserDetails(malUserName)
-
-    } catch (err) {
-      console.log(err);
-    };
-  };
   
-  async function getUserList() {
-    try {
-      const getAnimeList = await fetch(`${ serverUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
-      const userListResult = await getAnimeList.json();
-      // console.log(userListResult);
-      setAnimeList(userListResult)
 
-    } catch (err) {
-      console.log(err);
-    };
-  };
 
 // offsets to be sent as params to server. 
   async function incrementOffset(e) {
@@ -66,12 +47,25 @@ function MalAnimeList() {
     setOffset(prevOffset => prevOffset - 8);
   };
 
+  async function getMalToken() {
+    try {
+      const getCode = await fetch(`${ serverUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
+      const getChallenge = await getCode.json();
+
+      await window.open(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=${ clientUrl }/logcallback`, "_self")
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <>
     <div className='text-center mb-3'>
       <h2 >User Anime List</h2>
-      { animeList.data ? <i>Your anime list from MyAnimeList</i> : <i><Link to='/'>Log in</Link> to MAL to see your saved anime list</i> } 
+      { animeList.data ? <i>Your anime list from MyAnimeList</i> 
+      : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
+      {/* { animeList.data ? <i>Your anime list from MyAnimeList</i> : <i><Link to='/'>Log in</Link> to MAL to see your saved anime list</i> }  */}
     </div>
 
     <Container>
