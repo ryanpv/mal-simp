@@ -10,6 +10,7 @@ function NavBar() {
   const animeRef = React.useRef();
   const { setSearchResults, offset, setOffset } = useStateContext();
   const { currentUser, logout, setLoading } = useAuth();
+  const [formErrors, setFormErrors] = React.useState('');
 
 
 
@@ -20,7 +21,7 @@ function NavBar() {
 
     try {
       if (animeRef.current.value === "" || !/\S/.test(animeRef.current.value) || animeRef.current.value.includes('  ')) {
-        alert("Invalid search input. Ensure no double spacing")
+        setFormErrors("Invalid search input. Ensure no double spacing")
       }
 
       const animeSearch = await fetch(`animeRef.current.value}/animesearch/${ offset }/anime?q=${ new URLSearchParams(animeRef.current.value) }`)
@@ -59,7 +60,10 @@ function NavBar() {
           </Nav>
 
           <Form className='me-auto' onSubmit={(e) => submitSearch(e)}>
-            <Form.Control className="" type='text' ref={animeRef} placeholder='Search Anime'></Form.Control>
+            <Form.Control className="" type='text' ref={animeRef} placeholder='Search Anime' isInvalid={ !!formErrors }></Form.Control>
+            <Form.Control.Feedback type='invalid'>
+              { formErrors }
+            </Form.Control.Feedback>
           </Form>
 
           <Nav>

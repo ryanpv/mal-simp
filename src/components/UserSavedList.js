@@ -19,6 +19,7 @@ export default function UserSavedList() {
   const [show, setShow] = React.useState(false);
   const [paginationTitles, setPaginationTitles] = React.useState({ firstTitle: '', lastTitle: '' });
   const [fetchCount, setFetchCount] = React.useState(10);
+  const [formErrors, setFormErrors] = React.useState('');
 
   const params = useParams();
   const navigate = useNavigate();
@@ -170,11 +171,11 @@ async function addNewCategory(e) {
   try {
 
     if (categoryInput === "" || !/\S/.test(categoryInput) || categoryInput.includes('  ')) {
-      alert("Please enter proper category name. Ensure no double spacing")
+      setFormErrors("Please enter proper category name. Ensure no double spacing.")
     } else if (checkCategoryDuplicate.length > 0) {
-      alert('category already exists')
+      setFormErrors('Category already exists.')
     } else if(categoryList.length >= 25) { 
-      alert('maximum amount of categories reached') // limit users' categories amount
+      setFormErrors('Maximum amount of categories reached.') // limit users' categories amount
     } else {
         const postCategory = await fetch(`${ serverUrl }/create-category`, {
           method: 'POST',
@@ -219,7 +220,10 @@ function deleteBtn() {
 
             <Form.Group as={ Col }>
               <Form.Label>Add new category</Form.Label>
-              <Form.Control type='text' ref={categoryRef} placeholder='New Category'/>
+              <Form.Control type='text' ref={categoryRef} placeholder='New Category' isInvalid={ !!formErrors }/>
+              <Form.Control.Feedback type='invalid'>
+                { formErrors }
+              </Form.Control.Feedback>
             </Form.Group>
           </Row>
         </Form>

@@ -14,6 +14,7 @@ function SeasonalAnime() {
   const [currentYear, setCurrentYear] = React.useState(date.getFullYear())
   const [offset, setOffset] = React.useState(0)
   const [season, setSeason] = React.useState("winter");
+  const [formErrors, setFormErrors] = React.useState('');
   const { animeList, setAnimeList } = useStateContext();
   // const { handleShow } = useDisplayContext();
   const animeSeason = document.getElementById('anime-season')
@@ -31,7 +32,7 @@ function SeasonalAnime() {
         setAnimeList(seasonalListResults);
       } catch (err) {
         console.log(err);
-        alert("Invalid season/year input")
+        setFormErrors("Invalid season/year input")
         animeYear.current.value = null
       }
 
@@ -81,7 +82,10 @@ function SeasonalAnime() {
 
           <Form.Group as={Col}>
             <Form.Label>Year</Form.Label>
-            <Form.Control ref={animeYear} placeholder='Specify Year' id="anime-year"/>
+            <Form.Control ref={animeYear} placeholder='Specify Year' id="anime-year" isInvalid={ !!formErrors } />
+            <Form.Control.Feedback type='invalid'>
+              { formErrors }
+            </Form.Control.Feedback>
           </Form.Group>
         </Row>
       </Form>
