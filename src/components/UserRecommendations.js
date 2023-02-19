@@ -7,7 +7,7 @@ import ContentCards from '../templates/ContentCards';
 
 export default function HomePage() {
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
-  const { animeList, setAnimeList, errorMessage, setErrorMessage, malUserDetails, setMalUserDetails } = useStateContext();
+  const { animeList, setAnimeList, malLoginMessage, setMalLoginMessage, malUserDetails, setMalUserDetails } = useStateContext();
   const { handleShow } = useDisplayContext();
   const [offset, setOffset] = React.useState(0)
   const { currentUser, setLoading } = useAuth();
@@ -28,7 +28,7 @@ export default function HomePage() {
     }
   }
 
-  console.log(process.env.NODE_ENV === 'development');
+  console.log('in development?:', process.env.NODE_ENV === 'development');
 
   React.useEffect(() => {
     // console.log('homepage serverurl: ', serverUrl);
@@ -42,18 +42,19 @@ export default function HomePage() {
         }
           const fetchRecommended = await fetch(`${ serverUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
           const recommendationResults = await fetchRecommended.json();
+          // console.log(recommendationResults);
           setAnimeList(recommendationResults);
           
       } catch (err) {
         if (err) {
-          setErrorMessage('Log in to MAL to see recommendations.')
+          setMalLoginMessage('Log in to MAL to see recommendations.')
         }
-        // console.log(err);
+        console.log(err);
       }
     }
     fetchRecommendedAnime();
 
-  }, [offset])
+  }, [offset, malUserDetails.id])
 
 
   async function incrementOffset(e) {
@@ -69,7 +70,8 @@ export default function HomePage() {
   async function malLogout() {
     try {
       await fetch(`${ serverUrl }/clear-mal-cookie`, { credentials: 'include'})
-      window.location.reload();
+      setMalUserDetails({})
+      // window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -79,19 +81,20 @@ export default function HomePage() {
   return (
     <>
     <div className='w-100 text-center mt-2 mb-4'>
-      { malUserDetails.name || animeList.data ? 
+      { malUserDetails.name ? 
         <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
         : <Button onClick={ () => malLogin() }>Log In to MyAnimeList.net</Button> 
-        }
+      }
     </div>
 
     { malUserDetails.name ? 
       <div className='text-center'>
-        <h2>Anime recommendations for <strong><i>{ malUserDetails.name }</i></strong> :</h2>
+        <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2>
       </div>
-    : <h2>{ errorMessage }</h2>
+    : <h2>Log into MAL to see your recommendations.</h2>
     }
     
+    { malUserDetails.id ? 
     <Container className='fluid'>
       <ContentCards />
       { animeList.paging ?
@@ -103,6 +106,7 @@ export default function HomePage() {
         : null
       }
     </Container>
+    : null }
 
     </>
   )

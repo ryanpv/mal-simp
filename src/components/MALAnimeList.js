@@ -11,7 +11,7 @@ function MalAnimeList() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
   const [offset, setOffset] = React.useState(0)
-  const { animeList, setAnimeList, loading, setLoading, malUserDetails, setMalUserDetails } = useStateContext();
+  const { animeList, setAnimeList, loading, setLoading, malUserDetails, setMalUserDetails, malLoginMessage } = useStateContext();
   const { currentUser } = useAuth();
   const firebaseToken = currentUser && currentUser.accessToken;
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
@@ -68,11 +68,14 @@ function MalAnimeList() {
       {/* { animeList.data ? <i>Your anime list from MyAnimeList</i> : <i><Link to='/'>Log in</Link> to MAL to see your saved anime list</i> }  */}
     </div>
 
+    { malUserDetails.id ? 
     <Container>
       { loading ? <>Loading...</> : <ContentCards animeList={animeList} /> }
       </Container>
+    : <h2>{ malLoginMessage }</h2> 
+    }
       
-      { animeList.paging ?
+      { malUserDetails && animeList.paging ?
         <div className='w-100 text-center mt-2 mb-2'>
           { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

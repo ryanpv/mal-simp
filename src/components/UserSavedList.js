@@ -194,7 +194,7 @@ async function addNewCategory(e) {
     } catch (err) {
       console.log(err);
     }
-    return categoryRef.current.value === ""
+    categoryRef.current.value = ""
 }
 
 function deleteBtn() {

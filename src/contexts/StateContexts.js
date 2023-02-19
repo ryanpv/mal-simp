@@ -22,6 +22,7 @@ export function StateProvider({ children }) {
   const [additionalContent, setAdditionalContent] = React.useState([]);
   const [errorMessage, setErrorMessage] = React.useState('')
   const [malUserDetails, setMalUserDetails] = React.useState({})
+  const [malLoginMessage, setMalLoginMessage] = React.useState('No MAL user currently logged in.')
 
 
 
@@ -34,9 +35,11 @@ export function StateProvider({ children }) {
     loading,
     setLoading,
     errorMessage,
+    setErrorMessage,
+    malLoginMessage,
+    setMalLoginMessage,
     malUserDetails,
     setMalUserDetails,
-    setErrorMessage,
     setOffset,
     animeDetails,
     setAnimeDetails,

@@ -56,7 +56,7 @@ function SeasonalAnime() {
     e.preventDefault();
     setCurrentYear(animeYear.current.value)
     setSeason(animeSeason.value)
-
+    animeYear.current.value = null
   }
 
 
