@@ -22,14 +22,16 @@ function NavBar() {
     try {
       if (animeRef.current.value === "" || !/\S/.test(animeRef.current.value) || animeRef.current.value.includes('  ')) {
         setFormErrors("Invalid search input. Ensure no double spacing")
+      } else {
+        const animeSearch = await fetch(`${ serverUrl }/animesearch/${ offset }/anime?q=${ new URLSearchParams(animeRef.current.value) }`)
+        const animeSearchResults = await animeSearch.json()
+        setSearchResults(animeSearchResults)
+        setOffset(0)
+        setFormErrors('')
+        
       }
-
-      const animeSearch = await fetch(`animeRef.current.value}/animesearch/${ offset }/anime?q=${ new URLSearchParams(animeRef.current.value) }`)
-      const animeSearchResults = await animeSearch.json()
-      setSearchResults(animeSearchResults)
-      setOffset(0)
-      
       navigate(`/search-results?anime=${animeRef.current.value}`)
+
     } catch (err) {
       console.log(err);
     }
@@ -60,7 +62,7 @@ function NavBar() {
           </Nav>
 
           <Form className='me-auto' onSubmit={(e) => submitSearch(e)}>
-            <Form.Control className="" type='text' ref={animeRef} placeholder='Search Anime' isInvalid={ !!formErrors }></Form.Control>
+            <Form.Control className="" type='text' ref={animeRef} placeholder='Search Anime' isInvalid={ !!formErrors } />
             <Form.Control.Feedback type='invalid'>
               { formErrors }
             </Form.Control.Feedback>

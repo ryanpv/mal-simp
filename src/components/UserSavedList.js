@@ -188,6 +188,7 @@ async function addNewCategory(e) {
         });
         // console.log(categoryRef.current.value)   
         setLastAddedCategory(categoryInput)
+        setFormErrors('')
         alert(`'${ categoryInput }' added as a category`)
 
       }
