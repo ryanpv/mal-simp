@@ -19,7 +19,11 @@ function NavBar() {
     // console.log(animeRef.current.value);
 
     try {
-      const animeSearch = await fetch(`${ serverUrl }/animesearch/${ offset }/anime?q=${ new URLSearchParams(animeRef.current.value) }`)
+      if (animeRef.current.value === "" || !/\S/.test(animeRef.current.value) || animeRef.current.value.includes('  ')) {
+        alert("Invalid search input. Ensure no double spacing")
+      }
+
+      const animeSearch = await fetch(`animeRef.current.value}/animesearch/${ offset }/anime?q=${ new URLSearchParams(animeRef.current.value) }`)
       const animeSearchResults = await animeSearch.json()
       setSearchResults(animeSearchResults)
       setOffset(0)
