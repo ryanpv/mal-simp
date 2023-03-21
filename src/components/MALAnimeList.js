@@ -75,7 +75,7 @@ function MalAnimeList() {
     : <h2>{ malLoginMessage }</h2> 
     }
       
-      { malUserDetails && animeList.paging ?
+      { malUserDetails.id && animeList.paging ?
         <div className='w-100 text-center mt-2 mb-2'>
           { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

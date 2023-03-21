@@ -81,7 +81,7 @@ export default function HomePage() {
   return (
     <>
     <div className='w-100 text-center mt-2 mb-4'>
-      { malUserDetails.name ? 
+      { malUserDetails.id ? 
         <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
         : <Button onClick={ () => malLogin() }>Log In to MyAnimeList.net</Button> 
       }
