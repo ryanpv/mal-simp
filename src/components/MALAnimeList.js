@@ -63,7 +63,7 @@ function MalAnimeList() {
     <>
     <div className='text-center mb-3'>
       <h2 >User Anime List</h2>
-      { animeList.data ? <i>Your anime list from MyAnimeList</i> 
+      { animeList.data ? <i>Your anime list from MyAnimeList.</i> 
       : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
       {/* { animeList.data ? <i>Your anime list from MyAnimeList</i> : <i><Link to='/'>Log in</Link> to MAL to see your saved anime list</i> }  */}
     </div>
