@@ -1,14 +1,11 @@
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap';
-import { useAuth } from '../contexts/AuthContext';
 
 function DeleteModal(props) {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const handleClose = () => props.setShow(false);
   const categoryDeleteRef = React.useRef('');
   const [deleteInput, setDeleteInput] = React.useState({ category: ""});
-  const { currentUser } = useAuth();
-  const firebaseToken = currentUser && currentUser.accessToken;
 
   function handleDelete(value) {
     return setDeleteInput((prev) => {
@@ -25,9 +22,9 @@ function DeleteModal(props) {
         await fetch(`${ serverUrl }/delete-category/${ props.selectedCategory }`, {
           method: 'DELETE',
           credentials: 'include',
-          headers: {
-            Authorization: `Bearer ${ firebaseToken }`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${ firebaseToken }`,
+          // },
         });
         props.setCategoryList(props.categoryList.filter((category) => category !== props.selectedCategory ));
         props.setSelectedCategory("");

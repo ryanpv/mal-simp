@@ -1,17 +1,15 @@
 import React from 'react'
-import { Row, Col, Card, Container, Button } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
 import ContentCards from '../templates/ContentCards';
-import { useDisplayContext } from '../contexts/DisplayDataContext';
 import { useAuth } from '../contexts/AuthContext';
-import { Link } from 'react-router-dom';
 ///////////////////////////////////////////////////////
 
 function MalAnimeList() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
   const [offset, setOffset] = React.useState(0)
-  const { animeList, setAnimeList, loading, setLoading, malUserDetails, setMalUserDetails, malLoginMessage } = useStateContext();
+  const { animeList, setAnimeList, loading, malUserDetails, malLoginMessage } = useStateContext();
   const { currentUser } = useAuth();
   const firebaseToken = currentUser && currentUser.accessToken;
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
@@ -51,7 +49,6 @@ function MalAnimeList() {
     try {
       const getCode = await fetch(`${ serverUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
       const getChallenge = await getCode.json();
-      console.log(window.location.href);
 
       window.location.href = (`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=${ clientUrl }/logcallback`)
       // await window.open(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=${ clientUrl }/logcallback`, "_self")

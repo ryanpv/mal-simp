@@ -1,9 +1,9 @@
 import React from 'react'
 import { useStateContext } from './contexts/StateContexts'
-import { Button, ButtonGroup, Nav, ToggleButton } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 function TrailerPagination({animeDetails}) {
-  const { currentPage, setCurrentPage, setCurrentTrailer } = useStateContext();
+  const { setCurrentPage } = useStateContext();
   const pageNumbers = [];
   const paginate = (pageNumber) => {
     // const indexOfLastVideo = pageNumber // usually method to find index of last item in array slice
@@ -11,12 +11,13 @@ function TrailerPagination({animeDetails}) {
     setCurrentPage(pageNumber) // when we click on 
   }
 
+// creates a page number for each video and stores in the array
   for (let i = 1; i <= animeDetails.videos.length; i++) {
     pageNumbers.push(i)
     // console.log(currentPage);
   }
 
-
+// the array of page numbers will correspond to each video and update currentPage number state 
   return (
     <nav>
       <ul className='pagination'>

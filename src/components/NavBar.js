@@ -9,7 +9,7 @@ function NavBar() {
   const navigate = useNavigate();
   const animeRef = React.useRef();
   const { setSearchResults, offset, setOffset } = useStateContext();
-  const { currentUser, logout, setLoading } = useAuth();
+  const { currentUser, logout } = useAuth();
   const [formErrors, setFormErrors] = React.useState('');
 
 
@@ -71,7 +71,7 @@ function NavBar() {
           <Nav>
             { currentUser ? 
             <>
-            <Nav.Link bg='light'>{currentUser.email} currently logged in</Nav.Link> 
+            <Nav.Link bg='light'>{currentUser} currently logged in</Nav.Link> 
             <Button variant='outline-light' onClick={() => logout()}>Log Out</Button>
             </>
             :

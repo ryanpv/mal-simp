@@ -1,7 +1,6 @@
 import React from 'react'
-import { Row, Col, Card, Container, Button, Form } from 'react-bootstrap';
+import { Row, Col, Container, Button, Form } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
-import { useDisplayContext } from '../contexts/DisplayDataContext';
 import ContentCards from '../templates/ContentCards';
 ////////////////////////////////////
 
@@ -20,7 +19,6 @@ function SeasonalAnime() {
   const animeSeason = document.getElementById('anime-season')
   // const animeYear = document.getElementById('anime-year') 
   const animeYear = React.useRef();
-
 
   React.useEffect(() => {
     async function getSeasonalAnime() {

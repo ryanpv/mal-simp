@@ -1,19 +1,17 @@
 import React from 'react'
-import { Button, ButtonGroup, DropdownButton, Dropdown, Modal } from 'react-bootstrap'
+import { ButtonGroup, DropdownButton, Dropdown, Modal } from 'react-bootstrap'
 import { useStateContext } from '../contexts/StateContexts'
 import TrailerPagination from '../trailerPagination';
 import { useAuth } from '../contexts/AuthContext';
 
 function TrailerModal(props) {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
-  const { animeDetails, currentPage, setCurrentPage, categoryList, setCategoryContents, categoryContents, additionalContent, setAdditionalContent } = useStateContext();
+  const { animeDetails, currentPage, categoryList } = useStateContext();
   const indexOfTrailerDisplayed = currentPage - 1 // only displaying 1 video each tab so - 1 to get the video index
   const currentTrailer = animeDetails.videos && animeDetails.videos.slice(indexOfTrailerDisplayed, currentPage)
-  const [categorySelect, setCategorySelect] = React.useState('')
   const { currentUser } = useAuth();
-  const firebaseToken  = currentUser && currentUser.accessToken
 
-
+// Post request to save anime data to user's personal category
   async function saveToCategory(value) {
     try { 
       const body = {
@@ -24,12 +22,12 @@ function TrailerModal(props) {
         mean: animeDetails.mean !== undefined ? animeDetails.mean : 'Currently unavailable.',      
         categoryName: value
       }
-      const postAnime = await fetch(`${ serverUrl }/add-anime`, {
+      await fetch(`${ serverUrl }/add-anime`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${ firebaseToken }`
+          // Authorization: `Bearer ${ firebaseToken }`
         },
         body: JSON.stringify(body)
       });
@@ -40,6 +38,7 @@ function TrailerModal(props) {
     };
   };
 
+// function to display all categories (saved in state after fetch) in dropdown button
   function categoryDropdown() {
     if (categoryList.length > 0) {
       return categoryList.map(category => {
@@ -65,7 +64,7 @@ function TrailerModal(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            { firebaseToken ? 
+            { currentUser ? 
             <>
             <DropdownButton
             as={ ButtonGroup }

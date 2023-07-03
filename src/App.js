@@ -4,7 +4,6 @@ import React from "react";
 import UserRecommendations from './components/UserRecommendations.js'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogCallback from "./components/LogCallback.js";
-import NavBar from "./components/NavBar.js";
 import SeasonalAnime from "./components/SeasonalAnime.js";
 import TrailerModal from "./modals/TrailerModal.js";
 import { useStateContext } from "./contexts/StateContexts.js";
@@ -24,23 +23,23 @@ import ForgotPassword from './Accounts/ForgotPassword.js';
 function App() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   // const [show, setShow] = React.useState(false);
-  const { show, setShow, setCategoryList, lastAddedCategory, setErrorMessage } = useStateContext();
+  const { show, setShow, setCategoryList, lastAddedCategory } = useStateContext();
   const handleClose = () => setShow(false);
-  const { setLoading, currentUser } = useAuth();
-  const firebaseToken = currentUser && currentUser.accessToken;
+  const { currentUser } = useAuth();
+
 
   React.useEffect(() => {
     async function getCategories() {
-      if (firebaseToken) {
+      if (currentUser) {
         const fetchCategories = await fetch(`${ serverUrl }/get-categories`, {
           credentials: "include",
-          headers: {
-            Authorization: `Bearer ${ firebaseToken }`
-          }
+          // headers: {
+          //   Authorization: `Bearer ${ firebaseToken }`
+          // }
         });
   
         const response = await fetchCategories.json(); // response is array of strings that are the category names
-        const responseArr = await response.map(title => {return {categoryName: title}})
+        // await response.map(title => {return {categoryName: title}})
         setCategoryList(response)
         // console.log(responseArr);
       } else {
@@ -48,7 +47,7 @@ function App() {
       }
     };
     getCategories();
-  }, [firebaseToken, lastAddedCategory]); // usememo
+  }, [currentUser, lastAddedCategory]); // usememo
 
 
 

@@ -5,8 +5,6 @@ import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, si
 import { auth } from '../Accounts/firebase';
 import { useStateContext } from './StateContexts';
 
-// const auth = getAuth();
-const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
 const AuthContext = React.createContext();
 const providerGoogle = new GoogleAuthProvider();
 
@@ -15,9 +13,9 @@ export function useAuth() {
 };
 
 export function AuthProvider({ children }) {
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [error, setError] = useState('');
   const [currentUser, setCurrentUser] = useState();
-  // const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const { setCategoryList, setErrorMessage, loading, setLoading } = useStateContext();
 
@@ -36,11 +34,9 @@ export function AuthProvider({ children }) {
       });
   };
 
-  function login(email, password) {
+   function login(email, password) {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-      })
+      .then(async (userCredential) => userCredential.user)
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
@@ -73,11 +69,11 @@ export function AuthProvider({ children }) {
 
   function loginWithGoogle(){
     signInWithPopup(auth, providerGoogle)
-      .then((result) => {
+      .then(async (result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user;
-        // console.log(`user: ${ user }, token: ${ token }`);
+
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -89,9 +85,18 @@ export function AuthProvider({ children }) {
   };
 
   React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('user ', user);
       if (user) {
-        setCurrentUser(user);
+        await fetch(`${ serverUrl }/login-session`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify({ accessToken: user.accessToken, isRegUser: user.isRegUser })
+        });
+        setCurrentUser(user.displayName ? user.displayName : user.email);
         setLoading(false);
         // console.log('firebase token acquired');
         // console.log(user.accessToken && 'firebase token acquired');

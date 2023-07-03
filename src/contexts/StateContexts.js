@@ -16,7 +16,7 @@ export function StateProvider({ children }) {
   const [currentTrailer, setCurrentTrailer] = useState({})
   const [searchResults, setSearchResults] = useState({})
   const [offset, setOffset] = React.useState(0)
-  const [categoryList, setCategoryList] = React.useState({}) // state for list of users' categories
+  const [categoryList, setCategoryList] = React.useState({}) // state for list of users' categories *** WHY NOT []??? ***
   const [categoryContents, setCategoryContents] = React.useState([]) // state for saved anime in categories
   const [lastAddedCategory, setLastAddedCategory] = React.useState("");
   const [additionalContent, setAdditionalContent] = React.useState([]);

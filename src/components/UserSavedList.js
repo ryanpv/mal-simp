@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useNavigate, Link, redirect, Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts'
 import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, InputGroup } from 'react-bootstrap';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
@@ -11,7 +11,7 @@ export default function UserSavedList() {
   const { categoryList, setCategoryList, categoryContents, setCategoryContents, setLastAddedCategory, errorMessage } = useStateContext();
   const { handleShow } = useDisplayContext();
   const { currentUser } = useAuth();
-  const firebaseToken = currentUser && currentUser.accessToken;
+  // const firebaseToken = currentUser && currentUser.accessToken;
   const categoryRef = React.useRef();
   const selectRef = React.useRef();
   // const [lastAddedCategory, setLastAddedCategory] = React.useState("");
@@ -20,32 +20,6 @@ export default function UserSavedList() {
   const [paginationTitles, setPaginationTitles] = React.useState({ firstTitle: '', lastTitle: '' });
   const [fetchCount, setFetchCount] = React.useState(10);
   const [formErrors, setFormErrors] = React.useState('');
-
-  const params = useParams();
-  const navigate = useNavigate();
-
-
-  // React.useEffect(() => {
-  //   async function getCategories() {
-  //     if (firebaseToken) {
-  //       const fetchCategories = await fetch('http://localhost:6969/get-categories', {
-  //         credentials: "include",
-  //         headers: {
-  //           Authorization: `Bearer ${ firebaseToken }`
-  //         }
-  //       });
-  
-  //       const response = await fetchCategories.json();
-  //       const responseArr = await response.map(title => {return {categoryName: title}})
-  //       setCategoryList(response)
-  //       console.log(responseArr);
-  //     } else {
-  //       console.log('fetch category error');
-  //     }
-  //   };
-  //   getCategories();
-  // }, [lastAddedCategory, currentUser]);
-
 
 
   const RemoveAnimeBtn = (props) => {
@@ -64,15 +38,12 @@ export default function UserSavedList() {
     await fetch(`${ serverUrl }/remove-anime`, {
       method: 'DELETE',
       credentials: "include",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${ firebaseToken }`
-      },
+      // headers: {
+      //   "Content-type": "application/json",
+      //   Authorization: `Bearer ${ firebaseToken }`
+      // },
       body: JSON.stringify(animeInfo)
     });
-    // const updateContentList = categoryContents.filter(anime => anime.animeId.toString() !== animeInfo.animeId.toString())
-    // setCategoryContents(updateContentList)
-    // console.log(updateContentList);
   }
 
   const AnimeResultList = (props) => {
@@ -113,9 +84,9 @@ async function fetchCategoryContent(e, value) { // called on category select
   try {
     const fetchContent = await fetch(`${ serverUrl }/get-content/${ value }`,{
       credentials:'include',
-      headers: {
-        Authorization: `Bearer ${ firebaseToken }`
-      },
+      // headers: {
+      //   Authorization: `Bearer ${ firebaseToken }`
+      // },
     });
     const fetchResult = await fetchContent.json();
 
@@ -143,9 +114,9 @@ async function fetchNextPage(e) {
   try {
     const fetchContent = await fetch(`${ serverUrl }/content-paginate-forward/${ selectedCategory }/${ paginationTitles.lastTitle }`,{
       credentials:'include',
-      headers: {
-        Authorization: `Bearer ${ firebaseToken }`
-      },
+      // headers: {
+      //   Authorization: `Bearer ${ firebaseToken }`
+      // },
     });
 
     const nextPage = await fetchContent.json()
@@ -182,7 +153,7 @@ async function addNewCategory(e) {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${ firebaseToken }`
+            // Authorization: `Bearer ${ firebaseToken }`
           },
           body: JSON.stringify({ categoryName: categoryInput })
         });
@@ -206,7 +177,8 @@ function deleteBtn() {
 
   return (
   <>
-    { firebaseToken ? 
+  {/* { firebaseToken ? */}
+  { currentUser ?
       <Container>
         <Form onSubmit={ (e) => addNewCategory(e) }>
           <Row className="w-50 mb-3 mt-3">
@@ -232,7 +204,8 @@ function deleteBtn() {
     : null }
 
 
-  { firebaseToken ?
+  {/* { firebaseToken ? */}
+  { currentUser ?
       <table className='table table-striped' style={ { marginTop: 20 } }>
       <thead>
         <tr>
