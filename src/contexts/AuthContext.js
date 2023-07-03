@@ -86,7 +86,6 @@ export function AuthProvider({ children }) {
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('user ', user);
       if (user) {
         await fetch(`${ serverUrl }/login-session`, {
           method: 'POST',
