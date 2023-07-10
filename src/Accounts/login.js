@@ -39,8 +39,9 @@ export default function Login() {
 
             <Button variant="outline-primary" className='w-100 mt-4' type='submit'>Log In.</Button>
           </Form>
+        <hr></hr>
         </Card.Body>
-          <div className='mt-2 mb-2 text-center'>
+          <div className='mb-2 text-center'>
             <Button variant='link' size='sm' onClick={ loginWithGoogle }>
               <img src={require('./google-signin-logo.png')} alt='google sign-in logo' width={150} />
             </Button>

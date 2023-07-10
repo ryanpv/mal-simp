@@ -43,13 +43,14 @@ function NavBar() {
   return (
     <>
       <Navbar bg="dark" variant="dark" expand="lg">
-        <Container fluid>
+        <Container>
           <Navbar.Brand href="/">WorldAnime</Navbar.Brand>
           <Navbar.Toggle aria-controls='NavbarScroll' />
           <Navbar.Collapse id="navbarScroll">
 
-          {/* <Nav className="me-auto" bg="light" variant="tabs"> */}
-          <Nav className='me-auto my-2 my-lg-0' style={ { maxHeight: '100px' } } navbarScroll>
+          {/* <Nav className='me-auto my-2 my-lg-0' style={ { maxHeight: '100px' } } navbarScroll> */}
+          {/* <Nav style={ { maxHeight: '100px' } } navbarScroll> */}
+          <Nav navbarScroll>
             <NavLink className='nav-link' to="/">Home</NavLink>
             <NavDropdown menuVariant='dark' title="Anime" id="navbarScrollingDropdown">
               <NavLink className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
@@ -61,12 +62,14 @@ function NavBar() {
             <NavLink className='nav-link' to="/user-anime-list">Saved Anime</NavLink>
           </Nav>
 
+        <Container style={{ maxWidth: '700px' }}>
           <Form className='me-auto' onSubmit={(e) => submitSearch(e)}>
             <Form.Control className="" type='text' ref={animeRef} placeholder='Search Anime' isInvalid={ !!formErrors } />
             <Form.Control.Feedback type='invalid'>
               { formErrors }
             </Form.Control.Feedback>
           </Form>
+        </Container>
 
           <Nav>
             { currentUser ? 
