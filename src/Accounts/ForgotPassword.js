@@ -6,8 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function ForgotPassword() {
   const emailRef = useRef();
-  const passwordRef = useRef();
-  const { login, loginWithGoogle, resetPassword } = useAuth();
+  const { loginWithGoogle, resetPassword } = useAuth();
   const navigate = useNavigate();
 
 
@@ -16,9 +15,8 @@ export default function ForgotPassword() {
 
     try {
       await resetPassword(emailRef.current.value)
-      // console.log(`password reset for ${ emailRef.current.value }`);
-      navigate('/user-anime-list')
 
+      navigate('/login')
     } catch (err) {
       console.log(err);
     }
@@ -30,6 +28,7 @@ export default function ForgotPassword() {
         <Card>
           <Card.Body>
             <h2 className='text-center mb-4'>Password Reset</h2>
+
             <Form onSubmit={handleSubmit}>
               <Form.Group id="email">
                 <Form.Label>Email</Form.Label>

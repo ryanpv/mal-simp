@@ -1,13 +1,12 @@
 import React, { useRef } from 'react'
-import { Button, Card, Container, Form } from 'react-bootstrap'
+import { Button, Card, Container, Form, Alert } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login, loginWithGoogle } = useAuth();
-  const navigate = useNavigate();
+  const { login, loginWithGoogle, error, setError } = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,6 +15,7 @@ export default function Login() {
       await login(emailRef.current.value, passwordRef.current.value)
     } catch (err) {
       console.log(err);
+      return setError(err)
     }
   }
 
@@ -25,7 +25,8 @@ export default function Login() {
       <Card>
         <Card.Body>
           <h2 className='text-center mb-4'>Log In</h2>
-          {/* {error && <Alert variant='danger'>{error}</Alert>} */}
+          { error && <Alert variant='danger'>{error}</Alert> }
+
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
