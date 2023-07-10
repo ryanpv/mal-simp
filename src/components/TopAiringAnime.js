@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, Row, Col, Card, Container } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
-import ContentCards from '../templates/ContentCards';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
 
 function TopAiringAnime() {

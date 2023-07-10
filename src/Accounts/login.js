@@ -1,8 +1,7 @@
 import React, { useRef } from 'react'
-import { Button, Card, Form } from 'react-bootstrap'
+import { Button, Card, Container, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-
 
 export default function Login() {
   const emailRef = useRef();
@@ -10,15 +9,13 @@ export default function Login() {
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
-
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
       await login(emailRef.current.value, passwordRef.current.value)
-      // console.log(`logged in as ${ emailRef.current.value }`);
-      navigate('/user-anime-list')
 
+      navigate('/user-anime-list')
     } catch (err) {
       console.log(err);
     }
@@ -26,6 +23,7 @@ export default function Login() {
 
   return (
     <>
+    <Container className="mt-4" style={{ maxWidth: '325px' }}>
       <Card>
         <Card.Body>
           <h2 className='text-center mb-4'>Log In</h2>
@@ -42,14 +40,6 @@ export default function Login() {
 
             <Button variant="outline-primary" className='w-100 mt-4' type='submit'>Log In.</Button>
           </Form>
-
-
-
-
-          {/* <div className='w-100 text-center mt-3'>
-            <Link to="/admin/forgot-password">Forgot Password?</Link> 
-          </div> */}
-
         </Card.Body>
           <div className='mt-2 mb-2 text-center'>
             <Button variant='link' size='sm' onClick={ loginWithGoogle }>
@@ -57,12 +47,15 @@ export default function Login() {
             </Button>
           </div>
       </Card>
-          {/* <Button onClick={ loginWithGoogle } variant="outline-primary" className='w-100 mt-4' type='submit'>Google Sign in</Button> */}
-        
 
           <div className='w-100 text-center mt-4'>
             <Link to='/forgot-password'>Forgot Password?</Link>
           </div>
+    </Container>
+
+    <div className='text-center mt-3'>
+        <p>Don't have an account? Go to the <Link to='/sign-up'>Sign Up</Link> page</p>
+      </div>
     </>
   )
 }

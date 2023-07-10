@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Button, Card, Form, Alert } from 'react-bootstrap'
+import { Button, Card, Form, Container } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -26,6 +26,7 @@ export default function ForgotPassword() {
 
   return (
     <>
+    <Container className="mt-4" style={{ maxWidth: '325px' }}>
       <Card>
         <Card.Body>
           <h2 className='text-center mb-4'>Password Reset</h2>
@@ -36,31 +37,24 @@ export default function ForgotPassword() {
             </Form.Group>
             <Button variant="outline-primary" className='w-100 mt-2' type='submit'>Reset Password</Button>
           </Form>
+          <hr></hr>
 
-          <Button onClick={ loginWithGoogle } variant="outline-primary" className='w-100 mt-2' type='submit'>Google Sign in</Button>
-        
           <div className='mt-3 text-center'>
             <Button variant='link' size='sm' onClick={ loginWithGoogle }>
               <img src={require('./google-signin-logo.png')} alt='google sign-in logo' width={150} />
             </Button>
           </div>
           <div className='w-100 text-center'>
-            <Link to='/forgot-password'>Login</Link>
+            <p>Back to <Link to='/login'>Login</Link></p>
           </div>
           
-                  </Card.Body>
-                </Card>
+        </Card.Body>
+      </Card>
+    </Container>
 
-
-          <div className='w-100 text-center'>
-            Don't have an account? <Link to='/sign-up'>Sign Up</Link>
-          </div>
-
-
-
-          {/* <div className='w-100 text-center mt-3'>
-            <Link to="/admin/forgot-password">Forgot Password?</Link> 
-          </div> */}
+    <div className='w-100 text-center'>
+      Don't have an account? <Link to='/sign-up'>Sign Up</Link>
+    </div>
     </>
   )
 }

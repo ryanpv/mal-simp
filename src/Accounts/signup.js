@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { Button, Card, Form, Alert } from 'react-bootstrap';
+import React, { useRef } from 'react'
+import { Button, Card, Form, Alert, Container } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -36,6 +36,7 @@ export default function Signup() {
 
   return (
     <>
+    <Container className="mt-4" style={{ maxWidth: '325px' }}>
       <Card>
         <Card.Body>
           <h2 className='text-center mb-4'>Sign Up</h2>
@@ -65,6 +66,7 @@ export default function Signup() {
           </Form>
         </Card.Body>
       </Card>
+    </Container>
 
       <div className='text-center mt-3'>
         <p>Already have an account? Go to the <Link to='/login'>Login</Link> page</p>
