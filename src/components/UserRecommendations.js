@@ -88,15 +88,16 @@ export default function HomePage() {
       }
     </div>
 
-    { malUserDetails.name ? 
-      <div className='text-center'>
-        <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2>
-      </div>
-    : <h2>Log into MAL to see your recommendations.</h2>
-    }
     
     { malUserDetails.id ? 
     <Container className='fluid'>
+      { malUserDetails.name ? 
+        <div className='text-left'>
+          <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2>
+        </div>
+      : <h2>Log into MAL to see your recommendations.</h2>
+      }
+      <hr></hr>
       <ContentCards />
       { animeList.paging ?
         <div className='w-100 text-center mt-2 mb-2'>

@@ -44,7 +44,7 @@ function NavBar() {
     <>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="/">MAL-Simp</Navbar.Brand>
+          <Navbar.Brand href="/">WorldAnime</Navbar.Brand>
           <Navbar.Toggle aria-controls='NavbarScroll' />
           <Navbar.Collapse id="navbarScroll">
 
@@ -58,7 +58,7 @@ function NavBar() {
             </NavDropdown>
             {/* <Nav.Link href="/seasonal-anime" eventKey="1" to="/seasonal-anime">Seasonal Anime</Nav.Link> */}
             <NavLink className='nav-link' to="/user-MAL">MAL</NavLink>
-            <NavLink className='nav-link' to="/user-anime-list">MySimpList</NavLink>
+            <NavLink className='nav-link' to="/user-anime-list">Saved Anime</NavLink>
           </Nav>
 
           <Form className='me-auto' onSubmit={(e) => submitSearch(e)}>

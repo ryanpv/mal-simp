@@ -38,11 +38,11 @@ function TopUpcomingAnime() {
 
   return (
     <>
-    <h2 className='text-center mb-3'>Top Upcoming Anime</h2>
-
-    <Container>
-      <ContentCards />
-    </Container>
+      <Container>
+        <h2 className='text-left mb-3 mt-4'>Top Upcoming Anime</h2>
+        <hr></hr>
+        <ContentCards />
+      </Container>
 
     { animeList.paging ?
         <div className='w-100 text-center mt-2 mb-2'>

@@ -60,15 +60,14 @@ function MalAnimeList() {
 
   return (
     <>
-    <div className='text-center mb-3'>
-      <h2 >User Anime List</h2>
-      { animeList.data ? <i>Your anime list from MyAnimeList.</i> 
-      : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
-      {/* { animeList.data ? <i>Your anime list from MyAnimeList</i> : <i><Link to='/'>Log in</Link> to MAL to see your saved anime list</i> }  */}
-    </div>
-
     { malUserDetails.id ? 
     <Container>
+      <div className='text-left mb-3 mt-4'>
+        <h2 >User Anime List</h2>
+        { animeList.data ? <i>Your anime list from MyAnimeList.</i> 
+        : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
+      </div>
+        <hr></hr>
       { loading ? <>Loading...</> : <ContentCards animeList={animeList} /> }
       </Container>
     : <h2>{ malLoginMessage }</h2> 

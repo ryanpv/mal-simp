@@ -62,11 +62,14 @@ function SeasonalAnime() {
 
   return (
     <>
-      <h2 className='text-center'>Seasonal Anime</h2>
-      <h6 className='text-center'>{ animeList.season ? `${animeList.season.season.toUpperCase()} ${animeList.season.year}` : null }</h6>
-      <br></br>
 
     <Container>
+      <h2 className='text-left mt-4'>Seasonal Anime</h2>
+      <hr></hr>
+      <h6 className='text-center'>
+        <strong>{ animeList.season ? `${animeList.season.season.toUpperCase()} ${animeList.season.year}` : null }</strong>
+          </h6>
+      {/* <br></br> */}
       <Form className='centered' onSubmit={(e) => seasonalQuery(e)}>
         <Row className="w-25 mb-3">
           <Form.Group as={Col}>

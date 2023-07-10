@@ -41,13 +41,14 @@ function TopAiringAnime() {
 
   return (
     <>
-    <div className='w-100 text-center mt-1 mb-4'>
-      <h2>MAL-Simp. Simplified web-app for MyAnimeList</h2>
+    <div className='w-100 text-center mt-4 mb-4'>
+      <h2>Welcome to WorldAnime</h2>
     </div>
 
-    <h2 className='text-center mb-3'>Top Airing Anime</h2>
 
     <Container>
+      <h3 className='text-left mb-3'>Top Airing Anime</h3>
+      <hr></hr>
       {/* <ContentCards /> */}
       <Row xs={1} md={5} className="g-4">
         { animeList.data ? animeList.data.map(recs => { return (
