@@ -45,7 +45,7 @@ function TopAiringAnime() {
     </div>
 
 
-    <Container>
+    <Container className="pt-4 pb-4" style={{ backgroundColor: 'white'}}>
       <h3 className='text-left mb-3'>Top Airing Anime</h3>
       <hr></hr>
       {/* <ContentCards /> */}

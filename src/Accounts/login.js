@@ -14,8 +14,6 @@ export default function Login() {
 
     try {
       await login(emailRef.current.value, passwordRef.current.value)
-
-      navigate('/user-anime-list')
     } catch (err) {
       console.log(err);
     }

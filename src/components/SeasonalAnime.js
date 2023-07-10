@@ -63,7 +63,7 @@ function SeasonalAnime() {
   return (
     <>
 
-    <Container>
+    <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
       <h2 className='text-left mt-4'>Seasonal Anime</h2>
       <hr></hr>
       <h6 className='text-center'>

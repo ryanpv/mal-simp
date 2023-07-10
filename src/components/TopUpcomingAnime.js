@@ -38,7 +38,7 @@ function TopUpcomingAnime() {
 
   return (
     <>
-      <Container>
+      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         <h2 className='text-left mb-3 mt-4'>Top Upcoming Anime</h2>
         <hr></hr>
         <ContentCards />

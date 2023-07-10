@@ -43,6 +43,7 @@ export function AuthProvider({ children }) {
         console.log(errorCode);
         setError(errorMessage);
       });
+      navigate('/user-anime-list');
   };
 
   function logout() {
