@@ -21,6 +21,7 @@ function TopAiringAnime() {
         setAnimeList(topAiringResults)
       } catch (err) {
         console.log(err);
+        setLoading(false);
       }
     }
     getTopAiring();

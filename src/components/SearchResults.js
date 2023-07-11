@@ -25,6 +25,7 @@ export default function SearchResults() {
 
       } catch (err) {
         console.log(err);
+        setLoading(false)
       }
     }
     updateSearchResults();

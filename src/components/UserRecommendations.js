@@ -48,6 +48,7 @@ export default function HomePage() {
           setMalLoginMessage('Log in to MAL to see recommendations.')
         }
         console.log(err);
+        setLoading(false)
       }
     }
     fetchRecommendedAnime();

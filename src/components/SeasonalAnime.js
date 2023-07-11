@@ -31,6 +31,7 @@ function SeasonalAnime() {
         console.log(err);
         setFormErrors("Invalid season/year input")
         animeYear.current.value = null
+        setLoading(false)
       }
 
     }
