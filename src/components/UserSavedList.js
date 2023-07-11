@@ -8,7 +8,7 @@ import DeleteModal from '../modals/DeleteModal';
 
 export default function UserSavedList() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
-  const { categoryList, setCategoryList, categoryContents, setCategoryContents, setLastAddedCategory, errorMessage } = useStateContext();
+  const { categoryList, setCategoryList, setLastAddedCategory, errorMessage } = useStateContext();
   const { handleShow } = useDisplayContext();
   const { currentUser } = useAuth();
   // const firebaseToken = currentUser && currentUser.accessToken;
@@ -16,11 +16,13 @@ export default function UserSavedList() {
   const selectRef = React.useRef();
   // const [lastAddedCategory, setLastAddedCategory] = React.useState("");
   const [selectedCategory, setSelectedCategory] = React.useState("");
+  const [categoryContents, setCategoryContents] = React.useState([])
   const [show, setShow] = React.useState(false);
   const [paginationTitles, setPaginationTitles] = React.useState({ firstTitle: '', lastTitle: '' });
   const [fetchCount, setFetchCount] = React.useState(10);
   const [formErrors, setFormErrors] = React.useState('');
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('')
 
 
   const RemoveAnimeBtn = (props) => {
@@ -36,15 +38,19 @@ export default function UserSavedList() {
   }
 
   async function removeAnime(animeInfo) {
-    await fetch(`${ serverUrl }/remove-anime`, {
-      method: 'DELETE',
-      credentials: "include",
-      // headers: {
-      //   "Content-type": "application/json",
-      //   Authorization: `Bearer ${ firebaseToken }`
-      // },
-      body: JSON.stringify(animeInfo)
-    });
+    try {
+      await fetch(`${ serverUrl }/remove-anime`, {
+        method: 'DELETE',
+        credentials: "include",
+        headers: {
+          "Content-type": "application/json",
+          // Authorization: `Bearer ${ firebaseToken }`
+        },
+        body: JSON.stringify(animeInfo)
+      });
+    } catch (err) {
+      setError(err)
+    }
   }
 
   const AnimeResultList = (props) => {
@@ -74,7 +80,7 @@ export default function UserSavedList() {
           <AnimeResultList anime={ anime } key={ anime.animeId } />
         )
       });
-    };
+    }
     return ;
   };
 
@@ -83,28 +89,30 @@ async function fetchCategoryContent(e, value) { // called on category select
   e.preventDefault();
   setSelectedCategory(value)
   try {
+    setLoading(true)
     const fetchContent = await fetch(`${ serverUrl }/get-content/${ value }`,{
       credentials:'include',
-      // headers: {
-      //   Authorization: `Bearer ${ firebaseToken }`
-      // },
     });
     const fetchResult = await fetchContent.json();
 
     setCategoryContents(fetchResult);
+    setLoading(false)
     if (fetchResult.length > 0) {
       setPaginationTitles({ 
         firstTitle: fetchResult[0].animeTitle,
         lastTitle: fetchResult[fetchResult.length - 1].animeTitle 
       });
-    };
+    } else {
+      setCategoryContents([])
+    }
 
     setFetchCount(fetchResult.length)
   
     // console.log('category: ', value)
     // console.log('test', fetchResult)
   } catch (err) {
-    console.log(err);
+    setCategoryContents([])
+    setError(err)
   }
 
   // onSelect should update state which will cause the table to render
@@ -224,7 +232,7 @@ function deleteBtn() {
           <th style={ { border: "1px solid black", padding: "10px 10px" } }>No. Episodes</th>
         </tr>
       </thead>
-      <tbody>{ displaySearchedAnime() }</tbody>
+      <tbody>{ !loading && displaySearchedAnime() }</tbody>
     </table>
 
     :

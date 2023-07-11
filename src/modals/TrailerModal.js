@@ -25,6 +25,7 @@ function TrailerModal(props) {
         mean: animeDetails.mean !== undefined ? animeDetails.mean : 'Currently unavailable.',      
         categoryName: value
       }
+
       await fetch(`${ serverUrl }/add-anime`, {
         method: 'POST',
         credentials: 'include',
