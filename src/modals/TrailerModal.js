@@ -1,8 +1,10 @@
 import React from 'react'
-import { ButtonGroup, DropdownButton, Dropdown, Modal } from 'react-bootstrap'
-import { useStateContext } from '../contexts/StateContexts'
+import { ButtonGroup, DropdownButton, Dropdown, Modal, Container } from 'react-bootstrap'
+import { useStateContext } from '../contexts/StateContexts';
+import { useDisplayContext } from '../contexts/DisplayDataContext';
 import TrailerPagination from '../trailerPagination';
 import { useAuth } from '../contexts/AuthContext';
+import SyncLoader from "react-spinners/SyncLoader";
 
 function TrailerModal(props) {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -10,6 +12,7 @@ function TrailerModal(props) {
   const indexOfTrailerDisplayed = currentPage - 1 // only displaying 1 video each tab so - 1 to get the video index
   const currentTrailer = animeDetails.videos && animeDetails.videos.slice(indexOfTrailerDisplayed, currentPage)
   const { currentUser } = useAuth();
+  const { loading } = useDisplayContext();
 
 // Post request to save anime data to user's personal category
   async function saveToCategory(value) {
@@ -52,6 +55,7 @@ function TrailerModal(props) {
   
   return (
     <>
+    { loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
     <Modal
       { ...props }
       show={ props.show }
@@ -62,6 +66,7 @@ function TrailerModal(props) {
       centered
       animation={ false }
       >
+
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             { currentUser ? 
@@ -116,12 +121,9 @@ function TrailerModal(props) {
             { animeDetails.synopsis }
           </p>
 
-
-
         </Modal.Body>
-        {/* <Modal.Footer>footer</Modal.Footer> */}
-
-    </Modal>
+    </Modal> 
+    }
     </>
   )
 }
