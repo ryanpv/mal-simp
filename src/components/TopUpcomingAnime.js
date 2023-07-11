@@ -6,17 +6,18 @@ import { Container, Button } from 'react-bootstrap';
 function TopUpcomingAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [offset, setOffset] = React.useState(0)
+  const [loading, setLoading] = React.useState(false)
   const { animeList, setAnimeList } = useStateContext();
 
   React.useEffect(() => {
     async function getTopUpcoming() {
       try {
+        setLoading(true)
         const getTopUpcomingList = await fetch(`${ serverUrl }/anime-ranked/upcoming/${ offset }`)
         const topUpcomingResults = await getTopUpcomingList.json();
-
+        
+        setLoading(false)
         setAnimeList(topUpcomingResults)
-
-        // console.log(topUpcomingResults);
       } catch (err) {
         console.log(err);
       }
@@ -41,7 +42,8 @@ function TopUpcomingAnime() {
       <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         <h2 className='text-left mb-3 mt-4'>Top Upcoming Anime</h2>
         <hr></hr>
-        <ContentCards />
+        
+        <ContentCards loading={loading}/>
       </Container>
 
     { animeList.paging ?

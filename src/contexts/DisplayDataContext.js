@@ -17,8 +17,7 @@ export function DisplayDataProvider({ children }) {
       const getAnimeContent = await fetch(`${ serverUrl }/anime/${value.id}/videos,synopsis,mean,num_episodes`)
       const contentResults = await getAnimeContent.json();
       setAnimeDetails(contentResults)
-      // console.log(contentResults.videos.length > 0 ? contentResults.videos[0].url : 'n/a');
-      // console.log(contentResults);
+
     }
 
 

@@ -11,9 +11,6 @@ function NavBar() {
   const { setSearchResults, offset, setOffset } = useStateContext();
   const { currentUser, logout } = useAuth();
   const [formErrors, setFormErrors] = React.useState('');
-
-
-
   
   async function submitSearch(e) {
     e.preventDefault();

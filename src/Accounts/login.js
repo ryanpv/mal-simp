@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Button, Card, Container, Form, Alert } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {

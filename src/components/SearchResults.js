@@ -3,6 +3,7 @@ import { useStateContext } from '../contexts/StateContexts'
 import { Button } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 export default function SearchResults() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -11,17 +12,17 @@ export default function SearchResults() {
   const { handleShow } = useDisplayContext()
   const { search } = useLocation();
   const url = new URLSearchParams(search)
-  // console.log(url.get("anime"));
+  const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
     async function updateSearchResults() {
       try {
+        setLoading(true)
         const animeSearch = await fetch(`${ serverUrl }/animesearch/${ offset }/anime?q=${ url.get('anime') }`)
         const animeSearchResults = await animeSearch.json()
         setSearchResults(animeSearchResults)
+        setLoading(false)
 
-        // console.log(offset);
-        
       } catch (err) {
         console.log(err);
       }
@@ -75,7 +76,7 @@ export default function SearchResults() {
           <th style={{ border: "1px solid black", padding: "10px 10px" }}>Anime Title</th>
         </tr>
       </thead>
-      <tbody>{displaySearchedAnime()}</tbody>
+      <tbody>{ loading ? <ClipLoader color='blue' size={30} loading={loading} /> : displaySearchedAnime() }</tbody>
     </table>
 
     { searchResults.paging ?

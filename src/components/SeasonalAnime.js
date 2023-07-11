@@ -8,26 +8,25 @@ import ContentCards from '../templates/ContentCards';
 
 function SeasonalAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
-  // const [animeList, setAnimeList] = React.useState({});
   const date = new Date();
   const [currentYear, setCurrentYear] = React.useState(date.getFullYear())
   const [offset, setOffset] = React.useState(0)
+  const [loading, setLoading] = React.useState(false)
   const [season, setSeason] = React.useState("winter");
   const [formErrors, setFormErrors] = React.useState('');
   const { animeList, setAnimeList } = useStateContext();
-  // const { handleShow } = useDisplayContext();
   const animeSeason = document.getElementById('anime-season')
-  // const animeYear = document.getElementById('anime-year') 
   const animeYear = React.useRef();
 
   React.useEffect(() => {
     async function getSeasonalAnime() {
       try {
+        setLoading(true);
         const getSeasonalList = await fetch(`${ serverUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
         const seasonalListResults = await getSeasonalList.json();
-        // console.log('season results', seasonalListResults);
-
+        
         setAnimeList(seasonalListResults);
+        setLoading(false)
       } catch (err) {
         console.log(err);
         setFormErrors("Invalid season/year input")
@@ -91,8 +90,8 @@ function SeasonalAnime() {
           </Form.Group>
         </Row>
       </Form>
-
-      <ContentCards animeList={animeList} />
+      
+        <ContentCards animeList={animeList} loading={loading}/>
     </Container>
 
 

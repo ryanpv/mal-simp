@@ -1,16 +1,13 @@
 import React from 'react'
 import { Button, Container } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
-import { useDisplayContext } from '../contexts/DisplayDataContext';
-import { useAuth } from '../contexts/AuthContext';
 import ContentCards from '../templates/ContentCards';
 
 export default function HomePage() {
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
-  const { animeList, setAnimeList, malLoginMessage, setMalLoginMessage, malUserDetails, setMalUserDetails } = useStateContext();
-  const { handleShow } = useDisplayContext();
+  const [loading, setLoading] = React.useState(false)
+  const { animeList, setAnimeList, setMalLoginMessage, malUserDetails, setMalUserDetails } = useStateContext();
   const [offset, setOffset] = React.useState(0)
-  const { currentUser, setLoading } = useAuth();
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
 
@@ -32,20 +29,20 @@ export default function HomePage() {
   console.log('in development?:', process.env.NODE_ENV === 'development');
 
   React.useEffect(() => {
-    // console.log('homepage serverurl: ', serverUrl);
     async function fetchRecommendedAnime() {
       try {
         if (!malUserDetails.id) {
           const fetchMalUser = await fetch(`${ serverUrl }/get-mal-username`, { credentials: 'include' });
           const malUserName = await fetchMalUser.json();
-          console.log('fetched for mal username');
+          
           setMalUserDetails(malUserName)
         }
-          const fetchRecommended = await fetch(`${ serverUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
-          const recommendationResults = await fetchRecommended.json();
-          // console.log(recommendationResults);
-          setAnimeList(recommendationResults);
-          
+        setLoading(true)
+        const fetchRecommended = await fetch(`${ serverUrl }/user-recommendations/${ offset }`, { credentials: 'include' })
+        const recommendationResults = await fetchRecommended.json();
+        
+        setLoading(false)
+        setAnimeList(recommendationResults);
       } catch (err) {
         if (err) {
           setMalLoginMessage('Log in to MAL to see recommendations.')
@@ -98,7 +95,9 @@ export default function HomePage() {
       : <h2>Log into MAL to see your recommendations.</h2>
       }
       <hr></hr>
-      <ContentCards />
+
+      <ContentCards loading={loading}/>
+
       { animeList.paging ?
         <div className='w-100 text-center mt-2 mb-2'>
           { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }

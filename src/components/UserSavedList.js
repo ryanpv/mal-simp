@@ -20,6 +20,7 @@ export default function UserSavedList() {
   const [paginationTitles, setPaginationTitles] = React.useState({ firstTitle: '', lastTitle: '' });
   const [fetchCount, setFetchCount] = React.useState(10);
   const [formErrors, setFormErrors] = React.useState('');
+  const [loading, setLoading] = React.useState(false)
 
 
   const RemoveAnimeBtn = (props) => {

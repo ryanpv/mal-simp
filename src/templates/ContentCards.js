@@ -1,14 +1,16 @@
 import React from 'react'
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { Row, Col, Card } from 'react-bootstrap'
 import { useDisplayContext } from '../contexts/DisplayDataContext'
 import { useStateContext } from '../contexts/StateContexts';
+import ClipLoader from "react-spinners/ClipLoader"
 
-export default function ContentCards() {
+export default function ContentCards({ loading }) {
   const { handleShow } = useDisplayContext();
   const { animeList } = useStateContext();
 
   return (
     <>
+      { loading ? <ClipLoader color='blue' size={30} loading={loading} /> :
       <Row xs={1} md={4} className="g-4">
         { animeList.data && animeList.data.map(el => { return (
             <Col key={ el.node.id }>
@@ -39,6 +41,7 @@ export default function ContentCards() {
           )
         }
       </Row>
+}
     </>
   )
 }
