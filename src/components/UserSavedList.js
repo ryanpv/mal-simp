@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Navigate } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts'
-import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup, InputGroup } from 'react-bootstrap';
+import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup } from 'react-bootstrap';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
 import { useAuth } from '../contexts/AuthContext';
 import DeleteModal from '../modals/DeleteModal';
@@ -107,9 +107,6 @@ async function fetchCategoryContent(e, value) { // called on category select
     }
 
     setFetchCount(fetchResult.length)
-  
-    // console.log('category: ', value)
-    // console.log('test', fetchResult)
   } catch (err) {
     setCategoryContents([])
     setError(err)

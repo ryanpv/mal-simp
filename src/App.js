@@ -17,16 +17,11 @@ import UserSavedList from './components/UserSavedList.js';
 import MalAnimeList from './components/MALAnimeList.js';
 import ForgotPassword from './Accounts/ForgotPassword.js';
 
-
-
-
 function App() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
-  // const [show, setShow] = React.useState(false);
   const { show, setShow, setCategoryList, lastAddedCategory } = useStateContext();
   const handleClose = () => setShow(false);
   const { currentUser } = useAuth();
-
 
   React.useEffect(() => {
     async function getCategories() {
@@ -39,17 +34,11 @@ function App() {
         });
   
         const response = await fetchCategories.json(); // response is array of strings that are the category names
-        // await response.map(title => {return {categoryName: title}})
         setCategoryList(response)
-        // console.log(responseArr);
-      } else {
-        console.log('fetch category error');
       }
     };
     getCategories();
   }, [currentUser, lastAddedCategory]); // usememo
-
-
 
   return (
     <>

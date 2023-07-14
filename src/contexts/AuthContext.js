@@ -36,14 +36,18 @@ export function AuthProvider({ children }) {
 
    function login(email, password) {
     signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => userCredential.user)
+      .then(async (userCredential) => {
+        console.log('user: ', userCredential.user)
+        setCurrentUser(userCredential.user.displayName ? userCredential.user.displayName : userCredential.user.email); 
+        return userCredential.user
+      })
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
         console.log(errorCode);
         setError(errorMessage);
       });
-      navigate('/user-anime-list');
+      navigate('/')
   };
 
   function logout() {
@@ -96,7 +100,7 @@ export function AuthProvider({ children }) {
           },
           body: JSON.stringify({ accessToken: user.accessToken, isRegUser: user.isRegUser })
         });
-        setCurrentUser(user.displayName ? user.displayName : user.email);
+        // setCurrentUser(user.displayName ? user.displayName : user.email);
         setLoading(false);
         // console.log('firebase token acquired');
         // console.log(user.accessToken && 'firebase token acquired');
