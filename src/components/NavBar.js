@@ -56,7 +56,10 @@ function NavBar() {
             </NavDropdown>
             {/* <Nav.Link href="/seasonal-anime" eventKey="1" to="/seasonal-anime">Seasonal Anime</Nav.Link> */}
             <NavLink className='nav-link' to="/user-MAL">MAL</NavLink>
+            { currentUser !== undefined &&
             <NavLink className='nav-link' to="/user-anime-list">Saved Anime</NavLink>
+            
+          }
           </Nav>
 
         <Container style={{ maxWidth: '700px' }}>
