@@ -92,7 +92,7 @@ export function AuthProvider({ children }) {
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setCurrentUser(user.displayName ? user.displayName : user.email)
+        // setCurrentUser(user.displayName ? user.displayName : user.email)
         await fetch(`${ serverUrl }/login-session`, {
           method: 'POST',
           credentials: 'include',
@@ -101,10 +101,8 @@ export function AuthProvider({ children }) {
           },
           body: JSON.stringify({ accessToken: user.accessToken, isRegUser: user.isRegUser })
         });
-        // setCurrentUser(user.displayName ? user.displayName : user.email);
-        setLoading(false);
+        setCurrentUser(user.displayName ? user.displayName : user.email);
         console.log('user: ', user);
-        // console.log(user.accessToken && 'firebase token acquired');
       } else {
         setErrorMessage('No user detected. Please log in or refresh the page.');
         console.log('no user logged in');
