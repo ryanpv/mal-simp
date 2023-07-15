@@ -38,7 +38,8 @@ export function AuthProvider({ children }) {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         // console.log('user: ', userCredential.user)
-        setCurrentUser(userCredential.user.displayName ? userCredential.user.displayName : userCredential.user.email); 
+        // setCurrentUser(userCredential.user.displayName ? userCredential.user.displayName : userCredential.user.email); 
+        navigate('/')
         return userCredential.user
       })
       .catch((error) => {
@@ -47,7 +48,6 @@ export function AuthProvider({ children }) {
         console.log(errorCode);
         setError(errorMessage);
       });
-      navigate('/')
   };
 
   function logout() {
@@ -92,6 +92,7 @@ export function AuthProvider({ children }) {
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        setCurrentUser(user.displayName ? user.displayName : user.email)
         await fetch(`${ serverUrl }/login-session`, {
           method: 'POST',
           credentials: 'include',
@@ -102,7 +103,7 @@ export function AuthProvider({ children }) {
         });
         // setCurrentUser(user.displayName ? user.displayName : user.email);
         setLoading(false);
-        // console.log('firebase token acquired');
+        console.log('user: ', user);
         // console.log(user.accessToken && 'firebase token acquired');
       } else {
         setErrorMessage('No user detected. Please log in or refresh the page.');

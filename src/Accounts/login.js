@@ -10,12 +10,15 @@ export default function Login() {
   const [attempt, setAttempt] = React.useState(0);
   async function handleSubmit(e) {
     e.preventDefault();
-    setAttempt(+1)
+    setAttempt(prev => prev + 1)
     console.log(attempt)
     try {
       await login(emailRef.current.value, passwordRef.current.value)
     } catch (err) {
-      console.log(err);
+      if (attempt > 2) {
+        console.log('too many attempts: count 2')
+      }
+      console.log('login error: ', err);
       return setError(err)
     }
   }
