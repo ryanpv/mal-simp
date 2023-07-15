@@ -16,6 +16,8 @@ export function AuthProvider({ children }) {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [error, setError] = useState('');
   const [currentUser, setCurrentUser] = useState();
+  const [loginAttempts, setLoginAttempts] = useState(1)
+  const [userEmailStore, setUserEmailStore] = useState({ userEmailStore: ""})
   const navigate = useNavigate();
   const { setCategoryList, setErrorMessage, loading, setLoading } = useStateContext();
 
@@ -33,10 +35,26 @@ export function AuthProvider({ children }) {
         setError(errorMessage)
       });
   };
+console.log('email store: ', userEmailStore);
+   async function login(email, password) {
+    if (loginAttempts > 5 && userEmailStore === email) {
+      console.log('too many login attempts');
 
-   function login(email, password) {
+      await fetch(`${ serverUrl }/disable-user`, { 
+        method: 'POST',
+        headers: {
+          "Content-type": "application/json",
+        },
+        credentials: 'include',
+        body: JSON.stringify({ userEmail: email })
+      });
+    } else if (userEmailStore !== email) {
+      setLoginAttempts(1)
+    }
+
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
+        setLoginAttempts(1)
         // console.log('user: ', userCredential.user)
         // setCurrentUser(userCredential.user.displayName ? userCredential.user.displayName : userCredential.user.email); 
         navigate('/')
@@ -45,9 +63,11 @@ export function AuthProvider({ children }) {
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
-        console.log(errorCode);
+        console.log('err: ', errorMessage);
+        setLoginAttempts((prev) => prev + 1);
         setError(errorMessage);
       });
+      console.log('login attempts: ', loginAttempts);
   };
 
   function logout() {
@@ -116,6 +136,8 @@ export function AuthProvider({ children }) {
     login,
     loginWithGoogle,
     logout,
+    loginAttempts,
+    setUserEmailStore,
     resetPassword,
     setLoading,
     error,

@@ -6,21 +6,22 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login, loginWithGoogle, error, setError, currentUser } = useAuth();
-  const [attempt, setAttempt] = React.useState(0);
+  const { login, loginWithGoogle, error, setError, currentUser, setUserEmailStore } = useAuth();
+
   async function handleSubmit(e) {
     e.preventDefault();
-    setAttempt(prev => prev + 1)
-    console.log(attempt)
     try {
       await login(emailRef.current.value, passwordRef.current.value)
     } catch (err) {
-      if (attempt > 2) {
-        console.log('too many attempts: count 2')
-      }
       console.log('login error: ', err);
       return setError(err)
     }
+  }
+
+  function userEmailRef (value) {
+    return setUserEmailStore((prev) => {
+      return { ...prev, ...value }
+    })
   }
 
   return (
@@ -36,7 +37,7 @@ export default function Login() {
             <Form onSubmit={handleSubmit}>
               <Form.Group id="email">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" ref={emailRef} required />
+                <Form.Control type="email" onChange={ (e) => userEmailRef({ setUserEmailStore: e.target.value }) } ref={emailRef} required />
               </Form.Group>
               <Form.Group id="password">
                 <Form.Label>Password</Form.Label>
