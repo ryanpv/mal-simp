@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+        navigate('/')
       })
       .catch((error) => {
         const errorCode = error.code
@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
         setError(errorMessage)
       });
   };
-console.log('email store: ', userEmailStore);
+
    async function login(email, password) {
     if (loginAttempts > 5 && userEmailStore === email) {
       console.log('too many login attempts');
@@ -67,7 +67,6 @@ console.log('email store: ', userEmailStore);
         setLoginAttempts((prev) => prev + 1);
         setError(errorMessage);
       });
-      console.log('login attempts: ', loginAttempts);
   };
 
   function logout() {
@@ -122,7 +121,6 @@ console.log('email store: ', userEmailStore);
           body: JSON.stringify({ accessToken: user.accessToken, isRegUser: user.isRegUser })
         });
         setCurrentUser(user.displayName ? user.displayName : user.email);
-        console.log('user: ', user);
       } else {
         setErrorMessage('No user detected. Please log in or refresh the page.');
         console.log('no user logged in');
