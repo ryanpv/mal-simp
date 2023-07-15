@@ -5,6 +5,7 @@ import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGrou
 import { useDisplayContext } from '../contexts/DisplayDataContext';
 import { useAuth } from '../contexts/AuthContext';
 import DeleteModal from '../modals/DeleteModal';
+import SyncLoader from 'react-spinners/SyncLoader';
 
 export default function UserSavedList() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -108,6 +109,7 @@ async function fetchCategoryContent(e, value) { // called on category select
 
     setFetchCount(fetchResult.length)
   } catch (err) {
+    setLoading(false) // Loading must be reset since fetchResult.length === 0 throws err
     setCategoryContents([])
     setError(err)
   }
@@ -211,27 +213,27 @@ function deleteBtn() {
 
 
   {/* { firebaseToken ? */}
-  { currentUser ?
-      <table className='table table-striped' style={ { marginTop: 20 } }>
-      <thead>
-        <tr>
-          <th style={ { border: "1px solid black", width: 150 } }>
-            { selectedCategory !== "" ? selectedCategory : "" }{'   '}
+  { currentUser ? 
+      loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
+        <table className='table table-striped' style={ { marginTop: 20 } }>
+        <thead>
+          <tr>
+            <th style={ { border: "1px solid black", width: 150 } }>
+              { selectedCategory !== "" ? selectedCategory : "" }{'   '}
 
-            { selectedCategory === "" ? null
-            : selectedCategory === "Select category..." ? null // default selection value
-            : selectedCategory === "Watch Later" ? null // default category
-            : <Button size="sm" onClick={ deleteBtn } variant='danger' value='del'>-</Button> }
-          </th>
+              { selectedCategory === "" ? null
+              : selectedCategory === "Select category..." ? null // default selection value
+              : selectedCategory === "Watch Later" ? null // default category
+              : <Button size="sm" onClick={ deleteBtn } variant='danger' value='del'>-</Button> }
+            </th>
 
-          <th style={ { margin: 20, border: "1px solid black", padding: "10px 10px", width: 200 } }>Score</th>
-          <th style={ { border: "1px solid black", padding: "10px 10px" } }>Anime Title</th>
-          <th style={ { border: "1px solid black", padding: "10px 10px" } }>No. Episodes</th>
-        </tr>
-      </thead>
-      <tbody>{ !loading && displaySearchedAnime() }</tbody>
-    </table>
-
+            <th style={ { margin: 20, border: "1px solid black", padding: "10px 10px", width: 200 } }>Score</th>
+            <th style={ { border: "1px solid black", padding: "10px 10px" } }>Anime Title</th>
+            <th style={ { border: "1px solid black", padding: "10px 10px" } }>No. Episodes</th>
+          </tr>
+        </thead>
+        <tbody>{ loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> : displaySearchedAnime() }</tbody>
+      </table>
     :
     <>
     <div className='text-center'>
