@@ -7,8 +7,11 @@ export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login, loginWithGoogle, error, setError, currentUser } = useAuth();
+  const [attempt, setAttempt] = React.useState(0);
   async function handleSubmit(e) {
     e.preventDefault();
+    setAttempt(+1)
+    console.log(attempt)
     try {
       await login(emailRef.current.value, passwordRef.current.value)
     } catch (err) {
