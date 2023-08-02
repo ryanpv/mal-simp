@@ -4,4 +4,4 @@ This repository is the client-side source code to my [WorldAnime](https://mal-si
 
 If you wish to see the full README or source code for the server-side source code then go to [mal-simp-api](https://github.com/ryanpv/mal-simp-api).
 
-![WorldAnime-Screenshot](https://github.com/ryanpv/mal-simp-api/blob/main/public/WorldAnime-Screenshot.jpg)
+![WorldAnime-Screenshot](https://github.com/ryanpv/mal-simp/blob/main/public/WorldAnime-Screenshot.jpg)
