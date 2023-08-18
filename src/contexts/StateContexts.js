@@ -12,7 +12,7 @@ export function StateProvider({ children }) {
   const [show, setShow] = useState(false);
   const [animeDetails, setAnimeDetails] = useState({}); // needed additional state because MAL API does not allow certain field groups
   const [currentPage, setCurrentPage] = useState(1);
-  const [animeList, setAnimeList] = useState({});
+  const [animeList, setAnimeList] = useState([]);
   const [currentTrailer, setCurrentTrailer] = useState({})
   const [searchResults, setSearchResults] = useState({})
   const [offset, setOffset] = React.useState(0)

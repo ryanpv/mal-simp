@@ -28,9 +28,6 @@ function App() {
       if (currentUser) {
         const fetchCategories = await fetch(`${ serverUrl }/get-categories`, {
           credentials: "include",
-          // headers: {
-          //   Authorization: `Bearer ${ firebaseToken }`
-          // }
         });
   
         const response = await fetchCategories.json(); // response is array of strings that are the category names

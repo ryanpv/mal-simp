@@ -10,23 +10,39 @@ function TopAiringAnime() {
   const [loading, setLoading] = React.useState(false)
   const { animeList, setAnimeList } = useStateContext();
   const { handleShow } = useDisplayContext();
+  const [cardRows, setCardRows] = React.useState(2)
 
   React.useEffect(() => {
-    async function getTopAiring() {
-      try {
-        setLoading(true)
-        const getTopAiringList = await fetch(`${ serverUrl }/anime-ranked/airing/${ offset }`)
-        const topAiringResults = await getTopAiringList.json();
-        setLoading(false)
-        setAnimeList(topAiringResults)
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    }
     getTopAiring();
-  }, [offset])
+  }, [offset]);
 
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
+
+  async function getTopAiring() {
+    setLoading(true)
+    try {
+      const getTopAiringList = await fetch(`${ serverUrl }/anime-ranked/airing/${ offset }`)
+      const topAiringResults = await getTopAiringList.json();
+      
+      setAnimeList(prev => prev.concat(topAiringResults.data))
+    } catch (err) {
+      console.log(err);
+    } finally {
+      console.log('loading', loading);
+      setLoading(false)
+    }
+  };
+
+  const handleScroll = async () => {
+      if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
+        return;
+      }
+
+      setOffset(prev => prev + 10)
+    };
 
   async function incrementOffset(e) {
     e.preventDefault();
@@ -40,43 +56,41 @@ function TopAiringAnime() {
 
   return (
     <>
-    <div className='w-100 text-center mt-4 mb-4'>
-      <h2>Welcome to WorldAnime</h2>
-    </div>
+      <div className='w-100 text-center mt-4 mb-4'>
+        <h2>Welcome to WorldAnime</h2>
+      </div>
 
-    <Container className="pt-4 pb-4" style={{ backgroundColor: 'white'}}>
-      <h3 className='text-left mb-3'>Top Airing Anime</h3>
-      <hr></hr>
+      <Container className="pt-4 pb-4" style={{ backgroundColor: 'white'}}>
+        <h3 className='text-left mb-3'>Top Airing Anime</h3>
+        <hr></hr>
 
-      { loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
-        <Row xs={1} md={5} className="g-4">
-          { animeList.data ? animeList.data.map(recs => { return (
-            <Col key={ recs.node.id } >
-              <Card onClick={() => handleShow({ id: recs.node.id }) } bg="light" style={ { height: '100%', cursor: "pointer" } }>
-                <Card.Img variant='top' src={ recs.node.main_picture.medium } />
-                <Card.Body>
-                  <strong as="h6">{ recs.node.title }</strong>
-                </Card.Body>
-                <Card.Footer>Score: { recs.node.mean }</Card.Footer>
-              </Card>
-            </Col>
-            );
-          })
+          <Row xs={1} md={5} className="g-4">
+            { animeList ? animeList.map(recs => { return (
+              <Col key={ recs.node.id } >
+                <Card onClick={() => handleShow({ id: recs.node.id }) } bg="light" style={ { height: '100%', cursor: "pointer" } }>
+                  <Card.Img variant='top' src={ recs.node.main_picture.medium } />
+                  <Card.Body>
+                    <strong as="h6">{ recs.node.title }</strong>
+                  </Card.Body>
+                  <Card.Footer>Score: { recs.node.mean }</Card.Footer>
+                </Card>
+              </Col>
+              );
+            })
+            : null
+            }
+          </Row>
+      </Container>
+
+      { loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> : null }
+      { animeList.paging ?
+          <div className='w-100 text-center mt-2 mb-2'>
+            { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            { animeList.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
+          </div> 
           : null
-          }
-        </Row>
-      }
-    </Container>
-
-    { animeList.paging ?
-        <div className='w-100 text-center mt-2 mb-2'>
-          { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          { animeList.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
-        </div> 
-        : null
-      }
-
+        }
     </>
   )
 }
