@@ -7,36 +7,38 @@ function TopUpcomingAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [offset, setOffset] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
-  const { animeList, setAnimeList } = useStateContext();
+  const { setAnimeList } = useStateContext();
 
   React.useEffect(() => {
-    async function getTopUpcoming() {
-      try {
-        setLoading(true)
-        const getTopUpcomingList = await fetch(`${ serverUrl }/anime-ranked/upcoming/${ offset }`)
-        const topUpcomingResults = await getTopUpcomingList.json();
-        
-        setLoading(false)
-        setAnimeList(topUpcomingResults)
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    }
     getTopUpcoming();
-  }, [offset])
+  }, [offset]);
 
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
 
-  async function incrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset + 8);
-  }
+  async function getTopUpcoming() {
+    setLoading(true)
+    try {
+      const getTopUpcomingList = await fetch(`${ serverUrl }/anime-ranked/upcoming/${ offset }`)
+      const topUpcomingResults = await getTopUpcomingList.json();
+      
+      setAnimeList(prev => prev.concat(topUpcomingResults.data))
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  function decrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset - 8);
-  }
+  const handleScroll = async () => {
+    if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
+      return;
+    }
 
+    setOffset(prev => prev + 10)
+  };
 
   return (
     <>
@@ -46,16 +48,6 @@ function TopUpcomingAnime() {
         
         <ContentCards loading={loading}/>
       </Container>
-
-    { animeList.paging ?
-        <div className='w-100 text-center mt-2 mb-2'>
-          { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          { animeList.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
-        </div> 
-        : null
-      }
-
     </>
   )
 }

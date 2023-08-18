@@ -48,16 +48,16 @@ function NavBar() {
           {/* <Nav className='me-auto my-2 my-lg-0' style={ { maxHeight: '100px' } } navbarScroll> */}
           {/* <Nav style={ { maxHeight: '100px' } } navbarScroll> */}
           <Nav navbarScroll>
-            <NavLink className='nav-link' to="/">Home</NavLink>
+            <NavLink reloadDocument className='nav-link' to="/">Home</NavLink>
             <NavDropdown menuVariant='dark' title="Anime" id="navbarScrollingDropdown">
-              <NavLink className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
-              <NavLink className='nav-link' to='/seasonal-anime'>Seasonal Anime</NavLink>
-              <NavLink className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
+              <NavLink reloadDocument className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
+              <NavLink reloadDocument className='nav-link' to='/seasonal-anime'>Seasonal Anime</NavLink>
+              <NavLink reloadDocument className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
             </NavDropdown>
             {/* <Nav.Link href="/seasonal-anime" eventKey="1" to="/seasonal-anime">Seasonal Anime</Nav.Link> */}
-            <NavLink className='nav-link' to="/user-MAL">MAL</NavLink>
+            <NavLink reloadDocument className='nav-link' to="/user-MAL">MAL</NavLink>
             { currentUser !== undefined &&
-            <NavLink className='nav-link' to="/user-anime-list">Saved Anime</NavLink>
+            <NavLink reloadDocument className='nav-link' to="/user-anime-list">Saved Anime</NavLink>
             
           }
           </Nav>

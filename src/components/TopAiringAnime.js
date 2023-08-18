@@ -10,7 +10,7 @@ function TopAiringAnime() {
   const [loading, setLoading] = React.useState(false)
   const { animeList, setAnimeList } = useStateContext();
   const { handleShow } = useDisplayContext();
-  const [cardRows, setCardRows] = React.useState(2)
+  const [error, setError] = React.useState("")
 
   React.useEffect(() => {
     getTopAiring();
@@ -44,15 +44,15 @@ function TopAiringAnime() {
       setOffset(prev => prev + 10)
     };
 
-  async function incrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset + 5);
-  }
+  // async function incrementOffset(e) {
+  //   e.preventDefault();
+  //   setOffset(prevOffset => prevOffset + 5);
+  // }
 
-  function decrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset - 5);
-  }
+  // function decrementOffset(e) {
+  //   e.preventDefault();
+  //   setOffset(prevOffset => prevOffset - 5);
+  // }
 
   return (
     <>
@@ -83,14 +83,14 @@ function TopAiringAnime() {
       </Container>
 
       { loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> : null }
-      { animeList.paging ?
+      {/* { animeList.paging ?
           <div className='w-100 text-center mt-2 mb-2'>
             { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             { animeList.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
           </div> 
           : null
-        }
+        } */}
     </>
   )
 }

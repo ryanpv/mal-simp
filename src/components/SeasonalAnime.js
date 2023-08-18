@@ -19,37 +19,37 @@ function SeasonalAnime() {
   const animeYear = React.useRef();
 
   React.useEffect(() => {
-    async function getSeasonalAnime() {
-      try {
-        setLoading(true);
-        const getSeasonalList = await fetch(`${ serverUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
-        const seasonalListResults = await getSeasonalList.json();
-        
-        setAnimeList(seasonalListResults);
-        setLoading(false)
-      } catch (err) {
-        console.log(err);
-        setFormErrors("Invalid season/year input")
-        animeYear.current.value = null
-        setLoading(false)
-      }
+    getSeasonalAnime();
+  }, [offset, season, currentYear, setAnimeList]);
 
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
+
+  const handleScroll = async () => {
+    if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
+      return;
     }
 
-    getSeasonalAnime();
-  }, [offset, season, currentYear, setAnimeList])
+    setOffset(prev => prev + 10)
+  };
 
-
-
-  async function incrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset + 8);
-  }
-
-  function decrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset - 8);
-  }
+  async function getSeasonalAnime() {
+    try {
+      setLoading(true);
+      const getSeasonalList = await fetch(`${ serverUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
+      const seasonalListResults = await getSeasonalList.json();
+      
+      setAnimeList(prev => prev.concat(seasonalListResults.data));
+      setLoading(false)
+    } catch (err) {
+      console.log(err);
+      setFormErrors("Invalid season/year input")
+      animeYear.current.value = null
+      setLoading(false)
+    }
+  };
 
   const seasonalQuery = (e) => {
     e.preventDefault();
@@ -57,54 +57,42 @@ function SeasonalAnime() {
     setSeason(animeSeason.value)
     setFormErrors('')
     animeYear.current.value = null
-  }
+  };
 
 
   return (
     <>
+      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+        <h2 className='text-left mt-4'>Seasonal Anime</h2>
+        <hr></hr>
+        <h6 className='text-center'>
+          <strong>{ animeList.season ? `${animeList.season.season.toUpperCase()} ${animeList.season.year}` : null }</strong>
+            </h6>
+        {/* <br></br> */}
+        <Form className='centered' onSubmit={(e) => seasonalQuery(e)}>
+          <Row className="w-25 mb-3">
+            <Form.Group as={Col}>
+              <Form.Label>Season</Form.Label>
+              <Form.Select id='anime-season'>
+              <option value="winter">Winter</option>
+              <option value="spring">Spring</option>
+              <option value="summer">Summer</option>
+              <option value="fall">Fall</option>
+            </Form.Select>
+            </Form.Group>
 
-    <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
-      <h2 className='text-left mt-4'>Seasonal Anime</h2>
-      <hr></hr>
-      <h6 className='text-center'>
-        <strong>{ animeList.season ? `${animeList.season.season.toUpperCase()} ${animeList.season.year}` : null }</strong>
-          </h6>
-      {/* <br></br> */}
-      <Form className='centered' onSubmit={(e) => seasonalQuery(e)}>
-        <Row className="w-25 mb-3">
-          <Form.Group as={Col}>
-            <Form.Label>Season</Form.Label>
-            <Form.Select id='anime-season'>
-            <option value="winter">Winter</option>
-            <option value="spring">Spring</option>
-            <option value="summer">Summer</option>
-            <option value="fall">Fall</option>
-          </Form.Select>
-          </Form.Group>
-
-          <Form.Group as={Col}>
-            <Form.Label>Year</Form.Label>
-            <Form.Control ref={animeYear} placeholder='Specify Year' id="anime-year" isInvalid={ !!formErrors } />
-            <Form.Control.Feedback type='invalid'>
-              { formErrors }
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-      </Form>
-      
-        <ContentCards animeList={animeList} loading={loading}/>
-    </Container>
-
-
-    { animeList.paging ?
-        <div className='w-100 text-center mt-2 mb-2'>
-          { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          { animeList.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
-        </div> 
-        : null
-      }
-
+            <Form.Group as={Col}>
+              <Form.Label>Year</Form.Label>
+              <Form.Control ref={animeYear} placeholder='Specify Year' id="anime-year" isInvalid={ !!formErrors } />
+              <Form.Control.Feedback type='invalid'>
+                { formErrors }
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Row>
+        </Form>
+        
+          <ContentCards animeList={animeList} loading={loading}/>
+      </Container>
     </>
   )
 }

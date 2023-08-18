@@ -2,7 +2,7 @@ import React from 'react'
 import { Row, Col, Card } from 'react-bootstrap'
 import { useDisplayContext } from '../contexts/DisplayDataContext'
 import { useStateContext } from '../contexts/StateContexts';
-import ClipLoader from "react-spinners/ClipLoader"
+import SyncLoader from "react-spinners/SyncLoader"
 
 export default function ContentCards({ loading }) {
   const { handleShow } = useDisplayContext();
@@ -10,9 +10,9 @@ export default function ContentCards({ loading }) {
 
   return (
     <>
-      { loading ? <ClipLoader color='blue' size={30} loading={loading} /> :
-      <Row xs={1} md={4} className="g-4">
-        { animeList.data && animeList.data.map(el => { return (
+      {/* { loading ? <ClipLoader color='blue' size={30} loading={loading} /> : */}
+      <Row xs={1} md={5} className="g-4">
+        { animeList && animeList.map(el => { return (
             <Col key={ el.node.id }>
               <Card onClick={ () => handleShow({ id:el.node.id, title:el.node.title }) } bg='light' style={ { height:'100%', cursor: "pointer" } }>
                 <Card.Title className="text-center">{ el.node.title }</Card.Title>
@@ -41,7 +41,9 @@ export default function ContentCards({ loading }) {
           )
         }
       </Row>
-}
+
+      { loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
+{/* } */}
     </>
   )
 }
