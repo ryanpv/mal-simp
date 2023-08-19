@@ -1,7 +1,9 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useStateContext } from '../contexts/StateContexts';
 
 function LogCallback() {
+  const { setMalUserDetails } = useStateContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -10,13 +12,14 @@ function LogCallback() {
     const code = `${location.search.split('=')[1]}`;
 
     async function retrieveMalToken() {
-      await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { method: 'POST', credentials: 'include' })
-      console.log('log callback execution');
+      const malTokenRequest = await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { method: 'POST', credentials: 'include' })
+      const malUsernameRequest = await malTokenRequest.json();
 
+      setMalUserDetails(malUsernameRequest);
     };
 
     retrieveMalToken();
-    navigate('/')
+    navigate('/user-MAL')
 
   },[])
   

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Nav, Navbar, Form, NavDropdown, Button } from 'react-bootstrap'
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, Link } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts';
 import { useAuth } from '../contexts/AuthContext'
 
@@ -48,16 +48,16 @@ function NavBar() {
           {/* <Nav className='me-auto my-2 my-lg-0' style={ { maxHeight: '100px' } } navbarScroll> */}
           {/* <Nav style={ { maxHeight: '100px' } } navbarScroll> */}
           <Nav navbarScroll>
-            <NavLink reloadDocument className='nav-link' to="/">Home</NavLink>
+            <NavLink className='nav-link' to="/">Home</NavLink>
             <NavDropdown menuVariant='dark' title="Anime" id="navbarScrollingDropdown">
-              <NavLink reloadDocument className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
-              <NavLink reloadDocument className='nav-link' to='/seasonal-anime'>Seasonal Anime</NavLink>
-              <NavLink reloadDocument className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
+              <NavLink className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
+              <NavLink className='nav-link' to='/seasonal-anime'>Seasonal Anime</NavLink>
+              <NavLink className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
             </NavDropdown>
             {/* <Nav.Link href="/seasonal-anime" eventKey="1" to="/seasonal-anime">Seasonal Anime</Nav.Link> */}
-            <NavLink reloadDocument className='nav-link' to="/user-MAL">MAL</NavLink>
+            <NavLink className='nav-link' to="/user-MAL">MAL</NavLink>
             { currentUser !== undefined &&
-            <NavLink reloadDocument className='nav-link' to="/user-anime-list">Saved Anime</NavLink>
+            <NavLink className='nav-link' to="/user-anime-list">Saved Anime</NavLink>
             
           }
           </Nav>

@@ -9,40 +9,42 @@ function MalAnimeList() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
   const [offset, setOffset] = React.useState(0)
-  const { animeList, setAnimeList, loading, malUserDetails, malLoginMessage } = useStateContext();
+  const { malUserDetails, malLoginMessage } = useStateContext();
+  const [animeList, setAnimeList] = React.useState([]);
   const { currentUser } = useAuth();
   const firebaseToken = currentUser && currentUser.accessToken;
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
-
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    async function getUserList() {
-      try {
-        const getAnimeList = await fetch(`${ serverUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
-        const userListResult = await getAnimeList.json();
-        // console.log(userListResult);
-        setAnimeList(userListResult)
-  
-      } catch (err) {
-        console.log(err);
-      };
-    };
-
     getUserList()
-  }, [offset, firebaseToken, malUserDetails])
+  }, [offset, malUserDetails.id]);
 
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
   
+  const handleScroll = async () => {
+    if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
+      return;
+    }
 
-
-// offsets to be sent as params to server. 
-  async function incrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset + 8);
+    setOffset(prev => prev + 10)
   };
+  
+  async function getUserList() {
+    setLoading(true);
+    try {
+      const getAnimeList = await fetch(`${ serverUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
+      const userListResult = await getAnimeList.json();
 
-  function decrementOffset(e) {
-    e.preventDefault();
-    setOffset(prevOffset => prevOffset - 8);
+      setAnimeList(prev => prev.concat(userListResult.data));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   async function getMalToken() {
@@ -64,27 +66,16 @@ function MalAnimeList() {
     <Container>
       <div className='text-left mb-3 mt-4'>
         <h2 >User Anime List</h2>
-        { animeList.data ? <i>Your anime list from MyAnimeList.</i> 
+        { animeList ? <i>Your anime list from MyAnimeList.</i> 
         : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
       </div>
         <hr></hr>
-      { loading ? <>Loading...</> : <ContentCards animeList={animeList} /> }
-      </Container>
+      <ContentCards loading={loading} animeList={animeList} />
+    </Container>
     : <h2>{ malLoginMessage }</h2> 
     }
-      
-      { malUserDetails.id && animeList.paging ?
-        <div className='w-100 text-center mt-2 mb-2'>
-          { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          { animeList.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
-        </div> 
-        : null
-      }
     </>
   )
 }
 
 export default MalAnimeList
-
-// CLICKING ON CARD CAN OPEN MODAL FOR MORE DETAILS AND VIDEO PLAYER?

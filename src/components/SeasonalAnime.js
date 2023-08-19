@@ -14,7 +14,8 @@ function SeasonalAnime() {
   const [loading, setLoading] = React.useState(false)
   const [season, setSeason] = React.useState("winter");
   const [formErrors, setFormErrors] = React.useState('');
-  const { animeList, setAnimeList } = useStateContext();
+  // const { animeList, setAnimeList } = useStateContext();
+  const [animeList, setAnimeList] = React.useState([]);
   const animeSeason = document.getElementById('anime-season')
   const animeYear = React.useRef();
 
@@ -36,11 +37,11 @@ function SeasonalAnime() {
   };
 
   async function getSeasonalAnime() {
+    setLoading(true);
     try {
-      setLoading(true);
       const getSeasonalList = await fetch(`${ serverUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
       const seasonalListResults = await getSeasonalList.json();
-      
+      console.log(seasonalListResults);
       setAnimeList(prev => prev.concat(seasonalListResults.data));
       setLoading(false)
     } catch (err) {

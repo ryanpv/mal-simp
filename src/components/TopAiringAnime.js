@@ -3,14 +3,18 @@ import { Button, Row, Col, Card, Container } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
 import SyncLoader from "react-spinners/SyncLoader"
+import { Outlet, matchPath, useLocation } from 'react-router-dom';
 
 function TopAiringAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const [offset, setOffset] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
-  const { animeList, setAnimeList } = useStateContext();
+  // const { animeList, setAnimeList, malUserDetails } = useStateContext();
+  const [animeList, setAnimeList]  = React.useState([])
   const { handleShow } = useDisplayContext();
   const [error, setError] = React.useState("")
+  const path = useLocation();
+  console.log('path', path)
 
   React.useEffect(() => {
     getTopAiring();
@@ -26,7 +30,6 @@ function TopAiringAnime() {
     try {
       const getTopAiringList = await fetch(`${ serverUrl }/anime-ranked/airing/${ offset }`)
       const topAiringResults = await getTopAiringList.json();
-      
       setAnimeList(prev => prev.concat(topAiringResults.data))
     } catch (err) {
       console.log(err);
@@ -80,9 +83,9 @@ function TopAiringAnime() {
             : null
             }
           </Row>
+      { loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
       </Container>
-
-      { loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> : null }
+<Outlet />
       {/* { animeList.paging ?
           <div className='w-100 text-center mt-2 mb-2'>
             { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
