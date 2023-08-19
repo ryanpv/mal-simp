@@ -1,9 +1,7 @@
 import React from 'react'
-import { Button, Row, Col, Card, Container } from 'react-bootstrap';
-import { useStateContext } from '../contexts/StateContexts';
+import { Row, Col, Card, Container } from 'react-bootstrap';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
 import SyncLoader from "react-spinners/SyncLoader"
-import { Outlet, matchPath, useLocation } from 'react-router-dom';
 
 function TopAiringAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -13,8 +11,6 @@ function TopAiringAnime() {
   const [animeList, setAnimeList]  = React.useState([])
   const { handleShow } = useDisplayContext();
   const [error, setError] = React.useState("")
-  const path = useLocation();
-  console.log('path', path)
 
   React.useEffect(() => {
     getTopAiring();
@@ -23,6 +19,11 @@ function TopAiringAnime() {
   React.useEffect(() => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
+
+  React.useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [loading]);
 
   async function getTopAiring() {
@@ -39,23 +40,20 @@ function TopAiringAnime() {
     }
   };
 
-  const handleScroll = async () => {
-      if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
-        return;
-      }
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
+      return;
+    }
+    setOffset(prev => prev + 10)
+  };
 
-      setOffset(prev => prev + 10)
-    };
-
-  // async function incrementOffset(e) {
-  //   e.preventDefault();
-  //   setOffset(prevOffset => prevOffset + 5);
-  // }
-
-  // function decrementOffset(e) {
-  //   e.preventDefault();
-  //   setOffset(prevOffset => prevOffset - 5);
-  // }
+  const handleResize = () => {
+    if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
+      return;
+    }
+    setOffset(prev => prev + 10)
+  };
+    
 
   return (
     <>
@@ -85,15 +83,6 @@ function TopAiringAnime() {
           </Row>
       { loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
       </Container>
-<Outlet />
-      {/* { animeList.paging ?
-          <div className='w-100 text-center mt-2 mb-2'>
-            { animeList.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            { animeList.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
-          </div> 
-          : null
-        } */}
     </>
   )
 }

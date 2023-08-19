@@ -25,12 +25,23 @@ function MalAnimeList() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading]);
+
+  React.useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [loading]);
   
   const handleScroll = async () => {
     if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
       return;
     }
+    setOffset(prev => prev + 10)
+  };
 
+  const handleResize = () => {
+    if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
+      return;
+    }
     setOffset(prev => prev + 10)
   };
   
@@ -79,7 +90,7 @@ function MalAnimeList() {
       <div className='w-100 text-center mt-2 mb-4'>
         <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
       </div>
-      
+
       <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         <div className='text-left mb-3 mt-4'>
           <h2 >User Anime List</h2>

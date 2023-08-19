@@ -17,6 +17,11 @@ function TopUpcomingAnime() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading]);
 
+  React.useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [loading]);
+
   async function getTopUpcoming() {
     setLoading(true)
     try {
@@ -35,7 +40,13 @@ function TopUpcomingAnime() {
     if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
       return;
     }
-
+    setOffset(prev => prev + 10)
+  };
+  
+  const handleResize = () => {
+    if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
+      return;
+    }
     setOffset(prev => prev + 10)
   };
 
