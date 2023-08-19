@@ -55,8 +55,7 @@ export function AuthProvider({ children }) {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         setLoginAttempts(1)
-        // console.log('user: ', userCredential.user)
-        // setCurrentUser(userCredential.user.displayName ? userCredential.user.displayName : userCredential.user.email); 
+
         navigate('/')
         return userCredential.user
       })

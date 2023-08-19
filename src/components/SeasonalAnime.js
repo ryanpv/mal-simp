@@ -54,8 +54,7 @@ function SeasonalAnime() {
 
   const seasonalQuery = (e) => {
     e.preventDefault();
-    console.log('input', animeYearInput.current.value);
-    console.log('default', animeList.season.year);
+
     if (animeYearInput.current.value === animeList.season.year.toString()) {
       setFormErrors("Query results already present.")
     } else {

@@ -10,7 +10,7 @@ function MalAnimeList() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
   const [offset, setOffset] = React.useState(0)
-  const { malUserDetails, malLoginMessage } = useStateContext();
+  const { malUserDetails, setMalUserDetails } = useStateContext();
   const [animeList, setAnimeList] = React.useState([]);
   const { currentUser } = useAuth();
   const firebaseToken = currentUser && currentUser.accessToken;
@@ -63,20 +63,36 @@ function MalAnimeList() {
     }
   }
 
+  async function malLogout() {
+    try {
+      await fetch(`${ serverUrl }/clear-mal-cookie`, { credentials: 'include'})
+      setMalUserDetails({})
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
     { malUserDetails.id ? 
-    <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
-      <div className='text-left mb-3 mt-4'>
-        <h2 >User Anime List</h2>
-        { animeList ? <i>Your anime list from MyAnimeList.</i> 
-        : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
+    <>
+      <div className='w-100 text-center mt-2 mb-4'>
+        <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
       </div>
-        <hr></hr>
-      <ContentCards loading={loading} animeList={animeList} />
-    </Container>
-    : <h2>{ malLoginMessage }</h2> 
+      
+      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+        <div className='text-left mb-3 mt-4'>
+          <h2 >User Anime List</h2>
+          { animeList ? <i>Your anime list from MyAnimeList.</i> 
+          : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
+        </div>
+          <hr></hr>
+        <ContentCards loading={loading} animeList={animeList} />
+      </Container>
+    </>
+    : <div className='w-100 text-center mt-2 mb-4'>
+        <Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list
+      </div>
   }
   { !malUserDetails.id && loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
     </>
