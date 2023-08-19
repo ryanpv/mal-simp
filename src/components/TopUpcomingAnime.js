@@ -7,6 +7,7 @@ function TopUpcomingAnime() {
   const [offset, setOffset] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
   const [animeList, setAnimeList] = React.useState([])
+  const containerRef = React.useRef();
 
   React.useEffect(() => {
     getTopUpcoming();
@@ -29,6 +30,10 @@ function TopUpcomingAnime() {
       const topUpcomingResults = await getTopUpcomingList.json();
 
       setAnimeList(prev => prev.concat(topUpcomingResults.data))
+
+      if (containerRef.current.clientHeight < window.innerHeight) {
+        setOffset(prev => prev + 15)
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -40,19 +45,19 @@ function TopUpcomingAnime() {
     if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
       return;
     }
-    setOffset(prev => prev + 10)
+    setOffset(prev => prev + 15)
   };
-  
+
   const handleResize = () => {
     if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
       return;
     }
-    setOffset(prev => prev + 10)
+    setOffset(prev => prev + 15)
   };
 
   return (
     <>
-      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+      <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         <h2 className='text-left mb-3 mt-4'>Top Upcoming Anime</h2>
         <hr></hr>
         

@@ -14,6 +14,7 @@ function SeasonalAnime() {
   const [animeList, setAnimeList] = React.useState({ anime: [] });
   const animeSeason = document.getElementById('anime-season');
   const animeYearInput = React.useRef();
+  const containerRef = React.useRef();
 
   React.useEffect(() => {
     getSeasonalAnime();
@@ -33,14 +34,14 @@ function SeasonalAnime() {
     if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
       return;
     }
-    setOffset(prev => prev + 10)
+    setOffset(prev => prev + 15)
   };
 
   const handleResize = () => {
     if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
       return;
     }
-    setOffset(prev => prev + 10)
+    setOffset(prev => prev + 15)
   };
 
   async function getSeasonalAnime() {
@@ -52,8 +53,12 @@ function SeasonalAnime() {
       setAnimeList(prev => ({ 
         anime: prev.anime.concat(seasonalListResults.data), 
         season: seasonalListResults.season
-      })
-    );
+        })
+      );
+
+      if (containerRef.current.clientHeight < window.innerHeight) {
+        setOffset(prev => prev + 15)
+      }
     } catch (err) {
       console.log(err);
       setFormErrors("Invalid season/year input")
@@ -81,7 +86,7 @@ function SeasonalAnime() {
 
   return (
     <>
-      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+      <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         <h2 className='text-left mt-4'>Seasonal Anime</h2>
         <hr></hr>
         <h6 className='text-center'>

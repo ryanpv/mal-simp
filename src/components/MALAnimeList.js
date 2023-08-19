@@ -16,8 +16,10 @@ function MalAnimeList() {
   const firebaseToken = currentUser && currentUser.accessToken;
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
   const [loading, setLoading] = React.useState(false);
+  const containerRef = React.useRef();
 
   React.useEffect(() => {
+    console.log('offset', offset);
     getUserList()
   }, [offset, malUserDetails.id]);
 
@@ -35,14 +37,14 @@ function MalAnimeList() {
     if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
       return;
     }
-    setOffset(prev => prev + 10)
+    setOffset(prev => prev + 15)
   };
 
   const handleResize = () => {
     if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
       return;
     }
-    setOffset(prev => prev + 10)
+    setOffset(prev => prev + 15)
   };
   
   async function getUserList() {
@@ -52,6 +54,10 @@ function MalAnimeList() {
       const userListResult = await getAnimeList.json();
 
       setAnimeList(prev => prev.concat(userListResult.data));
+
+      if (containerRef.current.clientHeight < window.innerHeight) {
+        setOffset(prev => prev + 15)
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -91,7 +97,7 @@ function MalAnimeList() {
         <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
       </div>
 
-      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+      <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         <div className='text-left mb-3 mt-4'>
           <h2 >User Anime List</h2>
           { animeList ? <i>Your anime list from MyAnimeList.</i> 

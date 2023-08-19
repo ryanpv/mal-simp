@@ -11,6 +11,7 @@ function TopAiringAnime() {
   const [animeList, setAnimeList]  = React.useState([])
   const { handleShow } = useDisplayContext();
   const [error, setError] = React.useState("")
+  const topAiringRef = React.useRef();
 
   React.useEffect(() => {
     getTopAiring();
@@ -32,6 +33,12 @@ function TopAiringAnime() {
       const getTopAiringList = await fetch(`${ serverUrl }/anime-ranked/airing/${ offset }`)
       const topAiringResults = await getTopAiringList.json();
       setAnimeList(prev => prev.concat(topAiringResults.data))
+
+// if container height < window innerheight, fetch more data since scroller would not be available to cause the useEffect's fetch call
+      if (topAiringRef.current.clientHeight < window.innerHeight) {
+        setOffset(prev => prev + 15)
+      }
+
     } catch (err) {
       console.log(err);
     } finally {
@@ -44,16 +51,18 @@ function TopAiringAnime() {
     if (window.innerHeight + document.documentElement.scrollTop < (document.documentElement.offsetHeight - 100) || loading) {
       return;
     }
-    setOffset(prev => prev + 10)
+    setOffset(prev => prev + 15)
   };
-
+  
   const handleResize = () => {
+// console.log('zoom', window.devicePixelRatio);
+console.log('container', topAiringRef.current.clientHeight);
+console.log('innerheight', window.innerHeight);
     if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
       return;
     }
-    setOffset(prev => prev + 10)
+    // setOffset(prev => prev + 15)
   };
-    
 
   return (
     <>
@@ -61,7 +70,7 @@ function TopAiringAnime() {
         <h2>Welcome to WorldAnime</h2>
       </div>
 
-      <Container className="pt-4 pb-4" style={{ backgroundColor: 'white'}}>
+      <Container ref={topAiringRef} className="pt-4 pb-4" style={{ backgroundColor: 'white'}}>
         <h3 className='text-left mb-3'>Top Airing Anime</h3>
         <hr></hr>
 

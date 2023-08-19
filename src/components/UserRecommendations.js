@@ -12,6 +12,7 @@ export default function HomePage() {
   const [offset, setOffset] = React.useState(0)
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
+  const containerRef = React.useRef();
 
   console.log('in development?:', process.env.NODE_ENV === 'development');
 
@@ -40,7 +41,7 @@ export default function HomePage() {
     if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
       return;
     }
-      setOffset(prev => prev + 10)
+      setOffset(prev => prev + 15)
   };
 
   
@@ -54,6 +55,10 @@ export default function HomePage() {
       const recommendationResults = await fetchRecommended.json();
 
       setAnimeList(prev => prev.concat(recommendationResults.data));
+
+      if (containerRef.current.clientHeight < window.innerHeight) {
+        setOffset(prev => prev + 15)
+      }
     } catch (err) {
       if (err) {
         setMalLoginMessage('Log in to MAL to see recommendations.')
@@ -99,7 +104,7 @@ export default function HomePage() {
       </div>
       
       { malUserDetails.id ? 
-      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+      <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         { malUserDetails.name ? 
           <div className='text-left'>
             <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2>
