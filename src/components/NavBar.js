@@ -41,7 +41,7 @@ function NavBar() {
     <>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
-          <Navbar.Brand href="/">WorldAnime</Navbar.Brand>
+          <Navbar.Brand href="/"><img className="mb-2" style={{ height: 25 }} src={require("../logo192.png")} alt='WorldAnime Logo'/> WorldAnime</Navbar.Brand>
           <Navbar.Toggle aria-controls='NavbarScroll' />
           <Navbar.Collapse id="navbarScroll">
 
