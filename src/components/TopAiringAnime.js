@@ -55,13 +55,10 @@ function TopAiringAnime() {
   };
   
   const handleResize = () => {
-// console.log('zoom', window.devicePixelRatio);
-console.log('container', topAiringRef.current.clientHeight);
-console.log('innerheight', window.innerHeight);
     if (window.innerHeight + 100 < document.documentElement.offsetHeight) {
       return;
     }
-    // setOffset(prev => prev + 15)
+    setOffset(prev => prev + 15)
   };
 
   return (
