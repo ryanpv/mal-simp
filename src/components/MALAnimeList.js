@@ -3,6 +3,7 @@ import { Container, Button } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
 import ContentCards from '../templates/ContentCards';
 import { useAuth } from '../contexts/AuthContext';
+import SyncLoader from "react-spinners/SyncLoader";
 ///////////////////////////////////////////////////////
 
 function MalAnimeList() {
@@ -48,6 +49,7 @@ function MalAnimeList() {
   };
 
   async function getMalToken() {
+    setLoading(true);
     try {
       const getCode = await fetch(`${ serverUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
       const getChallenge = await getCode.json();
@@ -56,6 +58,8 @@ function MalAnimeList() {
       // await window.open(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ clientId }&code_challenge=${ getChallenge }&redirect_uri=${ clientUrl }/logcallback`, "_self")
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -63,7 +67,7 @@ function MalAnimeList() {
   return (
     <>
     { malUserDetails.id ? 
-    <Container>
+    <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
       <div className='text-left mb-3 mt-4'>
         <h2 >User Anime List</h2>
         { animeList ? <i>Your anime list from MyAnimeList.</i> 
@@ -73,7 +77,8 @@ function MalAnimeList() {
       <ContentCards loading={loading} animeList={animeList} />
     </Container>
     : <h2>{ malLoginMessage }</h2> 
-    }
+  }
+  { !malUserDetails.id && loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
     </>
   )
 }

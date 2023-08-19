@@ -1,23 +1,19 @@
 import React from 'react'
 import { Row, Col, Container, Button, Form } from 'react-bootstrap';
-import { useStateContext } from '../contexts/StateContexts';
 import ContentCards from '../templates/ContentCards';
 ////////////////////////////////////
-
-
 
 function SeasonalAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const date = new Date();
-  const [currentYear, setCurrentYear] = React.useState(date.getFullYear())
-  const [offset, setOffset] = React.useState(0)
-  const [loading, setLoading] = React.useState(false)
+  const [currentYear, setCurrentYear] = React.useState(date.getFullYear());
+  const [offset, setOffset] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   const [season, setSeason] = React.useState("winter");
   const [formErrors, setFormErrors] = React.useState('');
-  // const { animeList, setAnimeList } = useStateContext();
-  const [animeList, setAnimeList] = React.useState([]);
-  const animeSeason = document.getElementById('anime-season')
-  const animeYear = React.useRef();
+  const [animeList, setAnimeList] = React.useState({ anime: [] });
+  const animeSeason = document.getElementById('anime-season');
+  const animeYearInput = React.useRef();
 
   React.useEffect(() => {
     getSeasonalAnime();
@@ -41,23 +37,35 @@ function SeasonalAnime() {
     try {
       const getSeasonalList = await fetch(`${ serverUrl }/seasonal-anime/${ currentYear }/${ season }/${ offset }`, { credentials: 'include' })
       const seasonalListResults = await getSeasonalList.json();
-      console.log(seasonalListResults);
-      setAnimeList(prev => prev.concat(seasonalListResults.data));
-      setLoading(false)
+ 
+      setAnimeList(prev => ({ 
+        anime: prev.anime.concat(seasonalListResults.data), 
+        season: seasonalListResults.season
+      })
+    );
     } catch (err) {
       console.log(err);
       setFormErrors("Invalid season/year input")
-      animeYear.current.value = null
+      animeYearInput.current.value = null
+    } finally {
       setLoading(false)
     }
   };
 
   const seasonalQuery = (e) => {
     e.preventDefault();
-    setCurrentYear(animeYear.current.value)
-    setSeason(animeSeason.value)
-    setFormErrors('')
-    animeYear.current.value = null
+    console.log('input', animeYearInput.current.value);
+    console.log('default', animeList.season.year);
+    if (animeYearInput.current.value === animeList.season.year.toString()) {
+      setFormErrors("Query results already present.")
+    } else {
+      setAnimeList({ anime: [] })
+      setOffset(0)
+      setCurrentYear(animeYearInput.current.value)
+      setSeason(animeSeason.value)
+      setFormErrors('')
+      animeYearInput.current.value = null
+    }
   };
 
 
@@ -84,7 +92,7 @@ function SeasonalAnime() {
 
             <Form.Group as={Col}>
               <Form.Label>Year</Form.Label>
-              <Form.Control ref={animeYear} placeholder='Specify Year' id="anime-year" isInvalid={ !!formErrors } />
+              <Form.Control ref={animeYearInput} placeholder='Specify Year' id="anime-year" isInvalid={ !!formErrors } />
               <Form.Control.Feedback type='invalid'>
                 { formErrors }
               </Form.Control.Feedback>
@@ -92,7 +100,7 @@ function SeasonalAnime() {
           </Row>
         </Form>
         
-          <ContentCards animeList={animeList} loading={loading}/>
+          <ContentCards animeList={animeList.anime} loading={loading}/>
       </Container>
     </>
   )

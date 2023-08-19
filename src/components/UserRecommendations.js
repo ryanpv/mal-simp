@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Container } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
 import ContentCards from '../templates/ContentCards';
+import SyncLoader from "react-spinners/SyncLoader";
 
 export default function HomePage() {
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
@@ -13,7 +14,6 @@ export default function HomePage() {
   const clientUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_CLIENT : process.env.REACT_APP_CLIENT_BASEURL
 
   console.log('in development?:', process.env.NODE_ENV === 'development');
-
 
   React.useEffect(() => {
     fetchRecommendedAnime();
@@ -54,6 +54,7 @@ export default function HomePage() {
 
 /////////// MYANIMELIST LOGIN/LOGOUT /////////////
   async function malLogin() {
+    setLoading(true);
     try {
       const getCode = await fetch(`${ serverUrl }/create-challenge`, { headers: { 'Content-Type': 'application/json' }, credentials:"include" })
       const getChallenge = await getCode.json();      
@@ -62,6 +63,8 @@ export default function HomePage() {
 
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,7 +87,7 @@ export default function HomePage() {
       </div>
       
       { malUserDetails.id ? 
-      <Container className='fluid'>
+      <Container className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
         { malUserDetails.name ? 
           <div className='text-left'>
             <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2>
@@ -97,6 +100,7 @@ export default function HomePage() {
 
       </Container>
       : null }
+      { !malUserDetails.id && loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
     </>
   )
 }

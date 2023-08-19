@@ -1,12 +1,10 @@
 import React from 'react'
 import { Row, Col, Card } from 'react-bootstrap'
 import { useDisplayContext } from '../contexts/DisplayDataContext'
-import { useStateContext } from '../contexts/StateContexts';
 import SyncLoader from "react-spinners/SyncLoader"
 
 export default function ContentCards({ loading, animeList }) {
   const { handleShow } = useDisplayContext();
-  // const { animeList } = useStateContext();
 
   return (
     <>
