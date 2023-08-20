@@ -68,12 +68,21 @@ export function AuthProvider({ children }) {
       });
   };
 
-  function logout() {
-    setCurrentUser("");
-    setCategoryList({});
-    malLogout();
-    navigate('/');
-    return signOut(auth);
+  async function logout() {
+    try {
+      await fetch (`${ serverUrl }/logout`, {
+        method: "DELETE"
+      });
+
+      setCurrentUser("");
+      setCategoryList({});
+      malLogout();
+      navigate('/');
+      
+      return signOut(auth);
+    } catch (err) {
+      console.log('logout err: ', err);
+    }
   };
 
   function resetPassword(email) {

@@ -6,23 +6,21 @@ function LogCallback() {
   const { setMalUserDetails } = useStateContext();
   const location = useLocation();
   const navigate = useNavigate();
+  const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
+  const code = `${location.search.split('=')[1]}`;
 
-  React.useEffect(() => {
-    const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
-    const code = `${location.search.split('=')[1]}`;
-
-    async function retrieveMalToken() {
-      const malTokenRequest = await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { method: 'POST', credentials: 'include' })
-      const malUsernameRequest = await malTokenRequest.json();
-
-      setMalUserDetails(malUsernameRequest);
-    };
-
+  React.useEffect(() => {    
     retrieveMalToken();
-    navigate('/user-recommendations')
 
+    navigate('/user-recommendations')
   },[])
   
+  async function retrieveMalToken() {
+    const malTokenRequest = await fetch(`${ serverUrl }/mal-auth?code=${ code }`, { method: 'POST', credentials: 'include' })
+    const malUsernameRequest = await malTokenRequest.json();
+
+    setMalUserDetails(malUsernameRequest);
+  };
   
   return (
     <>
