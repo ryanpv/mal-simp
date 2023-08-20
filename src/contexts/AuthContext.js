@@ -71,7 +71,8 @@ export function AuthProvider({ children }) {
   async function logout() {
     try {
       await fetch (`${ serverUrl }/logout`, {
-        method: "DELETE"
+        method: "DELETE",
+        credentials: "include",
       });
 
       setCurrentUser("");
