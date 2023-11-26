@@ -63,11 +63,11 @@ function TopAiringAnime() {
 
   return (
     <>
-
+      <div className='w-100 text-center mt-4 mb-4'>
+        <h2 className='underline'>Welcome to WorldAnime</h2>
+      </div>
+      
       <Container ref={topAiringRef} className="pt-2 pb-4" style={{ backgroundColor: 'white'}}>
-        <div className='w-100 text-center mt-4 mb-4'>
-          <h2 className='underline'>Welcome to WorldAnime</h2>
-        </div>
 
         <h3 className='text-left mb-3'>Top Airing Anime</h3>
         <hr></hr>
@@ -88,7 +88,8 @@ function TopAiringAnime() {
             : null
             }
           </Row>
-      { loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
+          
+        { loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
       </Container>
     </>
   )
