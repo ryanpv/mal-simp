@@ -97,7 +97,7 @@ function MalAnimeList() {
         <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
       </div>
 
-      <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+      <Container ref={containerRef} className="mt-4 pt-5 pb-4" style={{ backgroundColor: 'white'}}>
         <div className='text-left mb-3 mt-4'>
           <h2 >User Anime List</h2>
           { animeList ? <i>Your anime list from MyAnimeList.</i> 
@@ -107,7 +107,7 @@ function MalAnimeList() {
         <ContentCards loading={loading} animeList={animeList} />
       </Container>
     </>
-    : <div className='w-100 text-center mt-2 mb-4'>
+    : <div className='w-100 text-center pt-5 mt-4 mb-4'>
         <Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list
       </div>
   }

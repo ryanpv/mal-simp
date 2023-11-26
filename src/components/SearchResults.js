@@ -67,29 +67,30 @@ export default function SearchResults() {
 
   return (
     <>
-    <h2 className='text-center mb-2'>Search Results for</h2>
+      <div className='w-100 text-center pt-5 mt-4 mb-4'>
+        <h2 className='text-center mb-2'>Search Results for</h2>
+      </div>
 
-    <table className='table table-striped' style={ { marginTop: 20 } }>
-      <thead>
-        <tr>
-          <th style={{ margin: 20, border: "1px solid black", padding: "10px 10px" }}>Image</th>
-          <th style={{ margin: 20, border: "1px solid black", padding: "10px 10px" }}>Score</th>
-          <th style={{ border: "1px solid black", padding: "10px 10px" }}>Anime Title</th>
-        </tr>
-      </thead>
-      <tbody>{ loading ? <ClipLoader color='blue' size={30} loading={loading} /> : displaySearchedAnime() }</tbody>
-    </table>
+      <table className='table table-striped' style={ { marginTop: 20 } }>
+        <thead>
+          <tr>
+            <th style={{ margin: 20, border: "1px solid black", padding: "10px 10px" }}>Image</th>
+            <th style={{ margin: 20, border: "1px solid black", padding: "10px 10px" }}>Score</th>
+            <th style={{ border: "1px solid black", padding: "10px 10px" }}>Anime Title</th>
+          </tr>
+        </thead>
+        <tbody>{ loading ? <ClipLoader color='blue' size={30} loading={loading} /> : displaySearchedAnime() }</tbody>
+      </table>
 
-    { searchResults.paging ?
-        <div className='w-100 text-center mt-2 mb-2'>
-          {/* <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> */}
-          { searchResults.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          { searchResults.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
-        </div> 
-        : null
-      }
-
+      { searchResults.paging ?
+          <div className='w-100 text-center mt-2 mb-2'>
+            {/* <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> */}
+            { searchResults.paging.previous ? <Button size='sm' onClick={(e) => decrementOffset(e)}>Previous</Button> : null }
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            { searchResults.paging.next ? <Button size='sm' onClick={(e) => incrementOffset(e)}>Next</Button> : null }
+          </div> 
+          : null
+        }
 {/* use ternary to switch videos to cards vs table  */}
       {/* <ContentCards animeList={searchResults} handleShow={handleShow}/> */}
     </>

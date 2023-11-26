@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Nav, Navbar, Form, NavDropdown, Button } from 'react-bootstrap'
-import { useNavigate, NavLink, Link } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts';
 import { useAuth } from '../contexts/AuthContext'
 
@@ -34,12 +34,11 @@ function NavBar() {
     }
     
     animeRef.current.value = null
-
-  }
+  };
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar bg="dark" variant="dark" expand="lg" sticky='top'>
         <Container>
           <Navbar.Brand href="/"><img className="mb-2" style={{ height: 25 }} src={require("../logo192.png")} alt='WorldAnime Logo'/> WorldAnime</Navbar.Brand>
           <Navbar.Toggle aria-controls='NavbarScroll' />

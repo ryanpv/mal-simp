@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import React from "react";
 import UserRecommendations from './components/UserRecommendations.js'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LogCallback from "./components/LogCallback.js";
 import SeasonalAnime from "./components/SeasonalAnime.js";
 import TrailerModal from "./modals/TrailerModal.js";
@@ -16,6 +16,7 @@ import { useAuth } from './contexts/AuthContext.js';
 import UserSavedList from './components/UserSavedList.js';
 import MalAnimeList from './components/MALAnimeList.js';
 import ForgotPassword from './Accounts/ForgotPassword.js';
+import NavBar from './components/NavBar.js';
 
 function App() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -39,25 +40,26 @@ function App() {
 
   return (
     <>
-    <div className="App">
-    {/* <NavBar /> */}
-      <Routes>
-        <Route path="/" element={ <TopAiringAnime /> } />
-        <Route path="/user-recommendations" element={ <UserRecommendations /> } />
-        <Route path="/logcallback" element={ <LogCallback /> } />
-        <Route path="/user-MAL" element={ <MalAnimeList /> } />
-        <Route path="/user-anime-list" element={ <UserSavedList /> } />
-        <Route path="/seasonal-anime" element={ <SeasonalAnime /> } />
-        <Route path="/top-upcoming-anime" element={ <TopUpcomingAnime /> } />
-        <Route path="/search-results" element={ <SearchResults /> } />
-        <Route path="/login" element={ <Login /> } />
-        <Route path="/sign-up" element={ <Signup /> } />
-        <Route path="/forgot-password" element={ <ForgotPassword /> } />
+      <NavBar />
 
-      </Routes>
-    <TrailerModal show={ show } onHide={ () => handleClose() } />
-    </div>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={ <TopAiringAnime /> } />
+          <Route path="/user-recommendations" element={ <UserRecommendations /> } />
+          <Route path="/logcallback" element={ <LogCallback /> } />
+          <Route path="/user-MAL" element={ <MalAnimeList /> } />
+          <Route path="/user-anime-list" element={ <UserSavedList /> } />
+          <Route path="/seasonal-anime" element={ <SeasonalAnime /> } />
+          <Route path="/top-upcoming-anime" element={ <TopUpcomingAnime /> } />
+          <Route path="/search-results" element={ <SearchResults /> } />
+          <Route path="/login" element={ <Login /> } />
+          <Route path="/sign-up" element={ <Signup /> } />
+          <Route path="/forgot-password" element={ <ForgotPassword /> } />
 
+        </Routes>
+
+        <TrailerModal show={ show } onHide={ () => handleClose() } />
+      </div>
     </>
   );
 }

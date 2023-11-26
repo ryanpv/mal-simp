@@ -4,7 +4,6 @@ import App from './App';
 import { StateProvider } from './contexts/StateContexts';
 import { BrowserRouter } from 'react-router-dom';
 import {DisplayDataProvider} from './contexts/DisplayDataContext';
-import NavBar from './components/NavBar';
 import { AuthProvider } from './contexts/AuthContext';
 
 
@@ -16,7 +15,6 @@ root.render(
     <StateProvider>
       <AuthProvider>
         <DisplayDataProvider>
-          <NavBar />
           <App />
         </DisplayDataProvider>
       </AuthProvider>
