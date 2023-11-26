@@ -24,17 +24,22 @@ function TrailerModal(props) {
         num_episodes: animeDetails.num_episodes,
         mean: animeDetails.mean !== undefined ? animeDetails.mean : 'Currently unavailable.',      
         categoryName: value
+      };
+      // if (no curr user) { then save to local storage } else { execute code below } 
+      if (!currentUser) {
+        console.log("No logged user. Storing locally")
+        localStorage.setItem('tempUser', JSON.stringify([body]));
+      } else {
+        await fetch(`${ serverUrl }/add-anime`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${ firebaseToken }`
+          },
+          body: JSON.stringify(body)
+        });
       }
-
-      await fetch(`${ serverUrl }/add-anime`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${ firebaseToken }`
-        },
-        body: JSON.stringify(body)
-      });
 
       alert(`Added to ${ value.toUpperCase() }`)
     } catch (err) {
@@ -58,7 +63,7 @@ function TrailerModal(props) {
     <>
     { loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
     <Modal
-      { ...props }
+      // { ...props }
       show={ props.show }
       onHide={ props.onHide }
       // backdrop="static"
@@ -70,19 +75,24 @@ function TrailerModal(props) {
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            { currentUser ? 
+            {/* { currentUser ?  */}
             <>
             <DropdownButton
             as={ ButtonGroup }
             title="Add to list "
             id="bg-vertical-dropdown"
             onSelect={ (e) => saveToCategory(e) }>
+              { currentUser ? 
+              <>
               <Dropdown.Item eventKey="Watch Later">Watch Later</Dropdown.Item>
               { categoryDropdown() }
-              {/* { categoryList ? categoryDropdown() : null } */}
+              </>
+              :
+              <Dropdown.Item eventKey="Watch Later">Watch Later</Dropdown.Item>
+            }
             </DropdownButton>{'   '}
               </>
-            : null }
+            {/* : null } */}
             {animeDetails.title}
           </Modal.Title>
         </Modal.Header>

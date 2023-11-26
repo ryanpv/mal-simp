@@ -25,12 +25,13 @@ export default function UserSavedList() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('')
 
+  const getLocalStorageAnime = JSON.parse(localStorage.getItem("tempUser"))
 
   const RemoveAnimeBtn = (props) => {
     return (
       <>
         <Dropdown>
-          <DropdownButton variant="light" size="sm" title="" onSelect={ (e) => removeAnime({ categoryName: props.anime.categoryName, animeId: e }) }>
+          <DropdownButton variant="light" size="sm" title="" onSelect={ (e) => removeAnime({ categoryName: props.anime.categoryName, animeId: parseInt(e) }) }>
             <Dropdown.Item eventKey={props.anime.animeId}>Delete</Dropdown.Item>
           </DropdownButton>
         </Dropdown>
@@ -40,19 +41,29 @@ export default function UserSavedList() {
 
   async function removeAnime(animeInfo) {
     try {
-      await fetch(`${ serverUrl }/remove-anime`, {
-        method: 'DELETE',
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-          // Authorization: `Bearer ${ firebaseToken }`
-        },
-        body: JSON.stringify(animeInfo)
-      });
+      if (!currentUser && getLocalStorageAnime.length > 0) {
+        const filterAnime = getLocalStorageAnime.filter((anime) => animeInfo.animeId !== anime.animeId)
+        const updateLocalStorage = localStorage.setItem("tempUser", JSON.stringify(filterAnime));
+        if (filterAnime.length === 0) {
+          setCategoryContents([])
+        } else {
+          setCategoryContents(updateLocalStorage);
+        }
+      } else if (currentUser) {
+        await fetch(`${ serverUrl }/remove-anime`, {
+          method: 'DELETE',
+          credentials: "include",
+          headers: {
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify(animeInfo)
+        });
+      }
+
     } catch (err) {
       setError(err)
     }
-  }
+  };
 
   const AnimeResultList = (props) => {
     return (
@@ -72,42 +83,76 @@ export default function UserSavedList() {
         <td>{ props.anime.num_episodes }</td>
       </tr>
     )
-  }
+  };
 
   const displaySearchedAnime = () => {
-    if (categoryContents.length > 0) {
+    console.log('display search called');
+    if (currentUser && categoryContents && categoryContents.length > 0) {
       return categoryContents.map(anime => {
         return (
           <AnimeResultList anime={ anime } key={ anime.animeId } />
         )
       });
+    } else if (!currentUser && getLocalStorageAnime.length > 0) {
+      return getLocalStorageAnime.map(anime => {
+        return (
+          <AnimeResultList anime={ anime } key={ anime.animeId } />
+        );
+      });
+    } else {
+      console.log("no catego contents")
+      return null;
     }
-    return ;
   };
+
+  const displayLocalStorageAnime = () => {
+    console.log('display local called');
+    if (!currentUser && getLocalStorageAnime.length > 0) {
+      return getLocalStorageAnime.map(anime => {
+        return (
+          <AnimeResultList anime={ anime } key={ anime.animeId } />
+        );
+      });
+    }
+    return null;
+  }
 
 
 async function fetchCategoryContent(e, value) { // called on category select
   e.preventDefault();
   setSelectedCategory(value)
   try {
-    setLoading(true)
-    const fetchContent = await fetch(`${ serverUrl }/get-content/${ value }`,{
-      credentials:'include',
-    });
-    const fetchResult = await fetchContent.json();
+    if (!currentUser) {
+      setLoading(true)
 
-    setCategoryContents(fetchResult);
-    setLoading(false)
-    if (fetchResult.length > 0) {
-      setPaginationTitles({ 
-        firstTitle: fetchResult[0].animeTitle,
-        lastTitle: fetchResult[fetchResult.length - 1].animeTitle 
+
+      if (getLocalStorageAnime.length > 0) {
+        setCategoryContents(getLocalStorageAnime)
+      } else {
+        console.log("no content saved")
+        setCategoryContents([])
+      }
+
+      setLoading(false)
+    } else if (currentUser) {
+      setLoading(true)
+      const fetchContent = await fetch(`${ serverUrl }/get-content/${ value }`,{
+        credentials:'include',
       });
-    } else {
-      setCategoryContents([])
+      const fetchResult = await fetchContent.json();
+      setCategoryContents(fetchResult);
+      setLoading(false)
+      if (fetchResult.length > 0) {
+        setPaginationTitles({ 
+          firstTitle: fetchResult[0].animeTitle,
+          lastTitle: fetchResult[fetchResult.length - 1].animeTitle 
+        });
+      } else {
+        setCategoryContents([])
+      }
+  
+      setFetchCount(fetchResult.length)
     }
-
-    setFetchCount(fetchResult.length)
   } catch (err) {
     setLoading(false) // Loading must be reset since fetchResult.length === 0 throws err
     setCategoryContents([])
@@ -121,10 +166,7 @@ async function fetchNextPage(e) {
   e.preventDefault();
   try {
     const fetchContent = await fetch(`${ serverUrl }/content-paginate-forward/${ selectedCategory }/${ paginationTitles.lastTitle }`,{
-      credentials:'include',
-      // headers: {
-      //   Authorization: `Bearer ${ firebaseToken }`
-      // },
+      credentials:'include'
     });
 
     const nextPage = await fetchContent.json()
@@ -136,57 +178,53 @@ async function fetchNextPage(e) {
             lastTitle: nextPage[nextPage.length - 1].animeTitle
           });
       }
-      // console.log('length', nextPage.length);
   } catch (err) {
     console.log(err);
   };
 };
-
 
 async function addNewCategory(e) {
   e.preventDefault();
   const categoryInput = categoryRef.current.value
   const checkCategoryDuplicate = categoryList.filter(category => category.toLowerCase() === categoryInput.toLowerCase())
   try {
-
-    if (categoryInput === "" || !/\S/.test(categoryInput) || categoryInput.includes('  ')) {
-      setFormErrors("Please enter proper category name. Ensure no double spacing.")
-    } else if (checkCategoryDuplicate.length > 0) {
-      setFormErrors('Category already exists.')
-    } else if(categoryList.length >= 25) { 
-      setFormErrors('Maximum amount of categories reached.') // limit users' categories amount
-    } else {
-        const postCategory = await fetch(`${ serverUrl }/create-category`, {
-          method: 'POST',
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `Bearer ${ firebaseToken }`
-          },
-          body: JSON.stringify({ categoryName: categoryInput })
-        });
-        // console.log(categoryRef.current.value)   
-        setLastAddedCategory(categoryInput)
-        setFormErrors('')
-        alert(`'${ categoryInput }' added as a category`)
-
-      }
-
-    } catch (err) {
-      console.log(err);
+    if (!currentUser) {
+      throw Error('Forbidden action, no user logged in') 
+    } else if (currentUser) {
+      if (categoryInput === "" || !/\S/.test(categoryInput) || categoryInput.includes('  ')) {
+        setFormErrors("Please enter proper category name. Ensure no double spacing.")
+      } else if (checkCategoryDuplicate.length > 0) {
+        setFormErrors('Category already exists.')
+      } else if(categoryList.length >= 25) { 
+        setFormErrors('Maximum amount of categories reached.') // limit users' categories amount
+      } else {
+          await fetch(`${ serverUrl }/create-category`, {
+            method: 'POST',
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ categoryName: categoryInput })
+          }); 
+          setLastAddedCategory(categoryInput)
+          setFormErrors('')
+          alert(`'${ categoryInput }' added as a category`)
+        }
     }
-    categoryRef.current.value = ""
-}
+  } catch (err) {
+    console.log(err);
+  }
+  categoryRef.current.value = ""
+};
 
 function deleteBtn() {
   setShow(prev => !prev)
-}
+};
 
 
   return (
   <>
-  {/* { firebaseToken ? */}
-  { currentUser ?
+  {/* { currentUser ? */}
       <Container>
         <Form onSubmit={ (e) => addNewCategory(e) }>
           <Row className="w-50 mb-3 mt-3">
@@ -199,21 +237,23 @@ function deleteBtn() {
               </Form.Select>
               </Form.Group>
 
+            { currentUser ? 
             <Form.Group as={ Col }>
               <Form.Label>Add new category</Form.Label>
               <Form.Control type='text' ref={categoryRef} placeholder='New Category' isInvalid={ !!formErrors }/>
               <Form.Control.Feedback type='invalid'>
                 { formErrors }
               </Form.Control.Feedback>
-            </Form.Group>
+            </Form.Group> :
+            null }
           </Row>
         </Form>
       </Container>
-    : null }
+    {/* : null } */}
 
 
-  {/* { firebaseToken ? */}
-  { currentUser ? 
+  { 
+  // currentUser ? 
       loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
         <table className='table table-striped' style={ { marginTop: 20 } }>
         <thead>
@@ -234,14 +274,14 @@ function deleteBtn() {
         </thead>
         <tbody>{ loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> : displaySearchedAnime() }</tbody>
       </table>
-    :
-    <>
-    <div className='text-center'>
-        <h1>401 UNAUTHORIZED - { errorMessage !== '' ? errorMessage : null }</h1>
-        <h3><Link to='/login'>Log in</Link> or <Link to='/sign-up'>Sign up</Link> to save anime titles</h3>
-      </div> 
-      <Navigate replace to='/login' />
-    </> 
+    // :
+    // <>
+    // <div className='text-center'>
+    //     <h1>401 UNAUTHORIZED - { errorMessage !== '' ? errorMessage : null }</h1>
+    //     <h3><Link to='/login'>Log in</Link> or <Link to='/sign-up'>Sign up</Link> to save anime titles</h3>
+    //   </div> 
+    //   <Navigate replace to='/login' />
+    // </> 
   }
 
   { categoryContents.length > 0 && fetchCount === 10 ?
