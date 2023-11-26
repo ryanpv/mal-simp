@@ -14,7 +14,7 @@ export default function ContentCards({ loading, animeList }) {
             <Col key={ el.node.id }>
               <Card onClick={ () => handleShow({ id:el.node.id, title:el.node.title }) } bg='light' style={ { height:'100%', cursor: "pointer" } }>
                 <Card.Title className="text-center">{ el.node.title }</Card.Title>
-                <Card.Subtitle className="text-center">Score: { el.node.mean  }</Card.Subtitle>
+                <Card.Subtitle className="text-center">{ el.node.mean && `Score: ${ el.node.mean }` }</Card.Subtitle>
                 <Card.Img src={el.node.main_picture.medium} />                  
                 <Card.Body>
                   <Card.Subtitle className="text-muted mb-2" as="h6"><strong>Episodes:</strong> { el.node.num_episodes }</Card.Subtitle>
