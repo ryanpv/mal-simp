@@ -6,15 +6,15 @@ import ContentCards from '../templates/ContentCards';
 function SeasonalAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
   const date = new Date();
-  const [currentYear, setCurrentYear] = React.useState(date.getFullYear());
-  const [offset, setOffset] = React.useState(0);
+  const [currentYear, setCurrentYear] = React.useState(date.getFullYear()); // state for seasonal query's year value
+  const [offset, setOffset] = React.useState(0); // state for offset value to be sent to server for api query
   const [loading, setLoading] = React.useState(false);
-  const [season, setSeason] = React.useState("winter");
+  const [season, setSeason] = React.useState("winter"); // state for seasonal query's season value
   const [formErrors, setFormErrors] = React.useState('');
-  const [animeList, setAnimeList] = React.useState({ anime: [], season: { season: season, year: currentYear } });
-  const animeSeason = document.getElementById('anime-season');
-  const animeYearInput = React.useRef();
-  const containerRef = React.useRef();
+  const [animeList, setAnimeList] = React.useState({ anime: [], season: { season: season, year: currentYear } }); // state for anime list query results
+  const animeSeason = document.getElementById('anime-season'); // reference to form for current season value
+  const animeYearInput = React.useRef(); // ref for form's Year value
+  const containerRef = React.useRef(); // ref for the page's container. Used for infinite scrolling
 
   React.useEffect(() => {
     getSeasonalAnime(); 
