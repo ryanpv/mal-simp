@@ -71,7 +71,13 @@ function SeasonalAnime() {
   const seasonalQuery = (e) => {
     e.preventDefault();
 
-    if (animeYearInput.current.value === animeList.season.year.toString() || isNaN(animeYearInput.current.value)) {
+    if (
+      (animeYearInput.current.value === 
+      animeList.season.year.toString() && 
+      animeList.season.season.toLowerCase === 
+      animeSeason.value) || 
+      isNaN(animeYearInput.current.value)
+      ) {
       setFormErrors("Query results already present / invalid year input.")
     } else {
       setAnimeList({ anime: [], season: { season: season, year: currentYear } })
