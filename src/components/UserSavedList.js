@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts'
 import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup } from 'react-bootstrap';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
@@ -207,8 +208,12 @@ function deleteBtn() {
 
   return (
   <>
-  {/* { currentUser ? */}
-      <Container>
+    <Container>
+      <div className='text-center'>
+        <h3>Forgot to <Link to='/login'>Log in</Link>? or <Link to='/sign-up'>Sign up</Link> to create your own categories</h3>
+      </div>
+
+      { currentUser ? 
         <Form onSubmit={ (e) => addNewCategory(e) }>
           <Row className="w-50 mb-3 mt-3">
             <Form.Group as={ Col }>
@@ -219,21 +224,18 @@ function deleteBtn() {
                 { categoryList.length > 0 ? categoryList.map(title => <option key={ categoryList.indexOf(title) } value={ title} >{ title }</option>) : null }
               </Form.Select>
               </Form.Group>
-
-            { currentUser ? 
             <Form.Group as={ Col }>
               <Form.Label>Add new category</Form.Label>
               <Form.Control type='text' ref={categoryRef} placeholder='New Category' isInvalid={ !!formErrors }/>
               <Form.Control.Feedback type='invalid'>
                 { formErrors }
               </Form.Control.Feedback>
-            </Form.Group> :
-            null }
+            </Form.Group> 
           </Row>
         </Form>
-      </Container>
-    {/* : null } */}
-
+      :
+      null }
+    </Container>
 
   { 
   // currentUser ? 
