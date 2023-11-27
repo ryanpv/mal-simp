@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link, Navigate } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts'
 import { Container, Button, Form, Row, Col, Dropdown, DropdownButton, ButtonGroup } from 'react-bootstrap';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
@@ -42,12 +41,13 @@ export default function UserSavedList() {
   async function removeAnime(animeInfo) {
     try {
       if (!currentUser && getLocalStorageAnime.length > 0) {
-        const filterAnime = getLocalStorageAnime.filter((anime) => animeInfo.animeId !== anime.animeId)
-        const updateLocalStorage = localStorage.setItem("tempUser", JSON.stringify(filterAnime));
+        const filterAnime = getLocalStorageAnime.filter((anime) => animeInfo.animeId !== anime.animeId);
+        localStorage.setItem("tempUser", JSON.stringify(filterAnime));
+
         if (filterAnime.length === 0) {
           setCategoryContents([])
         } else {
-          setCategoryContents(updateLocalStorage);
+          setCategoryContents(filterAnime);
         }
       } else if (currentUser) {
         await fetch(`${ serverUrl }/remove-anime`, {
@@ -68,7 +68,6 @@ export default function UserSavedList() {
   const AnimeResultList = (props) => {
     return (
       <tr>
-        {/* <td></td> */}
         <td>
           <Button onClick={ () => handleShow({ id:props.anime.animeId }) } variant='link'><img alt={ `${props.anime.animeTitle} thumbnail` } 
           src={ props.anime.main_picture.medium } width={75} height={100} /></Button>
@@ -86,7 +85,6 @@ export default function UserSavedList() {
   };
 
   const displaySearchedAnime = () => {
-    console.log('display search called');
     if (currentUser && categoryContents && categoryContents.length > 0) {
       return categoryContents.map(anime => {
         return (
@@ -100,22 +98,9 @@ export default function UserSavedList() {
         );
       });
     } else {
-      console.log("no catego contents")
       return null;
     }
   };
-
-  const displayLocalStorageAnime = () => {
-    console.log('display local called');
-    if (!currentUser && getLocalStorageAnime.length > 0) {
-      return getLocalStorageAnime.map(anime => {
-        return (
-          <AnimeResultList anime={ anime } key={ anime.animeId } />
-        );
-      });
-    }
-    return null;
-  }
 
 
 async function fetchCategoryContent(e, value) { // called on category select
@@ -124,7 +109,6 @@ async function fetchCategoryContent(e, value) { // called on category select
   try {
     if (!currentUser) {
       setLoading(true)
-
 
       if (getLocalStorageAnime.length > 0) {
         setCategoryContents(getLocalStorageAnime)
@@ -158,7 +142,6 @@ async function fetchCategoryContent(e, value) { // called on category select
     setCategoryContents([])
     setError(err)
   }
-
   // onSelect should update state which will cause the table to render
 };
 
@@ -284,7 +267,7 @@ function deleteBtn() {
     // </> 
   }
 
-  { categoryContents.length > 0 && fetchCount === 10 ?
+  { categoryContents.length > 9 && fetchCount === 10 ?
       <div className='text-center mb-2'>
         <Button onClick={ (e) => fetchNextPage(e) }>Load More</Button> 
       </div>
