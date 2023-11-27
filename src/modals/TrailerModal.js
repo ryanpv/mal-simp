@@ -13,8 +13,8 @@ function TrailerModal(props) {
   const currentTrailer = animeDetails.videos && animeDetails.videos.slice(indexOfTrailerDisplayed, currentPage)
   const { currentUser } = useAuth();
   const { loading } = useDisplayContext();
-// console.log("fake storage: ", JSON.parse(localStorage.getItem("fakeStore")))
-// Post request to save anime data to user's personal category
+
+  // Post request to save anime data to user's personal category
   async function saveToCategory(value) {
     try { 
       const body = {
@@ -29,12 +29,9 @@ function TrailerModal(props) {
       if (!currentUser) {
         const checkLocalStorage = JSON.parse(localStorage.getItem("tempUser"));
         if (checkLocalStorage.length > 0) { 
-          console.log("checking: ", checkLocalStorage) 
           checkLocalStorage.push(body);
-          console.log("added to local: ", checkLocalStorage)
           localStorage.setItem("tempUser", JSON.stringify(checkLocalStorage));
         } else {
-          console.log("No logged user. Storing locally")
           localStorage.setItem('tempUser', JSON.stringify([body]));
         }
 
