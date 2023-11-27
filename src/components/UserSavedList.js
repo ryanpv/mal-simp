@@ -209,10 +209,6 @@ function deleteBtn() {
   return (
   <>
     <Container>
-      <div className='text-center'>
-        <h3>Forgot to <Link to='/login'>Log in</Link>? or <Link to='/sign-up'>Sign up</Link> to create your own categories</h3>
-      </div>
-
       { currentUser ? 
         <Form onSubmit={ (e) => addNewCategory(e) }>
           <Row className="w-50 mb-3 mt-3">
@@ -234,7 +230,10 @@ function deleteBtn() {
           </Row>
         </Form>
       :
-      null }
+      <div className='text-center'>
+      < h3>Forgot to <Link to='/login'>Log in</Link>? or <Link to='/sign-up'>Sign up</Link> to create your own categories</h3>
+      </div>
+      }
     </Container>
 
   { 

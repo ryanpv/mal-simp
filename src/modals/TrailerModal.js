@@ -88,17 +88,11 @@ function TrailerModal(props) {
             title="Add to list "
             id="bg-vertical-dropdown"
             onSelect={ (e) => saveToCategory(e) }>
-              { currentUser ? 
-              <>
               <Dropdown.Item eventKey="Watch Later">Watch Later</Dropdown.Item>
-              { categoryDropdown() }
-              </>
-              :
-              <Dropdown.Item eventKey="Watch Later">Watch Later</Dropdown.Item>
-            }
-            </DropdownButton>{'   '}
-              </>
-            {/* : null } */}
+                { currentUser && categoryDropdown() }
+              </DropdownButton>{'   '}
+            </>
+            
             {animeDetails.title}
           </Modal.Title>
         </Modal.Header>
