@@ -91,27 +91,33 @@ function MalAnimeList() {
 
   return (
     <>
-    { malUserDetails.id ? 
-    <>
-      <div className='w-100 text-center mt-2 mb-4'>
-        <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
+      <div className='w-100 text-center mt-4'>
+        <h3>To see your saved titles from MyAnimeList click the log in button below</h3>
+      </div>
+      <div className='w-100 text-center pt-5 mt-2 mb-4'>
+        { malUserDetails.id ? 
+          <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
+          : <Button onClick={ () => getMalToken() }>Log In to MyAnimeList.net</Button> 
+        }
       </div>
 
-      <Container ref={containerRef} className="mt-4 pt-5 pb-4" style={{ backgroundColor: 'white'}}>
-        <div className='text-left mb-3 mt-4'>
-          <h2 >User Anime List</h2>
-          { animeList ? <i>Your anime list from MyAnimeList.</i> 
-          : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
-        </div>
-          <hr></hr>
-        <ContentCards loading={loading} animeList={animeList} />
-      </Container>
-    </>
-    : <div className='w-100 text-center pt-5 mt-4 mb-4'>
-        <Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list
-      </div>
-  }
-  { !malUserDetails.id && loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
+      { malUserDetails.id ? 
+      <>
+        <Container ref={containerRef} className="mt-4 pt-5 pb-4" style={{ backgroundColor: 'white'}}>
+          <div className='text-left mb-3 mt-4'>
+            <h2 >User Anime List</h2>
+            { animeList ? <i>Your saved anime titles from MyAnimeList.</i> 
+            : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
+          </div>
+            <hr></hr>
+          <ContentCards loading={loading} animeList={animeList} />
+        </Container>
+      </>
+      :
+        null
+      } 
+
+      { !malUserDetails.id && loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
     </>
   )
 }

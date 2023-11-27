@@ -68,7 +68,7 @@ export default function SearchResults() {
   return (
     <>
       <div className='w-100 text-center pt-5 mt-4 mb-4'>
-        <h2 className='text-center mb-2'>Search Results for</h2>
+        <h2 className='text-center mb-2'>Search Results for: { url.get("anime") }</h2>
       </div>
 
       <table className='table table-striped' style={ { marginTop: 20 } }>

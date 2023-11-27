@@ -51,10 +51,16 @@ function NavBar() {
             <NavDropdown menuVariant='dark' title="Anime" id="navbarScrollingDropdown">
               <NavLink className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
               <NavLink className='nav-link' to='/seasonal-anime'>Seasonal Anime</NavLink>
-              <NavLink className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
             </NavDropdown>
             {/* <Nav.Link href="/seasonal-anime" eventKey="1" to="/seasonal-anime">Seasonal Anime</Nav.Link> */}
-            <NavLink className='nav-link' to="/user-MAL">MAL</NavLink>
+          { currentUser ? 
+            <NavDropdown menuVariant='dark' title="MAL" id="navbarScrollingDropdown">
+              <NavLink className='nav-link' to="/user-MAL">MyAnimeList</NavLink>
+              <NavLink className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
+            </NavDropdown>
+            :
+            null
+          }
             {/* { currentUser !== undefined && */}
             <NavLink className='nav-link' to="/user-anime-list">Watch Lists</NavLink>
             {/* } */}
@@ -72,7 +78,7 @@ function NavBar() {
           <Nav>
             { currentUser ? 
             <>
-            <Nav.Link bg='light'>{currentUser} currently logged in</Nav.Link> 
+            <Nav.Link className="pt-3" bg='light'>{ currentUser.split("@")[0] }</Nav.Link> 
             <Button variant='outline-light' onClick={() => logout()}>Log Out</Button>
             </>
             :

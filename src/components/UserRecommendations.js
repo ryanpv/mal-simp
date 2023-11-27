@@ -96,6 +96,10 @@ export default function HomePage() {
 
   return (
     <>
+      <div className='w-100 text-center mt-4'>
+        <h3>To see your MyAnimeList recommended titles click the log in button below</h3>
+      </div>
+
       <div className='w-100 text-center pt-5 mt-2 mb-4'>
         { malUserDetails.id ? 
           <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
