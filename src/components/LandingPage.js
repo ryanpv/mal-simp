@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Card, Row, Col } from 'react-bootstrap';
 import { BsArrowRight } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ export default function LandingPage() {
 
   return (
     <>
-    <div className='mt-5 mb-5 text-center'>
+    <div className='mt-3 mb-3 text-center'>
       <h1 >WorldAnime</h1>
       <h3>Look up anime titles and save them to your watch list!</h3>
     </div>
@@ -17,7 +17,18 @@ export default function LandingPage() {
       <div className='pb-5 ps-5 pe-5'>
 
         <div className='text-center mb-5'>
-          <img src={ require("../mal-simp-gif.gif") } style={ { height: 350 } } alt='site gif' />
+          <Row>
+            <Col></Col>
+            <Col xs={6}>
+          <Card>
+            <Card.Img variant='top' src={ require("../mal-simp-gif.gif") } bg="light" />
+          </Card>
+            
+            </Col>
+            <Col></Col>
+          </Row>
+
+          {/* <img src={ require("../mal-simp-gif.gif") } style={ { height: 350 } } alt='site gif' /> */}
         </div>
 
         <div className="text-center">

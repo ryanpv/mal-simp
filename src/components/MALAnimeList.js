@@ -92,7 +92,6 @@ function MalAnimeList() {
   return (
     <>
     <Container style={ { backgroundColor: 'white' } }>
-
       <div className='w-100 text-center mt-4 pt-4'>
         <h3>If you would like to see your saved titles from MyAnimeList click the log in button below</h3>
       </div>
