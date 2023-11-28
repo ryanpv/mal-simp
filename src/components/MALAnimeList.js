@@ -91,15 +91,18 @@ function MalAnimeList() {
 
   return (
     <>
-      <div className='w-100 text-center mt-4'>
-        <h3>To see your saved titles from MyAnimeList click the log in button below</h3>
+    <Container style={ { backgroundColor: 'white' } }>
+
+      <div className='w-100 text-center mt-4 pt-4'>
+        <h3>If you would like to see your saved titles from MyAnimeList click the log in button below</h3>
       </div>
-      <div className='w-100 text-center pt-5 mt-2 mb-4'>
+      <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>
         { malUserDetails.id ? 
           <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
           : <Button onClick={ () => getMalToken() }>Log In to MyAnimeList.net</Button> 
         }
       </div>
+    </Container>
 
       { malUserDetails.id ? 
       <>

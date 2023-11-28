@@ -96,16 +96,18 @@ export default function HomePage() {
 
   return (
     <>
-      <div className='w-100 text-center mt-4'>
-        <h3>To see your MyAnimeList recommended titles click the log in button below</h3>
-      </div>
+      <Container style={ { backgroundColor: 'white' } }>
+        <div className='w-100 text-center mt-4 pt-4'>
+          <h3>To see your MyAnimeList recommended titles click the log in button below</h3>
+        </div>
 
-      <div className='w-100 text-center pt-5 mt-2 mb-4'>
-        { malUserDetails.id ? 
-          <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
-          : <Button onClick={ () => malLogin() }>Log In to MyAnimeList.net</Button> 
-        }
-      </div>
+        <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>
+          { malUserDetails.id ? 
+            <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
+            : <Button onClick={ () => malLogin() }>Log In to MyAnimeList.net</Button> 
+          }
+        </div>
+      </Container>
       
       { malUserDetails.id ? 
       <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
