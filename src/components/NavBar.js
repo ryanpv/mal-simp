@@ -40,14 +40,14 @@ function NavBar() {
     <>
       <Navbar bg="dark" variant="dark" expand="lg" sticky='top'>
         <Container>
-          <Navbar.Brand href="/"><img className="mb-2" style={{ height: 25 }} src={require("../logo192.png")} alt='WorldAnime Logo'/> WorldAnime</Navbar.Brand>
+          <Navbar.Brand href="/home"><img className="mb-2" style={{ height: 25 }} src={require("../logo192.png")} alt='WorldAnime Logo'/> WorldAnime</Navbar.Brand>
           <Navbar.Toggle aria-controls='NavbarScroll' />
           <Navbar.Collapse id="navbarScroll">
 
           {/* <Nav className='me-auto my-2 my-lg-0' style={ { maxHeight: '100px' } } navbarScroll> */}
           {/* <Nav style={ { maxHeight: '100px' } } navbarScroll> */}
           <Nav navbarScroll>
-            <NavLink className='nav-link' to="/">Home</NavLink>
+            <NavLink className='nav-link' to="/home">Home</NavLink>
             <NavDropdown menuVariant='dark' title="Anime" id="navbarScrollingDropdown">
               <NavLink className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
               <NavLink className='nav-link' to='/seasonal-anime'>Seasonal Anime</NavLink>

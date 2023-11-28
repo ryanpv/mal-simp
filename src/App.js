@@ -17,6 +17,7 @@ import UserSavedList from './components/UserSavedList.js';
 import MalAnimeList from './components/MALAnimeList.js';
 import ForgotPassword from './Accounts/ForgotPassword.js';
 import NavBar from './components/NavBar.js';
+import LandingPage from './components/LandingPage.js';
 
 function App() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -44,7 +45,8 @@ function App() {
 
       <div className="App">
         <Routes>
-          <Route path="/" element={ <TopAiringAnime /> } />
+          <Route path="/" element={ <LandingPage /> } />
+          <Route path="/home" element={ <TopAiringAnime /> } />
           <Route path="/user-recommendations" element={ <UserRecommendations /> } />
           <Route path="/logcallback" element={ <LogCallback /> } />
           <Route path="/user-MAL" element={ <MalAnimeList /> } />
