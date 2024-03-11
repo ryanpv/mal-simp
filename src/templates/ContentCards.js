@@ -8,30 +8,34 @@ export default function ContentCards({ loading, animeList }) {
 
   return (
     <>
-      {/* { loading ? <ClipLoader color='blue' size={30} loading={loading} /> : */}
-      <Row xs={1} md={5} className="g-4">
-        { animeList && animeList.map(el => { return (
-            <Col key={ el.node.id }>
-              <Card onClick={ () => handleShow({ id:el.node.id, title:el.node.title }) } style={ { height:'100%', cursor: "pointer" } }>
-                <Card.Title className="text-center">{ el.node.title }</Card.Title>
-                <Card.Subtitle className="text-center">{ el.node.mean && `Score: ${ el.node.mean }` }</Card.Subtitle>
-                <Card.Img src={el.node.main_picture.medium} />                  
-                <Card.Body>
+      <Row xs={1} sm={2} md={3} xl={4} className="g-2">
+        { animeList && animeList.map(el => { return (      
+            <Col className='mb-2' style={{ borderBottom: '1px solid #B4C6EF'}} key={ el.node.id } >
+              <Card className='' onClick={() => handleShow({ id: el.node.id, title:el.node.title }) } style={ { border: '0', height: '100%', cursor: "pointer" } }>
+                <Card.Img style={{ height: '100%' }} variant='top' src={ el.node.main_picture.medium } />
+                <Card.ImgOverlay 
+                    style={{ 
+                      display: 'flex',
+                      borderRadius: '0', 
+                      height: '10%', 
+                      color: 'lightgoldenrodyellow', 
+                      fontWeight: 'bolder', 
+                      fontSize: '20px', 
+                      boxShadow: 'inset 0 30px 50px -10px rgba(0,0,0,2.5)' 
+                    }}
+                  >
+                    <span style={{ margin: 'auto' }}>Score: { el.node.mean }</span>
+                  </Card.ImgOverlay>
+                {/* <Card.Body> */}
+                <Card.Body style={{ backgroundColor: 'whitesmoke', padding:'5px 10px', color: '#B4C6EF', height: '100px', overflow: 'auto' }}>
+                  <Card.Title style={{ fontWeight: 'bold'}}>{ el.node.title }</Card.Title>
+
                   <Card.Subtitle className="text-muted mb-2" as="h6"><strong>Episodes:</strong> { el.node.num_episodes }</Card.Subtitle>
                   <Card.Subtitle className='text-muted mb-2'><strong>Status:</strong> 
                     { el.node.status === 'currently_airing' ? ' Currently Airing' 
                     : el.node.status === 'finished_airing' ? ' Finished Airing' 
                     : ' Not Yet Aired' }
                   </Card.Subtitle>
-                  {/* <br></br> */}
-                  <Card.Text>
-                    <strong as="h6">Synopsis: </strong>
-                    { el.node.synopsis && el.node.synopsis.length > 300 ? 
-                    <>
-                    { el.node.synopsis.substring(0,250) }...
-                    </>
-                    : el.node.synopsis }
-                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col> 
