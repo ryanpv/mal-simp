@@ -66,26 +66,38 @@ function TopAiringAnime() {
         <h2 className='underline' style={ { color: '#B4C6EF', fontWeight: 'bold' } }>Welcome to WorldAnime</h2>
       </div>
       
-      <Container ref={topAiringRef} className="pt-2 pb-4" style={{ backgroundColor: '#'}}>
+      <Container ref={topAiringRef} className="pt-2 pb-4">
 
         <h3 className='text-left mb-3' style={{ color: '#B4C6EF', fontWeight: 'bold' }}>Top Airing Anime</h3>
         <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
 
           <Row xs={1} sm={2} md={3} xl={4} className="g-2">
             { animeList ? animeList.map(recs => { return (
-              <Col key={ recs.node.id } >
-                <Card onClick={() => handleShow({ id: recs.node.id }) } bg="dark" style={ { height: '100%', cursor: "pointer" } }>
-                  <Card.Img variant='top' src={ recs.node.main_picture.medium } />
-                  <Card.Body style={{ backgroundColor: '#B4C6EF', color: '#0F172A' }}>
-                    <strong as="h6">{ recs.node.title }</strong>
+              <Col className='mb-2' style={{ borderBottom: '1px solid #B4C6EF'}} key={ recs.node.id } >
+                <Card className='' onClick={() => handleShow({ id: recs.node.id }) } style={ { border: '0', height: '100%', cursor: "pointer" } }>
+                  <Card.Img style={{ height: '100%' }} variant='top' src={ recs.node.main_picture.medium } />
+                  <Card.ImgOverlay 
+                    style={{ 
+                      display: 'flex',
+                      borderRadius: '0', 
+                      height: '10%', 
+                      color: 'lightgoldenrodyellow', 
+                      fontWeight: 'bolder', 
+                      fontSize: '20px', 
+                      boxShadow: 'inset 0 30px 50px -10px rgba(0,0,0,2.5)' 
+                    }}
+                  >
+                    <span style={{ margin: 'auto' }}>Score: { recs.node.mean }</span>
+                  </Card.ImgOverlay>
+                  <Card.Body style={{ backgroundColor: 'whitesmoke', padding:'5px 10px', color: '#B4C6EF', height: '70px', overflow: 'auto' }}>
+                    <Card.Title style={{ fontWeight: 'bold'}}>{ recs.node.title }</Card.Title>
                   </Card.Body>
-                  <Card.Footer style={{ backgroundColor: '#B4C6EF', color: '#0F172A' }}>Score: { recs.node.mean }</Card.Footer>
                 </Card>
               </Col>
               );
             })
             : null
-            }
+          }
           </Row>
           
         { loading ? <SyncLoader color='#B4C6EF' size={10} loading={loading} /> : null }
