@@ -68,7 +68,7 @@ export default function UserSavedList() {
 
   const AnimeResultList = (props) => {
     return (
-      <tr>
+      <tr style={{ overflowX: 'auto' }}>
         <td>
           <Button onClick={ () => handleShow({ id:props.anime.animeId }) } variant='link'><img alt={ `${props.anime.animeTitle} thumbnail` } 
           src={ props.anime.main_picture.medium } width={75} height={100} /></Button>
@@ -92,7 +92,7 @@ export default function UserSavedList() {
           <AnimeResultList anime={ anime } key={ anime.animeId } />
         )
       });
-    } else if (!currentUser && getLocalStorageAnime.length > 0) {
+    } else if (!currentUser && localStorage.getItem('tempUser')) {
       return getLocalStorageAnime.map(anime => {
         return (
           <AnimeResultList anime={ anime } key={ anime.animeId } />
@@ -239,7 +239,7 @@ function deleteBtn() {
   { 
   // currentUser ? 
       loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
-        <table className='table table-striped' style={ { marginTop: 20 } }>
+        <table className='table table-striped' style={ { marginTop: 20, overflow: 'auto' } }>
         <thead>
           <tr>
             <th style={ { border: "1px solid black", width: 150 } }>

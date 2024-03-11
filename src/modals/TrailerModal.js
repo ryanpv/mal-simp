@@ -28,7 +28,8 @@ function TrailerModal(props) {
       // if (no curr user) { then save to local storage } else { execute code below } 
       if (!currentUser) {
         const checkLocalStorage = JSON.parse(localStorage.getItem("tempUser"));
-        if (checkLocalStorage.length > 0) { 
+
+        if (localStorage.getItem('tempUser') && checkLocalStorage.length > 0) { 
           checkLocalStorage.push(body);
           localStorage.setItem("tempUser", JSON.stringify(checkLocalStorage));
         } else {

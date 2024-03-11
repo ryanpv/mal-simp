@@ -42,7 +42,6 @@ function TopAiringAnime() {
     } catch (err) {
       console.log(err);
     } finally {
-      console.log('loading', loading);
       setLoading(false)
     }
   };
@@ -63,24 +62,24 @@ function TopAiringAnime() {
 
   return (
     <>
-      <div className='w-100 text-center mt-4 mb-4'>
-        <h2 className='underline'>Welcome to WorldAnime</h2>
+      <div className='w-100 text-center text-white mt-4 mb-4'>
+        <h2 className='underline' style={ { color: '#B4C6EF', fontWeight: 'bold' } }>Welcome to WorldAnime</h2>
       </div>
       
-      <Container ref={topAiringRef} className="pt-2 pb-4" style={{ backgroundColor: 'white'}}>
+      <Container ref={topAiringRef} className="pt-2 pb-4" style={{ backgroundColor: '#'}}>
 
-        <h3 className='text-left mb-3'>Top Airing Anime</h3>
-        <hr></hr>
+        <h3 className='text-left mb-3' style={{ color: '#B4C6EF', fontWeight: 'bold' }}>Top Airing Anime</h3>
+        <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
 
-          <Row xs={1} md={5} className="g-4">
+          <Row xs={1} sm={2} md={3} xl={4} className="g-2">
             { animeList ? animeList.map(recs => { return (
               <Col key={ recs.node.id } >
-                <Card onClick={() => handleShow({ id: recs.node.id }) } bg="light" style={ { height: '100%', cursor: "pointer" } }>
+                <Card onClick={() => handleShow({ id: recs.node.id }) } bg="dark" style={ { height: '100%', cursor: "pointer" } }>
                   <Card.Img variant='top' src={ recs.node.main_picture.medium } />
-                  <Card.Body>
+                  <Card.Body style={{ backgroundColor: '#B4C6EF', color: '#0F172A' }}>
                     <strong as="h6">{ recs.node.title }</strong>
                   </Card.Body>
-                  <Card.Footer>Score: { recs.node.mean }</Card.Footer>
+                  <Card.Footer style={{ backgroundColor: '#B4C6EF', color: '#0F172A' }}>Score: { recs.node.mean }</Card.Footer>
                 </Card>
               </Col>
               );
@@ -89,7 +88,7 @@ function TopAiringAnime() {
             }
           </Row>
           
-        { loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
+        { loading ? <SyncLoader color='#B4C6EF' size={10} loading={loading} /> : null }
       </Container>
     </>
   )

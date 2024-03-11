@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Nav, Navbar, Form, NavDropdown, Button } from 'react-bootstrap'
+import { Container, Nav, Navbar, Form, NavDropdown, Button, Row, Col } from 'react-bootstrap'
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useStateContext } from '../contexts/StateContexts';
 import { useAuth } from '../contexts/AuthContext'
@@ -38,57 +38,77 @@ function NavBar() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg" sticky='top'>
-        <Container>
-          <Navbar.Brand href="/home"><img className="mb-2" style={{ height: 25 }} src={require("../logo192.png")} alt='WorldAnime Logo'/> WorldAnime</Navbar.Brand>
-          <Navbar.Toggle aria-controls='NavbarScroll' />
-          <Navbar.Collapse id="navbarScroll">
+      <Navbar style={{ backgroundColor: 'white', fontWeight: 'bold' }} className='py-3' expand="xl" sticky='top' >
+        <Container className='justify-content-between'>
+          <Navbar.Brand href="/home"><img className="" style={{ height: 50 }} src={require("../logo192.png")} alt='WorldAnime Logo'/></Navbar.Brand>
+          <Navbar.Brand style={{ fontWeight: '', fontSize: '30px', color: '#B4C6EF' }} href="/home">WorldAnime</Navbar.Brand>
+          <Navbar.Toggle aria-controls='NavbarScroll' variant="outline-light" style={{ backgroundColor: '#B4C6F', color: '#B4C6EF' }} />
+          <Navbar.Collapse style={{ backgroundColo: '#B4C6F', color: '#B4C6EF' }} className='justify-content-between' id="navbarScroll">
+            <Nav navbarScroll className='justify-content-between' style={{ whiteSpace: 'nowrap'}}>
+              <NavLink className='nav-link' style={{ margin: '0 10px', color: '#B4C6EF' }} to="/home">Home</NavLink>
 
-          {/* <Nav className='me-auto my-2 my-lg-0' style={ { maxHeight: '100px' } } navbarScroll> */}
-          {/* <Nav style={ { maxHeight: '100px' } } navbarScroll> */}
-          <Nav navbarScroll>
-            <NavLink className='nav-link' to="/home">Home</NavLink>
-            <NavDropdown menuVariant='dark' title="Anime" id="navbarScrollingDropdown">
-              <NavLink className='nav-link' to='/top-upcoming-anime'>Top Upcoming Anime</NavLink>
-              <NavLink className='nav-link' to='/seasonal-anime'>Seasonal Anime</NavLink>
-            </NavDropdown>
-            {/* <Nav.Link href="/seasonal-anime" eventKey="1" to="/seasonal-anime">Seasonal Anime</Nav.Link> */}
-          { currentUser ? 
-            <NavDropdown menuVariant='dark' title="MAL" id="navbarScrollingDropdown">
-              <NavLink className='nav-link' to="/user-MAL">MyAnimeList</NavLink>
-              <NavLink className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
-            </NavDropdown>
-            :
-            null
-          }
-            {/* { currentUser !== undefined && */}
-            <NavLink className='nav-link' to="/user-anime-list">Watch Lists</NavLink>
-            {/* } */}
-          </Nav>
+              <NavDropdown 
+                style={{ margin: '0 10px', color: 'red' }} 
+                title={<span style={{ color: '#B4C6EF' }}>Anime</span>} 
+                id="navbarScrollingDropdown"
+              >
+                <NavDropdown.Item 
+                  as={NavLink} 
+                  to='/top-upcoming-anime' 
+                  style={{ margin: '0 0px', color: '#B4C6EF', fontWeight: 'bold', backgroundColor: 'white' }}
+                >
+                  Top Upcoming Anime
+                </NavDropdown.Item>
+                <NavDropdown.Item 
+                  as={NavLink} 
+                  to='/seasonal-anime' 
+                  style={{ margin: '0 0px', color: '#B4C6EF', fontWeight: 'bold', backgroundColor: 'white' }}
+                >
+                  Seasonal Anime
+                </NavDropdown.Item>
+              </NavDropdown>
 
-        <Container style={{ maxWidth: '700px' }}>
-          <Form className='me-auto' onSubmit={(e) => submitSearch(e)}>
-            <Form.Control className="" type='text' ref={animeRef} placeholder='Search Anime' isInvalid={ !!formErrors } />
-            <Form.Control.Feedback type='invalid'>
-              { formErrors }
-            </Form.Control.Feedback>
-          </Form>
-        </Container>
+              { currentUser ? 
+                <NavDropdown title={ <span style={{ margin: '0 10px', color: '#B4C6EF' }}>MAL</span> } id="navbarScrollingDropdown">
+                  <NavLink style={{ color: '#0F172A' }} className='nav-link' to="/user-MAL">MyAnimeList</NavLink>
+                  <NavLink className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
+                </NavDropdown>
+                :
+                null
+              }
+              {/* { currentUser !== undefined && */}
+              <NavLink xs='auto' className='nav-link' style={{ margin: '0 10px', color: '#B4C6EF', minWidth: '' }} to="/user-anime-list">Watch Lists</NavLink>
+              {/* } */}
+            </Nav>
 
-          <Nav>
-            { currentUser ? 
-            <>
-            <Nav.Link className="pt-3" bg='light'>{ currentUser.split("@")[0] }</Nav.Link> 
-            <Button variant='outline-light' onClick={() => logout()}>Log Out</Button>
-            </>
-            :
-            <>
-            <Nav.Link href="/login">Log In</Nav.Link>
-            <Nav.Link href="sign-up">Sign Up</Nav.Link> 
-            </>
-            }
-            {/* if logged in, then a 'Profile' link should replace these two  */}
-          </Nav>
+            <Row>
+              <Col xs='auto'>
+                <Form inline className='' style={{ minWidth: '250px' }} onSubmit={(e) => submitSearch(e)}>
+                  <Form.Control className='' type='text' ref={animeRef} placeholder='Search Anime' isInvalid={ !!formErrors } />
+                  <Form.Control.Feedback type='invalid'>
+                    { formErrors }
+                  </Form.Control.Feedback>
+                </Form>
+              </Col>
+            </Row>
+            {/* </div> */}
+
+            <Nav className='' >
+              { currentUser ? 
+              <>
+                <NavDropdown title={ <span style={{ margin: '0 10px', color: '#B4C6EF' }}>{ currentUser.split("@")[0] }</span> } id="navbarScrollingDropdown">
+                  <NavDropdown.Item onClick={ () => logout() } style={{ margin: '0 0px', color: '#B4C6EF', fontWeight: 'bold' }}>Log Out</NavDropdown.Item>
+                </NavDropdown>
+              </>
+              :
+              <>
+                <Nav.Link style={{ margin: '0 10px', color: '#B4C6EF', flexShrink: 0 }} href="/sign-up">Signup</Nav.Link>
+                <Nav.Link style={{ margin: '0 10px', color: '#B4C6EF', flexShrink: 0 }} href="/login">Login</Nav.Link>
+              </>
+              }
+              {/* if logged in, then a 'Profile' link should replace these two  */}
+            </Nav>
+
           </Navbar.Collapse>
         </Container>
       </Navbar> 

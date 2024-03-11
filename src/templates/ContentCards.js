@@ -12,7 +12,7 @@ export default function ContentCards({ loading, animeList }) {
       <Row xs={1} md={5} className="g-4">
         { animeList && animeList.map(el => { return (
             <Col key={ el.node.id }>
-              <Card onClick={ () => handleShow({ id:el.node.id, title:el.node.title }) } bg='light' style={ { height:'100%', cursor: "pointer" } }>
+              <Card onClick={ () => handleShow({ id:el.node.id, title:el.node.title }) } style={ { height:'100%', cursor: "pointer" } }>
                 <Card.Title className="text-center">{ el.node.title }</Card.Title>
                 <Card.Subtitle className="text-center">{ el.node.mean && `Score: ${ el.node.mean }` }</Card.Subtitle>
                 <Card.Img src={el.node.main_picture.medium} />                  
@@ -40,7 +40,7 @@ export default function ContentCards({ loading, animeList }) {
         }
       </Row>
 
-      { loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
+      { loading ? <SyncLoader color='#B4C6EF' size={10} loading={loading} /> : null }
 {/* } */}
     </>
   )

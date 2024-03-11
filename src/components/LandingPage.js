@@ -15,6 +15,7 @@ export default function LandingPage() {
 
     <Container className="pt-5" style={ { backgroundColor: "white" } }>
       <div className='pb-5 ps-5 pe-5'>
+        <p className='text-center'>***This site is undergoing some changes. Please excuse the appearance!***</p>
 
         <div className='text-center mb-5'>
           <Row>
