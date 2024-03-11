@@ -11,6 +11,7 @@ function NavBar() {
   const { setSearchResults, offset, setOffset } = useStateContext();
   const { currentUser, logout } = useAuth();
   const [formErrors, setFormErrors] = React.useState('');
+  const [hoverColor, setHoverColor] = React.useState('white')
   
   async function submitSearch(e) {
     e.preventDefault();
@@ -42,13 +43,13 @@ function NavBar() {
         <Container className='justify-content-between'>
           <Navbar.Brand href="/home"><img className="" style={{ height: 50 }} src={require("../logo192.png")} alt='WorldAnime Logo'/></Navbar.Brand>
           <Navbar.Brand style={{ fontWeight: '', fontSize: '30px', color: '#B4C6EF' }} href="/home">WorldAnime</Navbar.Brand>
-          <Navbar.Toggle aria-controls='NavbarScroll' variant="outline-light" style={{ backgroundColor: '#B4C6F', color: '#B4C6EF' }} />
-          <Navbar.Collapse style={{ backgroundColo: '#B4C6F', color: '#B4C6EF' }} className='justify-content-between' id="navbarScroll">
+          <Navbar.Toggle aria-controls='NavbarScroll' style={{ backgroundColor: '#B4C6EF' }} />
+          <Navbar.Collapse className='justify-content-between' id="navbarScroll">
             <Nav navbarScroll className='justify-content-between' style={{ whiteSpace: 'nowrap'}}>
               <NavLink className='nav-link' style={{ margin: '0 10px', color: '#B4C6EF' }} to="/home">Home</NavLink>
 
               <NavDropdown 
-                style={{ margin: '0 10px', color: 'red' }} 
+                style={{ margin: '0 10px' }} 
                 title={<span style={{ color: '#B4C6EF' }}>Anime</span>} 
                 id="navbarScrollingDropdown"
               >
@@ -59,6 +60,7 @@ function NavBar() {
                 >
                   Top Upcoming Anime
                 </NavDropdown.Item>
+              <NavDropdown.Divider />
                 <NavDropdown.Item 
                   as={NavLink} 
                   to='/seasonal-anime' 
@@ -70,15 +72,27 @@ function NavBar() {
 
               { currentUser ? 
                 <NavDropdown title={ <span style={{ margin: '0 10px', color: '#B4C6EF' }}>MAL</span> } id="navbarScrollingDropdown">
-                  <NavLink style={{ color: '#0F172A' }} className='nav-link' to="/user-MAL">MyAnimeList</NavLink>
-                  <NavLink className='nav-link' to="/user-recommendations">Your Recommendations</NavLink>
+                  <NavDropdown.Item 
+                    as={NavLink} 
+                    to='/user-MAL' 
+                    style={{ margin: '0 0px', color: '#B4C6EF', fontWeight: 'bold', backgroundColor: 'white' }}
+                  >
+                    MyAnimeList
+                  </NavDropdown.Item>
+                <NavDropdown.Divider />
+                  <NavDropdown.Item 
+                    as={NavLink} 
+                    to='/user-recommendations' 
+                    style={{ margin: '0 0px', color: '#B4C6EF', fontWeight: 'bold', backgroundColor: 'white' }}
+                  >
+                    Your Recommendations
+                  </NavDropdown.Item>
                 </NavDropdown>
                 :
                 null
               }
-              {/* { currentUser !== undefined && */}
-              <NavLink xs='auto' className='nav-link' style={{ margin: '0 10px', color: '#B4C6EF', minWidth: '' }} to="/user-anime-list">Watch Lists</NavLink>
-              {/* } */}
+
+              <NavLink xs='auto' className='nav-link' style={{ margin: '0 10px', color: '#B4C6EF' }} to="/user-anime-list">Watch Lists</NavLink>
             </Nav>
 
             <Row>
