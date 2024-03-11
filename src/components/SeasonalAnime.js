@@ -91,19 +91,20 @@ function SeasonalAnime() {
 
 
   return (
-    <>
-      <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
-        <h2 className='text-left mt-4'>Seasonal Anime</h2>
-        <hr></hr>
-        <h6 className='text-center'>
-          <strong>{ animeList.season ? `${animeList.season.season.toUpperCase()} ${animeList.season.year}` : null }</strong>
-            </h6>
-        {/* <br></br> */}
-        <Form className='centered' onSubmit={(e) => seasonalQuery(e)}>
+    <> 
+      <Container 
+        ref={containerRef} 
+        className="mt-4 mb-4 pt-2 pb-3" 
+        style={{ backgroundColor: 'white' }}
+      >
+        <h3 className='text-left mb-3' style={{ color: '#B4C6EF', fontWeight: 'bold' }}>Seasonal Anime</h3>
+        <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
+
+        <Form style={{ color: '#B4C6EF', fontWeight: 'bold' }} className='centered' onSubmit={(e) => seasonalQuery(e)}>
           <Row className="w-25 mb-3">
             <Form.Group as={Col}>
               <Form.Label>Season</Form.Label>
-              <Form.Select id='anime-season'>
+              <Form.Select style={{ color: '#B4C6EF', fontWeight: 'bold' }} id='anime-season'>
               <option value="winter">Winter</option>
               <option value="spring">Spring</option>
               <option value="summer">Summer</option>
@@ -121,7 +122,14 @@ function SeasonalAnime() {
           </Row>
         </Form>
         
-          <ContentCards animeList={animeList.anime} loading={loading}/>
+      </Container>
+      
+      <h4 style={{ color: '#B4C6EF', fontWeight: 'bold' }} className='text-center mt-2'>
+        <strong>{ animeList.season ? `${animeList.season.season.toUpperCase()} ${animeList.season.year}` : null }</strong>
+      </h4>
+
+      <Container ref={ containerRef } className="pt-2 pb-4">
+        <ContentCards animeList={animeList.anime} loading={loading}/>
       </Container>
     </>
   )
