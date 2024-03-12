@@ -238,7 +238,7 @@ function deleteBtn() {
 
   { 
   // currentUser ? 
-      loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
+      loading ? <SyncLoader color='#B4C6EF' size={15} loading={loading} /> :
         <table className='table table-striped' style={ { marginTop: 20, overflow: 'auto' } }>
         <thead>
           <tr>
@@ -256,7 +256,7 @@ function deleteBtn() {
             <th style={ { border: "1px solid black", padding: "10px 10px" } }>No. Episodes</th>
           </tr>
         </thead>
-        <tbody>{ loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> : displaySearchedAnime() }</tbody>
+        <tbody>{ loading ? <SyncLoader color='#B4C6EF' size={15} loading={loading} /> : displaySearchedAnime() }</tbody>
       </table>
     // :
     // <>

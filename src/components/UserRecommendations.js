@@ -1,8 +1,9 @@
 import React from 'react'
-import { Button, Container } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useStateContext } from '../contexts/StateContexts';
 import ContentCards from '../templates/ContentCards';
 import SyncLoader from "react-spinners/SyncLoader";
+
 
 export default function HomePage() {
   const clientId = process.env.REACT_APP_MAL_CLIENT_ID
@@ -96,34 +97,50 @@ export default function HomePage() {
 
   return (
     <>
-      <Container style={ { backgroundColor: 'white' } }>
-        <div className='w-100 text-center mt-4 pt-4'>
-          <h3>To see your MyAnimeList recommended titles click the log in button below</h3>
-        </div>
+      { !malUserDetails.id ? 
+        <Container>
+          <div className='w-100 text-center mt-4 pt-4'>
+            <h3>To see your MyAnimeList recommended titles click the log in button below</h3>
+          </div>
 
-        <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>
-          { malUserDetails.id ? 
-            <Button onClick={ () => malLogout() }>Log out of MAL</Button> 
-            : <Button onClick={ () => malLogin() }>Log In to MyAnimeList.net</Button> 
-          }
-        </div>
-      </Container>
+          <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>
+            <Button onClick={ () => malLogin() }>Log In to MyAnimeList.net</Button> 
+          </div>
+        </Container>
+        : null
+      }
       
       { malUserDetails.id ? 
-      <Container ref={containerRef} className="mt-4 pt-2 pb-4" style={{ backgroundColor: 'white'}}>
-        { malUserDetails.name ? 
-          <div className='text-left'>
-            <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2>
-          </div>
-        : <h2>Log into MAL to see your recommendations.</h2>
-        }
-        <hr></hr>
+        <Container ref={containerRef} className="mt-4 pt-2 pb-4" >
+          { malUserDetails.name ? 
+            <div xs={1} className='text-left'>
+              <Row xs={1} sm={2} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
+                <h3 className='text-left mb-3' style={{ color: '#B4C6EF', fontWeight: 'bold' }}>
+                  MAL Anime Recommendations
+                </h3>
+                <Button className='mx-2' style={{ color: '#B4C6EF', maxWidth: '100px' }} variant='secondary' size='sm' onClick={ () => malLogout() }>MAL Logout</Button> 
+              </Row>
+              <i>Recommendations for </i><strong style={{ fontWeight: 'bold', color: '#B4C6EF', fontSize: '20px' }}>{ malUserDetails.name }</strong>
 
-        <ContentCards loading={loading} animeList={animeList}/>
 
-      </Container>
+              {/* <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2> */}
+            </div>
+          : <h2>Log into MAL to see your recommendations.</h2>
+          }
+          
+          <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
+
+          <ContentCards loading={loading} animeList={animeList}/>
+
+        </Container>
+        : null 
+      }
+
+      { !malUserDetails.id && loading ? 
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto'>
+          <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
+        </div>
       : null }
-      { !malUserDetails.id && loading ? <SyncLoader color='#0d6efd' size={10} loading={loading} /> : null }
     </>
   )
 }

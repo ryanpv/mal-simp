@@ -71,7 +71,9 @@ function NavBar() {
               </NavDropdown>
 
               { currentUser ? 
-                <NavDropdown title={ <span style={{ margin: '0 10px', color: '#B4C6EF' }}>MAL</span> } id="navbarScrollingDropdown">
+                <NavDropdown
+                  style={{ margin: '0 10px' }} 
+                  title={ <span style={{ color: '#B4C6EF' }}>MAL</span> } id="navbarScrollingDropdown">
                   <NavDropdown.Item 
                     as={NavLink} 
                     to='/user-MAL' 
