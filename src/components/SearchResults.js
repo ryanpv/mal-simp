@@ -3,7 +3,7 @@ import { useStateContext } from '../contexts/StateContexts'
 import { Button } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { useDisplayContext } from '../contexts/DisplayDataContext';
-import ClipLoader from 'react-spinners/ClipLoader';
+import SyncLoader from 'react-spinners/SyncLoader';
 
 export default function SearchResults() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -70,8 +70,11 @@ export default function SearchResults() {
       <div className='w-100 text-center pt-5 mt-4 mb-4'>
         <h2 className='text-center mb-2'>Search Results for: { url.get("anime") }</h2>
       </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto'>
+        <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
+      </div>
 
-      <table className='table table-striped' style={ { marginTop: 20 } }>
+      <table className='table table-striped' style={ { marginTop: 20, overflow: 'auto' } }>
         <thead>
           <tr>
             <th style={{ margin: 20, border: "1px solid black", padding: "10px 10px" }}>Image</th>
@@ -79,7 +82,8 @@ export default function SearchResults() {
             <th style={{ border: "1px solid black", padding: "10px 10px" }}>Anime Title</th>
           </tr>
         </thead>
-        <tbody>{ loading ? <ClipLoader color='blue' size={30} loading={loading} /> : displaySearchedAnime() }</tbody>
+        <tbody>{ !loading && displaySearchedAnime() }
+        </tbody>
       </table>
 
       { searchResults.paging ?

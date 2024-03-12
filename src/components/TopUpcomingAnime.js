@@ -1,6 +1,7 @@
 import React from 'react'
 import ContentCards from '../templates/ContentCards';
 import { Container } from 'react-bootstrap';
+import SyncLoader from "react-spinners/SyncLoader"
 
 function TopUpcomingAnime() {
   const serverUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_DEPLOYED_SERVER : process.env.REACT_APP_SERVER_BASEURL
@@ -62,6 +63,12 @@ function TopUpcomingAnime() {
         <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
 
         <ContentCards loading={loading} animeList={animeList}/>
+
+        { loading ? 
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto'>
+          <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
+        </div>
+        : null }
       </Container>
     </>
   )

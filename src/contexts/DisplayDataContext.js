@@ -13,9 +13,9 @@ export function DisplayDataProvider({ children }) {
   const [loading, setLoading] = React.useState(false)
 
     const handleShow = async (value) => {
+      setLoading(true)
       setShow(true)
       setCurrentPage(1)
-      setLoading(true)
       const getAnimeContent = await fetch(`${ serverUrl }/anime/${value.id}/videos,synopsis,mean,num_episodes`)
       const contentResults = await getAnimeContent.json();
       setAnimeDetails(contentResults)

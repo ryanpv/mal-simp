@@ -100,7 +100,11 @@ function TopAiringAnime() {
           }
           </Row>
           
-        { loading ? <SyncLoader color='#B4C6EF' size={10} loading={loading} /> : null }
+        { loading ? 
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto'>
+          <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
+        </div>
+        : null }
       </Container>
     </>
   )

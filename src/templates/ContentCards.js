@@ -43,9 +43,6 @@ export default function ContentCards({ loading, animeList }) {
           )
         }
       </Row>
-
-      { loading ? <SyncLoader color='#B4C6EF' size={10} loading={loading} /> : null }
-{/* } */}
     </>
   )
 }
