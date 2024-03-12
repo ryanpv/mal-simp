@@ -11,7 +11,9 @@ function TopUpcomingAnime() {
   const containerRef = React.useRef();
 
   React.useEffect(() => {
-    getTopUpcoming();
+    if (!loading) {
+      getTopUpcoming();
+    }
   }, [offset]);
 
   React.useEffect(() => {

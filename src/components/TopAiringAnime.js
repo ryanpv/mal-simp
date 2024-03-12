@@ -14,7 +14,9 @@ function TopAiringAnime() {
   const topAiringRef = React.useRef();
 
   React.useEffect(() => {
-    getTopAiring();
+    if (!loading) {
+      getTopAiring();
+    }
   }, [offset]);
 
   React.useEffect(() => {

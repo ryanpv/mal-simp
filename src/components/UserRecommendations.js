@@ -18,7 +18,7 @@ export default function HomePage() {
   console.log('in development?:', process.env.NODE_ENV === 'development');
 
   React.useEffect(() => {
-    if (malUserDetails.id) {
+    if (malUserDetails.id && !loading) {
       fetchRecommendedAnime();
     }
     return ;

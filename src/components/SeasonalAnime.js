@@ -17,7 +17,9 @@ function SeasonalAnime() {
   const containerRef = React.useRef(); // ref for the page's container. Used for infinite scrolling
 
   React.useEffect(() => {
-    getSeasonalAnime(); 
+    if (!loading) {
+      getSeasonalAnime(); 
+    }
   }, [offset, season, currentYear, setAnimeList]);
 
   React.useEffect(() => {
