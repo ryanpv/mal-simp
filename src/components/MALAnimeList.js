@@ -50,6 +50,9 @@ function MalAnimeList() {
   async function getUserList() {
     setLoading(true);
     try {
+      if (!malUserDetails.id) {
+        throw Error('Log in to MAL to see recommendations.')
+      }
       const getAnimeList = await fetch(`${ serverUrl }/user-list/${ offset }`, { credentials: 'include', headers: { Authorization: `Bearer ${ firebaseToken }`} })
       const userListResult = await getAnimeList.json();
 
