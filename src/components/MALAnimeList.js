@@ -97,15 +97,15 @@ function MalAnimeList() {
 
   return (
     <>
-        { !malUserDetails.id ? 
-    <Container>
-      <div className='w-100 text-center mt-4 pt-4'>
-        <h3>If you would like to see your saved titles from MyAnimeList click the log in button below</h3>
-      </div>
-      <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>
-       <Button onClick={ () => getMalToken() }>Log In to MyAnimeList.net</Button> 
-      </div>
-    </Container>
+      { !malUserDetails.id ? 
+        <Container>
+          <div className='w-100 text-center mt-4 pt-4'>
+            <h3>If you would like to see your saved titles from MyAnimeList click the log in button below</h3>
+          </div>
+          <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>
+          <Button onClick={ () => getMalToken() }>Log In to MyAnimeList.net</Button> 
+          </div>
+        </Container>
         : null
       }
 
@@ -133,8 +133,8 @@ function MalAnimeList() {
         null
       } 
 
-      { !malUserDetails.id && loading ? 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto'>
+      { loading ? 
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto pt-5'>
           <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
         </div>
       : null }

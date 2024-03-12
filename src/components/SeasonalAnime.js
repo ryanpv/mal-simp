@@ -1,6 +1,8 @@
 import React from 'react'
 import { Row, Col, Container, Button, Form } from 'react-bootstrap';
 import ContentCards from '../templates/ContentCards';
+import SyncLoader from "react-spinners/SyncLoader"
+
 ////////////////////////////////////
 
 function SeasonalAnime() {
@@ -132,6 +134,12 @@ function SeasonalAnime() {
 
       <Container ref={ containerRef } className="pt-2 pb-4">
         <ContentCards animeList={animeList.anime} loading={loading}/>
+        
+        { loading ? 
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto pt-5'>
+            <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
+          </div>
+        : null }
       </Container>
     </>
   )

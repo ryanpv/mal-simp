@@ -70,7 +70,7 @@ export default function SearchResults() {
       <div className='w-100 text-center pt-5 mt-4 mb-4'>
         <h2 className='text-center mb-2'>Search Results for: { url.get("anime") }</h2>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto'>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto pt-5'>
         <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
       </div>
 

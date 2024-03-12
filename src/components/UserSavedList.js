@@ -239,7 +239,7 @@ function deleteBtn() {
   { 
   // currentUser ? 
       loading ? 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto'>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto pt-5'>
         <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
       </div>
       :
