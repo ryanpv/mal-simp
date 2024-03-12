@@ -20,7 +20,10 @@ function MalAnimeList() {
 
   React.useEffect(() => {
     console.log('offset', offset);
-    getUserList()
+    if (malUserDetails.id) {
+      getUserList()
+    }
+    return ;
   }, [offset, malUserDetails.id]);
 
   React.useEffect(() => {
