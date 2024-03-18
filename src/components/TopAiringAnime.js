@@ -65,13 +65,13 @@ function TopAiringAnime() {
   return (
     <>
       <div className='w-100 text-center text-white mt-4 mb-4'>
-        <h2 className='underline' style={ { color: '#B4C6EF', fontWeight: 'bold' } }>Welcome to WorldAnime</h2>
+        <h2 className='underline' style={ { color: 'white', fontWeight: 'bold' } }>Welcome to WorldAnime</h2>
       </div>
       
       <Container ref={topAiringRef} className="pt-2 pb-4">
 
         <h3 className='text-left mb-3' style={{ color: '#B4C6EF', fontWeight: 'bold' }}>Top Airing Anime</h3>
-        <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
+        <hr style={{ color: "#F472B6", border: '3px solid #F472B6' }}></hr>
 
           <Row xs={1} sm={2} md={3} xl={4} className="g-2">
             { animeList ? animeList.map(recs => { return (
@@ -91,8 +91,8 @@ function TopAiringAnime() {
                   >
                     <span style={{ margin: 'auto' }}>Score: { recs.node.mean }</span>
                   </Card.ImgOverlay>
-                  <Card.Body style={{ backgroundColor: 'whitesmoke', padding:'5px 10px', color: '#B4C6EF', height: '70px', overflow: 'auto' }}>
-                    <Card.Title style={{ fontWeight: 'bold'}}>{ recs.node.title }</Card.Title>
+                  <Card.Body style={{ backgroundColor: '#0F172A', padding:'5px 10px', color: '#F472B6', height: '70px', overflow: 'auto' }}>
+                    <Card.Title style={{ color: '#F472B6' }}>{ recs.node.title }</Card.Title>
                   </Card.Body>
                 </Card>
               </Col>

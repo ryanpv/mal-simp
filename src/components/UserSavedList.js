@@ -73,14 +73,14 @@ export default function UserSavedList() {
           <Button onClick={ () => handleShow({ id:props.anime.animeId }) } variant='link'><img alt={ `${props.anime.animeTitle} thumbnail` } 
           src={ props.anime.main_picture.medium } width={75} height={100} /></Button>
         </td>
-        <td>{props.anime.mean}</td>
+        <td style={{ color: '#F472B6' }}>{props.anime.mean}</td>
         <td>
           <ButtonGroup>
             <RemoveAnimeBtn anime={props.anime} />
             <Button onClick={ () => handleShow({ id:props.anime.animeId }) } variant='link'>{props.anime.animeTitle}</Button>
           </ButtonGroup>
         </td>
-        <td>{ props.anime.num_episodes }</td>
+        <td style={{ color: '#F472B6' }}>{ props.anime.num_episodes }</td>
       </tr>
     )
   };
@@ -213,7 +213,7 @@ function deleteBtn() {
         <Form onSubmit={ (e) => addNewCategory(e) }>
           <Row className="w-50 mb-3 mt-3">
             <Form.Group as={ Col }>
-              <Form.Label>Select Category</Form.Label>
+              <Form.Label style={{ color: '#B4C6EF' }}>Select Category</Form.Label>
               <Form.Select ref={selectRef} onChange={ (e) => fetchCategoryContent(e, e.target.value) }>
                 <option defaultValue='select category...'>Select category...</option>
                 <option value='Watch Later'>Watch Later</option>
@@ -221,7 +221,7 @@ function deleteBtn() {
               </Form.Select>
               </Form.Group>
             <Form.Group as={ Col }>
-              <Form.Label>Add new category</Form.Label>
+              <Form.Label style={{ color: '#B4C6EF' }}>Add new category</Form.Label>
               <Form.Control type='text' ref={categoryRef} placeholder='New Category' isInvalid={ !!formErrors }/>
               <Form.Control.Feedback type='invalid'>
                 { formErrors }
@@ -246,7 +246,7 @@ function deleteBtn() {
         <table className='table table-striped' style={ { marginTop: 20, overflow: 'auto' } }>
         <thead>
           <tr>
-            <th style={ { border: "1px solid black", width: 150 } }>
+            <th style={ { border: "1px solid #B4C6EF", width: 150, color: '#B4C6EF' } }>
               { selectedCategory !== "" ? selectedCategory : "" }{'   '}
 
               { selectedCategory === "" ? null
@@ -255,9 +255,9 @@ function deleteBtn() {
               : <Button size="sm" onClick={ deleteBtn } variant='danger' value='del'>-</Button> }
             </th>
 
-            <th style={ { margin: 20, border: "1px solid black", padding: "10px 10px", width: 200 } }>Score</th>
-            <th style={ { border: "1px solid black", padding: "10px 10px" } }>Anime Title</th>
-            <th style={ { border: "1px solid black", padding: "10px 10px" } }>No. Episodes</th>
+            <th style={ { color: '#F472B6', margin: 20, border: "1px solid #B4C6EF", padding: "10px 10px", width: 200 } }>Score</th>
+            <th style={ { color: '#F472B6', border: "1px solid #B4C6EF", padding: "10px 10px" } }>Anime Title</th>
+            <th style={ { color: '#F472B6', border: "1px solid #B4C6EF", padding: "10px 10px" } }>No. Episodes</th>
           </tr>
         </thead>
         <tbody>{ !loading && displaySearchedAnime() }</tbody>

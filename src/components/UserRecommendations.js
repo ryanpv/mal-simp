@@ -123,15 +123,15 @@ export default function HomePage() {
                 </h3>
                 <Button className='mx-2' style={{ color: '#B4C6EF', maxWidth: '100px' }} variant='secondary' size='sm' onClick={ () => malLogout() }>MAL Logout</Button> 
               </Row>
-              <i>Recommendations for </i><strong style={{ fontWeight: 'bold', color: '#B4C6EF', fontSize: '20px' }}>{ malUserDetails.name }</strong>
+              <i style={{ color: '#B4C6EF' }}>Recommendations for </i><strong style={{ fontWeight: 'bold', color: '#F472B6', fontSize: '20px' }}>{ malUserDetails.name }</strong>
 
 
               {/* <h2>Anime recommendations for MAL user: <strong><i>{ malUserDetails.name }</i></strong></h2> */}
             </div>
-          : <h2>Log into MAL to see your recommendations.</h2>
+          : <h2 style={{ color: '#B4C6EF' }}>Log into MAL to see your recommendations.</h2>
           }
           
-          <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
+          <hr style={{ color: "#F472B6", border: '3px solid #F472B6' }}></hr>
 
           <ContentCards loading={loading} animeList={animeList}/>
 

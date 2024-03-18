@@ -9,8 +9,8 @@ export default function LandingPage() {
   return (
     <>
     <div className='mt-3 mb-3 text-center'>
-      <h1 >WorldAnime</h1>
-      <h3>Look up anime titles and save them to your watch list!</h3>
+      <h1 style={{ color: '#B4C6EF' }}>WorldAnime</h1>
+      <h3 style={{ color: '#B4C6EF' }}>Look up anime titles and save them to your watch list!</h3>
     </div>
 
     <Container className="pt-5" style={ { backgroundColor: "white" } }>
@@ -71,7 +71,7 @@ export default function LandingPage() {
     </Container>
 
     <footer className='mt-5 text-center'>
-      <p>
+      <p style={{ color: '#B4C6EF' }}>
         Thanks for stopping by! To check out my other projects or connect with me, you can visit one of my links: 
         <ul style={ { listStyleType: "none" } }>
           <li>

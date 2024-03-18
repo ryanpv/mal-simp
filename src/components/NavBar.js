@@ -39,18 +39,18 @@ function NavBar() {
 
   return (
     <>
-      <Navbar style={{ backgroundColor: 'white', fontWeight: 'bold' }} className='py-3' expand="xl" sticky='top' >
+      <Navbar style={{ backgroundColor: '#0F172A', fontWeight: 'bold', borderBottom: '1px solid #B4C6EF' }} className='py-1 border-solid' expand="xl" sticky='top' >
         <Container className='justify-content-between'>
-          <Navbar.Brand href="/home"><img className="" style={{ height: 50 }} src={require("../logo192.png")} alt='WorldAnime Logo'/></Navbar.Brand>
-          <Navbar.Brand style={{ fontWeight: '', fontSize: '30px', color: '#B4C6EF' }} href="/home">WorldAnime</Navbar.Brand>
-          <Navbar.Toggle aria-controls='NavbarScroll' style={{ backgroundColor: '#B4C6EF' }} />
+          <Navbar.Brand href="/home"><img className="" style={{ height: 40 }} src={require("../logo192.png")} alt='WorldAnime Logo'/></Navbar.Brand>
+          <Navbar.Brand style={{ fontWeight: '', fontSize: '30px', color: 'white' }} href="/home">WorldAnime</Navbar.Brand>
+          <Navbar.Toggle aria-controls='NavbarScroll' style={{ backgroundColor: '#4C4C70' }} />
           <Navbar.Collapse className='justify-content-between' id="navbarScroll">
             <Nav navbarScroll className='justify-content-between' style={{ whiteSpace: 'nowrap'}}>
-              <NavLink className='nav-link' style={{ margin: '0 10px', color: '#B4C6EF' }} to="/home">Home</NavLink>
+              <NavLink className='nav-link' style={{ margin: '0 10px', color: 'white' }} to="/home">Home</NavLink>
 
               <NavDropdown 
                 style={{ margin: '0 10px' }} 
-                title={<span style={{ color: '#B4C6EF' }}>Anime</span>} 
+                title={<span style={{ color: 'white' }}>Anime</span>} 
                 id="navbarScrollingDropdown"
               >
                 <NavDropdown.Item 
@@ -73,7 +73,7 @@ function NavBar() {
               { currentUser ? 
                 <NavDropdown
                   style={{ margin: '0 10px' }} 
-                  title={ <span style={{ color: '#B4C6EF' }}>MAL</span> } id="navbarScrollingDropdown">
+                  title={ <span style={{ color: 'white' }}>MAL</span> } id="navbarScrollingDropdown">
                   <NavDropdown.Item 
                     as={NavLink} 
                     to='/user-MAL' 
@@ -94,7 +94,7 @@ function NavBar() {
                 null
               }
 
-              <NavLink xs='auto' className='nav-link' style={{ margin: '0 10px', color: '#B4C6EF' }} to="/user-anime-list">Watch Lists</NavLink>
+              <NavLink xs='auto' className='nav-link' style={{ margin: '0 10px', color: 'white' }} to="/user-anime-list">Watch Lists</NavLink>
             </Nav>
 
             <Row>
@@ -112,14 +112,14 @@ function NavBar() {
             <Nav className='' >
               { currentUser ? 
               <>
-                <NavDropdown title={ <span style={{ margin: '0 10px', color: '#B4C6EF' }}>{ currentUser.split("@")[0] }</span> } id="navbarScrollingDropdown">
-                  <NavDropdown.Item onClick={ () => logout() } style={{ margin: '0 0px', color: '#B4C6EF', fontWeight: 'bold' }}>Log Out</NavDropdown.Item>
+                <NavDropdown title={ <span style={{ margin: '0 10px', color: 'white' }}>{ currentUser.split("@")[0] }</span> } id="navbarScrollingDropdown">
+                  <NavDropdown.Item onClick={ () => logout() } style={{ margin: '0 0px', color: '#F472B6', fontWeight: 'bold' }}>Log Out</NavDropdown.Item>
                 </NavDropdown>
               </>
               :
               <>
-                <Nav.Link style={{ margin: '0 10px', color: '#B4C6EF', flexShrink: 0 }} href="/sign-up">Signup</Nav.Link>
-                <Nav.Link style={{ margin: '0 10px', color: '#B4C6EF', flexShrink: 0 }} href="/login">Login</Nav.Link>
+                <Nav.Link style={{ margin: '0 10px', color: 'white', flexShrink: 0 }} href="/sign-up">Signup</Nav.Link>
+                <Nav.Link style={{ margin: '0 10px', color: 'white', flexShrink: 0 }} href="/login">Login</Nav.Link>
               </>
               }
               {/* if logged in, then a 'Profile' link should replace these two  */}

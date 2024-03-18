@@ -62,7 +62,7 @@ function TopUpcomingAnime() {
     <>
       <Container ref={containerRef} className="mt-4 pt-2 pb-4">
         <h3 className='text-left mb-3' style={{ color: '#B4C6EF', fontWeight: 'bold' }}>Top Upcoming Anime</h3>
-        <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
+        <hr style={{ color: "#F472B6", border: '3px solid #F472B6' }}></hr>
 
         <ContentCards loading={loading} animeList={animeList}/>
 

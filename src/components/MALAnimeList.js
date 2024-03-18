@@ -120,11 +120,11 @@ function MalAnimeList() {
               <Button className='mx-2' style={{ color: '#B4C6EF', maxWidth: '100px' }} variant='secondary' size='sm' onClick={ () => malLogout() }>MAL Logout</Button> 
             </Row>
 
-            { animeList ? <i>Your saved anime titles from MyAnimeList.</i> 
+            { animeList ? <i style={{ color: '#B4C6EF' }}>Your saved anime titles from MyAnimeList.</i> 
             : <><Button size='sm' variant='primary' onClick={ () => getMalToken() }>Log in</Button> to MAL to see your saved anime list</> } 
           </div>
 
-          <hr style={{ color: "#B4C6EF", border: '3px solid #B4C6EF' }}></hr>
+          <hr style={{ color: "#F472B6", border: '3px solid #F472B6' }}></hr>
 
           <ContentCards loading={loading} animeList={animeList} />
         </Container>

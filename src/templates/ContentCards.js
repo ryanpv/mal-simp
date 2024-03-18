@@ -27,11 +27,11 @@ export default function ContentCards({ loading, animeList }) {
                     <span style={{ margin: 'auto' }}>Score: { el.node.mean }</span>
                   </Card.ImgOverlay>
                 {/* <Card.Body> */}
-                <Card.Body style={{ backgroundColor: 'whitesmoke', padding:'5px 10px', color: '#B4C6EF', height: '100px', overflow: 'auto' }}>
+                <Card.Body style={{ backgroundColor: '#0F172A', padding:'5px 10px', color: '#F472B6', height: '100px', overflow: 'auto' }}>
                   <Card.Title style={{ fontWeight: 'bold'}}>{ el.node.title }</Card.Title>
-
-                  <Card.Subtitle className="text-muted mb-2" as="h6"><strong>Episodes:</strong> { el.node.num_episodes }</Card.Subtitle>
-                  <Card.Subtitle className='text-muted mb-2'><strong>Status:</strong> 
+{/* #B4C6EF */}
+                  <Card.Subtitle className="text-muted mb-2" as="h6"><strong style={{ color: '#B4C6EF' }}>Episodes:</strong> { el.node.num_episodes }</Card.Subtitle>
+                  <Card.Subtitle className='text-muted mb-2'><strong style={{ color: '#B4C6EF' }}>Status:</strong> 
                     { el.node.status === 'currently_airing' ? ' Currently Airing' 
                     : el.node.status === 'finished_airing' ? ' Finished Airing' 
                     : ' Not Yet Aired' }
