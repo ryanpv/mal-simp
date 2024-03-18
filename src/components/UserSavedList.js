@@ -231,7 +231,7 @@ function deleteBtn() {
         </Form>
       :
       <div className='text-center'>
-      < h3>Forgot to <Link to='/login'>Log in</Link>? or <Link to='/sign-up'>Sign up</Link> to create your own categories</h3>
+      <h3 style={{ color: '#B4C6EF' }}>Forgot to <Link to='/login'>Log in</Link>? or <Link to='/sign-up'>Sign up</Link> to create your own categories</h3>
       </div>
       }
     </Container>
