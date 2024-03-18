@@ -39,9 +39,9 @@ function NavBar() {
 
   return (
     <>
-      <Navbar style={{ backgroundColor: '#0F172A', fontWeight: 'bold', borderBottom: '1px solid #B4C6EF' }} className='py-1 border-solid' expand="xl" sticky='top' >
+      <Navbar style={{ background: 'linear-gradient(270deg, #0F172A, #2E374E)', backgroundColor: '#0F172A', fontWeight: 'bold' }} className='py-1 border-solid' expand="xl" sticky='top' >
         <Container className='justify-content-between'>
-          <Navbar.Brand href="/home"><img className="" style={{ height: 40 }} src={require("../logo192.png")} alt='WorldAnime Logo'/></Navbar.Brand>
+          <Navbar.Brand as={NavLink} to="/home"><img className="" style={{ height: 40 }} src={require("../logo192.png")} alt='WorldAnime Logo'/></Navbar.Brand>
           <Navbar.Brand style={{ fontWeight: '', fontSize: '30px', color: 'white' }} href="/home">WorldAnime</Navbar.Brand>
           <Navbar.Toggle aria-controls='NavbarScroll' style={{ backgroundColor: '#4C4C70' }} />
           <Navbar.Collapse className='justify-content-between' id="navbarScroll">

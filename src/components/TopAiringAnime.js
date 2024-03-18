@@ -76,7 +76,7 @@ function TopAiringAnime() {
           <Row xs={1} sm={2} md={3} xl={4} className="g-2">
             { animeList ? animeList.map(recs => { return (
               <Col className='mb-2' style={{ borderBottom: '1px solid #B4C6EF'}} key={ recs.node.id } >
-                <Card className='' onClick={() => handleShow({ id: recs.node.id }) } style={ { border: '0', height: '100%', cursor: "pointer" } }>
+                <Card className='' onClick={() => handleShow({ id: recs.node.id }) } style={ { backgroundColor:'transparent', border: '0', height: '100%', cursor: "pointer" } }>
                   <Card.Img style={{ height: '100%' }} variant='top' src={ recs.node.main_picture.medium } />
                   <Card.ImgOverlay 
                     style={{ 
@@ -91,7 +91,7 @@ function TopAiringAnime() {
                   >
                     <span style={{ margin: 'auto' }}>Score: { recs.node.mean }</span>
                   </Card.ImgOverlay>
-                  <Card.Body style={{ backgroundColor: '#0F172A', padding:'5px 10px', color: '#F472B6', height: '70px', overflow: 'auto' }}>
+                  <Card.Body style={{ padding:'5px 10px', color: '#F472B6', height: '70px', overflow: 'auto' }}>
                     <Card.Title style={{ color: '#F472B6' }}>{ recs.node.title }</Card.Title>
                   </Card.Body>
                 </Card>

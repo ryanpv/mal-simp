@@ -99,7 +99,7 @@ function SeasonalAnime() {
       <Container 
         ref={containerRef} 
         className="mt-4 mb-4 pt-2 pb-3" 
-        style={{ backgroundColor: '#0F172A' }}
+        style={{ backgroundColor: 'transparent' }}
       >
         <h3 className='text-left mb-3' style={{ color: '#B4C6EF', fontWeight: 'bold' }}>Seasonal Anime</h3>
         <hr style={{ color: "#F472B6", border: '3px solid #F472B6' }}></hr>

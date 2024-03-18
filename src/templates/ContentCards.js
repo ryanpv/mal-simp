@@ -11,7 +11,7 @@ export default function ContentCards({ loading, animeList }) {
       <Row xs={1} sm={2} md={3} xl={4} className="g-2">
         { animeList && animeList.map(el => { return (      
             <Col className='mb-2' style={{ borderBottom: '1px solid #B4C6EF'}} key={ el.node.id } >
-              <Card className='' onClick={() => handleShow({ id: el.node.id, title:el.node.title }) } style={ { border: '0', height: '100%', cursor: "pointer" } }>
+              <Card onClick={() => handleShow({ id: el.node.id, title:el.node.title }) } style={{ backgroundColor: 'transparent', border: '0', height: '100%', cursor: "pointer" } }>
                 <Card.Img style={{ height: '100%' }} variant='top' src={ el.node.main_picture.medium } />
                 <Card.ImgOverlay 
                     style={{ 
@@ -27,7 +27,7 @@ export default function ContentCards({ loading, animeList }) {
                     <span style={{ margin: 'auto' }}>Score: { el.node.mean }</span>
                   </Card.ImgOverlay>
                 {/* <Card.Body> */}
-                <Card.Body style={{ backgroundColor: '#0F172A', padding:'5px 10px', color: '#F472B6', height: '100px', overflow: 'auto' }}>
+                <Card.Body style={{ padding:'5px 10px', color: '#F472B6', height: '100px', overflow: 'auto' }}>
                   <Card.Title style={{ fontWeight: 'bold'}}>{ el.node.title }</Card.Title>
 {/* #B4C6EF */}
                   <Card.Subtitle className="text-muted mb-2" as="h6"><strong style={{ color: '#B4C6EF' }}>Episodes:</strong> { el.node.num_episodes }</Card.Subtitle>
