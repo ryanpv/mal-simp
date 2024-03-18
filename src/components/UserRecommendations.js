@@ -103,7 +103,7 @@ export default function HomePage() {
       { !malUserDetails.id ? 
         <Container>
           <div className='w-100 text-center mt-4 pt-4'>
-            <h3>To see your MyAnimeList recommended titles click the log in button below</h3>
+            <h3 style={{ color: '#B4C6EF' }}>To see your MyAnimeList recommended titles click the log in button below</h3>
           </div>
 
           <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>

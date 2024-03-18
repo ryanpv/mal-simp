@@ -100,7 +100,7 @@ function MalAnimeList() {
       { !malUserDetails.id ? 
         <Container>
           <div className='w-100 text-center mt-4 pt-4'>
-            <h3>If you would like to see your saved titles from MyAnimeList click the log in button below</h3>
+            <h3 style={{ color: '#B4C6EF' }}>If you would like to see your saved titles from MyAnimeList click the log in button below</h3>
           </div>
           <div className='w-100 text-center pt-5 mt-2 mb-4 pb-4'>
           <Button onClick={ () => getMalToken() }>Log In to MyAnimeList.net</Button> 

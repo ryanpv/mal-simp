@@ -68,8 +68,12 @@ function TrailerModal(props) {
   
   return (
     <>
-    { loading ? <SyncLoader color='#0d6efd' size={15} loading={loading} /> :
-    <Modal
+    { loading ? 
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className='m-auto pt-5'>
+        <SyncLoader color='#B4C6EF' size={10} loading={loading} /> 
+      </div>
+    :
+      <Modal
       // { ...props }
       show={ props.show }
       onHide={ props.onHide }
