@@ -60,7 +60,7 @@ export default function Login() {
             </div>
       </Container>
 
-      <div className='text-center mt-3'>
+      <div className='text-center mt-3' style={{ color: 'white' }}>
           <p>Don't have an account? Go to the <Link to='/sign-up'>Sign Up</Link> page</p>
       </div>
     </>

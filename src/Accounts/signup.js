@@ -30,10 +30,6 @@ export default function Signup() {
 
   }
 
-
-
-
-
   return (
     <>
     <Container className="mt-4" style={{ maxWidth: '325px' }}>
@@ -68,7 +64,7 @@ export default function Signup() {
       </Card>
     </Container>
 
-      <div className='text-center mt-3'>
+      <div className='text-center mt-3' style={{ color: 'white' }}>
         <p>Already have an account? Go to the <Link to='/login'>Login</Link> page</p>
       </div>
     </>
