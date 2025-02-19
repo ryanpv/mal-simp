@@ -45,7 +45,8 @@ function App() {
 
       <div className="App">
         <Routes>
-          <Route path="/" element={ <LandingPage /> } />
+          {/* <Route path="/" element={ <LandingPage /> } /> */}
+          <Route path="/" element={ <TopAiringAnime /> } />
           <Route path="/home" element={ <TopAiringAnime /> } />
           <Route path="/user-recommendations" element={ <UserRecommendations /> } />
           <Route path="/logcallback" element={ <LogCallback /> } />
